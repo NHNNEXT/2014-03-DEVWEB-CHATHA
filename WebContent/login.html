@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang-"ko">
+	<head>
+		<meta charset="utf-8">
+		<title>Test Site</title>
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+		<script src="login.js"></script>
+	</head>
+	<body ng-app="login" ng-controller="LoginController as login">
+		<header ng-show="login.data.login">
+			<h1>{{login.data.nickname}}</h1>
+			<span>UserID : {{login.data.id}}</span>
+		</header>
+		<hr>
+		<main>
+			<input type="text" ng-model="login.data.id" placeholder="id" />
+			<input type="password" ng-model="login.data.password" placeholder="password" />
+			<input type="submit" value="login" ng-click="login.submit()" />
+		</main>
+	</body>
+</html>
+
