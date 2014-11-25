@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import realrank.support.LoginResult;
+
 import com.google.gson.Gson;
 
 /**
@@ -29,7 +31,8 @@ public class LoginServlet extends HttpServlet {
 		String password	= request.getParameter("password");
 
 		// DAO : get user from DB
-		User user = UserDAO.getUser(userId);
+		UserDAO userDAO= new UserDAO();
+		User user = userDAO.getUser(userId);
 		
 		if (user != null && user.matchPassword(password) == false)
 			user = null;

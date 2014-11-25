@@ -1,56 +1,34 @@
 package realrank.user;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class UserDAO extends DAO {
-	private static final DAO dao = new DAO();
+import realrank.support.DAO;
 
-	public static User getUser(String userId) {
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		ResultSet resultSet = null;
+public class UserDAO {
+	DAO dao = new DAO();
+	ArrayList<Object> parameters = new ArrayList<Object>();
+	ArrayList<Object> result;
+	public User getUser(String userId) {
 
-		try {
-			connection = dao.getConnection();
-			String sql = "select * from user where id=?";
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, userId);
-			resultSet = pstmt.executeQuery();
-			
-			if (resultSet.next()) {
-				return new User(resultSet.getString("id"),
-						resultSet.getString("email"),
-						resultSet.getString("password"),
-						resultSet.getString("nickname"),
-						resultSet.getString("gender").charAt(0),
-						resultSet.getDate("birthDay"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (resultSet != null)
-				try {
-					resultSet.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			if (pstmt != null)
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			if (connection != null)
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		}
+		String sql = "select * from user where id=?";
+		
+		parameters.add(userId);
+		result = dao.selectQuery(sql, parameters, 6);
+		return new User((String) result.get(0), (String) result.get(1),
+				(String) result.get(2), (String) result.get(3), result.get(4)
+						.toString(), dao.parseDate(result.get(5)));
 
-		return null;
+	}
+
+	public boolean addUser(User user) {
+		String sql = "insert into user values(?,?,?,?,?,?)";
+		parameters.add(user.getUserId());
+		parameters.add(user.getEmail());
+		parameters.add(user.getPassword());
+		parameters.add(user.getNickname());
+		parameters.add(user.getGender());
+		parameters.add(user.getBirthday());
+		return dao.executeQuery(sql, parameters);
+
 	}
 }

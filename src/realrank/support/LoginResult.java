@@ -1,8 +1,13 @@
-package realrank.user;
+package realrank.support;
+
+import realrank.user.User;
 
 public class LoginResult {
+	@SuppressWarnings("unused")
 	private boolean success;
+	@SuppressWarnings("unused")
 	private String errmsg;
+	@SuppressWarnings("unused")
 	private User user;
 
 	public LoginResult(User user) {
