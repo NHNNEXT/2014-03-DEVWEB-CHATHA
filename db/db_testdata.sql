@@ -5,5 +5,8 @@ USE `realrank`;
 
 DELETE FROM `user`;
 INSERT INTO `user` VALUES (
-	'test', 'test@example.com', 'asdf', 'Kim Person', 'M', '1989-04-05'
+	'champ', 'champ@example.com', 'asdf', 'champion', 'M', '1990-05-05'
+);
+INSERT INTO `user` VALUES (
+	'chal', 'chal@example.com', 'asdf', 'challenger', 'F', '1988-04-07'
 );
