@@ -33,3 +33,19 @@ CREATE TABLE `user` (
 	PRIMARY KEY(`id`)
 ) ENGINE = InnoDB;
 
+
+
+USE `realrank`;
+DROP TABLE IF EXISTS `battle`;
+
+-- Table `user`
+CREATE TABLE `battle` (
+	`id` VARCHAR(32) NOT NULL,
+	`challenger` VARCHAR(32) NOT NULL,
+	`champion` VARCHAR(32) NOT NULL,
+	`req_time` DATETIME NOT NULL,
+	`acc_time` DATETIME NULL,
+	`state` TINYINT NULL,
+	`winner` VARCHAR(32) NULL,
+	PRIMARY KEY(`id`)
+) ENGINE = InnoDB;
