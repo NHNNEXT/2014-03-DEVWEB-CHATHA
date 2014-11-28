@@ -1,4 +1,4 @@
-package rearank.test;
+package realrank.test;
 
 import static org.junit.Assert.*;
 

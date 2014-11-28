@@ -13,7 +13,8 @@ public class UserDAO {
 		String sql = "select * from user where id=?";
 		
 		parameters.add(userId);
-		result = dao.selectQuery(sql, parameters, 6);
+//		Changed because the return type's change of selectQuery
+		result = (dao.selectQuery(sql, parameters, 6)).get(0);
 		return new User((String) result.get(0), (String) result.get(1),
 				(String) result.get(2), (String) result.get(3), result.get(4)
 						.toString(), dao.parseDate(result.get(5)));
