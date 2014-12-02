@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="Chatha">
-        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+  <wb-module deploy-name="genius">
+    <property name="context-root" value="/"/>
+    <wb-resource deploy-path="/" source-path="WebContent"/>
+    <property name="java-output-path" value="/WebContent/WEB-INF/classes"/>
+    <wb-resource deploy-path="/WEB-INF/classes" source-path="src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
-        <property name="context-root" value="Chatha"/>
-        <property name="java-output-path" value="/Chatha/build/classes"/>
-    </wb-module>
+  </wb-module>
 </project-modules>
