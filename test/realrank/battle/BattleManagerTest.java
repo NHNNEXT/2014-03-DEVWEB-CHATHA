@@ -27,6 +27,7 @@ public class BattleManagerTest {
 		BattleManager.acceptChallenge(75);
 		BattleManager.acceptChallenge(76);
 		BattleManager.acceptChallenge(77);
+		assertTrue(true);
 	}
 	
 	@Test

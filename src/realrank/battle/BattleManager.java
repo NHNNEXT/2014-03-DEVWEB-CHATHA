@@ -8,21 +8,20 @@ import realrank.support.DAO;
 class BattleManager {
 	static boolean challengeTo(String userId, String champId) {
 		DAO dao = new DAO();
-		ArrayList<Object> parameters = new ArrayList<Object>();
-		String sql = "insert into battle (challenger, champion, req_time, state) values(?,?, now(),?)";
-		parameters.add(userId);
-		parameters.add(champId);
-		parameters.add(0);
-		return dao.executeQuery(sql, parameters);
+		dao.setSql("insert into battle (challenger, champion, req_time, state) values(?,?, now(),?)");
+		dao.addParameters(userId);
+		dao.addParameters(champId);
+		dao.addParameters(0);
+		return dao.executeQuery();
 	}
 
 	static ArrayList<ArrayList<Object>> getAcceptibleChallenges(String userId) {
 		DAO dao = new DAO();
-		ArrayList<Object> parameters = new ArrayList<Object>();
 		// 0 means acceptable and validated
-		String sql = "select * from battle where champion = ? and state = 0";
-		parameters.add(userId);
-		return maskUnacceptibleChallenges(dao.selectQuery(sql, parameters, 7));
+		dao.setSql("select * from battle where champion = ? and state = 0");
+		dao.addParameters(userId);
+		dao.setResultSetLength(7);
+		return maskUnacceptibleChallenges(dao.getRecords());
 	}
 
 	private static ArrayList<ArrayList<Object>> maskUnacceptibleChallenges(
@@ -47,17 +46,17 @@ class BattleManager {
 
 	private static void handleErrorChallenges(ArrayList<Object> errorChallenges) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	static boolean acceptChallenge(long battleId) {
 		Date reqTime;
 		DAO dao = new DAO();
-		ArrayList<Object> parameters = new ArrayList<Object>();
 		// -1 means canceled.
-		String sql = "select req_time from battle where id = ? and state <> -1";
-		parameters.add(battleId);
-		reqTime = (Date) ((dao.selectQuery(sql, parameters, 1).get(0)).get(0));
+		dao.setSql("select req_time from battle where id = ? and state <> -1");
+		dao.addParameters(battleId);
+		dao.setResultSetLength(1);
+		reqTime = (Date) dao.getRecord().get(0);
 		if (determineTimeValidity(reqTime)) {
 			// 1 means accepted.
 			return setState(battleId, 1);
@@ -67,23 +66,23 @@ class BattleManager {
 	}
 
 	static boolean denyChallenge(long battleId) {
-//		-2 means denied.
+		// -2 means denied.
 		return setState(battleId, -2);
 	}
-	
+
 	static boolean setState(long battleId, int state) {
 		DAO dao = new DAO();
-		ArrayList<Object> parameters = new ArrayList<Object>();
-		String sql = "update battle set state = ? where id = ?";
-		parameters.add(state);
-		parameters.add(battleId);
-		return dao.executeQuery(sql, parameters);
+		dao.setSql("update battle set state = ? where id = ?");
+		dao.addParameters(state);
+		dao.addParameters(battleId);
+		return dao.executeQuery();
 	}
-	
+
 	static Date getServerTime() {
 		DAO dao = new DAO();
-		String sql = "select now()";
-		return (Date) (dao.selectQuery(sql, 1).get(0));
+		dao.setSql("select now()");
+		dao.setResultSetLength(1);
+		return (Date) (dao.getRecord().get(0));
 	}
 
 	static boolean determineTimeValidity(Date reqTime) {
@@ -96,10 +95,11 @@ class BattleManager {
 
 	static ArrayList<ArrayList<Object>> showAcceptedChallenges(String userId) {
 		DAO dao = new DAO();
-		ArrayList<Object> parameters = new ArrayList<Object>();
-		String sql = "select * from battle where (challenger = ? or champion = ?) and state = 1";
-		parameters.add(userId);
-		parameters.add(userId);
-		return dao.selectQuery(sql, parameters, 7);
+		// 챔피언이랑 챌린저랑 같은이유 ..?
+		dao.setSql("select * from battle where (challenger = ? or champion = ?) and state = 1");
+		dao.setResultSetLength(7);
+		dao.addParameters(userId);
+		dao.addParameters(userId);
+		return dao.getRecords();
 	}
 }

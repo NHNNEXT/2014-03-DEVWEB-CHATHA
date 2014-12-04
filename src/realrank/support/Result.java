@@ -1,5 +1,7 @@
 package realrank.support;
 
+import com.google.gson.Gson;
+
 public class Result {
 	boolean success;
 	String errorMessage;
@@ -9,10 +11,9 @@ public class Result {
 		this.errorMessage = errorMessage;
 	}
 
-	public char[] toJson() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toJson() {
+		Gson gson = new Gson();
+		return gson.toJson(this);
 	}
 
-	
 }
