@@ -21,7 +21,7 @@
 			})
 			.success( function(result) {
 				if (result.success) {
-					location.href="/userinfo.jsp";
+					location.href="/support/userinfo";
 				} else {
 					$scope.state = result;
 				}

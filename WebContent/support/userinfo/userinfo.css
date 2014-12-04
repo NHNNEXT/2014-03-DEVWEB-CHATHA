@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+#myPosition {
+	position: absolute;
+	left: -115px;
+	font-size: 25px;
+	top: 150px;
+}
+
+#myProfile {
+	top: 150px
+}
+
+#verticalLine {
+	background: #999;
+	width: 3px;
+	height: 500px;
+	position: absolute;
+	display: block;
+}
