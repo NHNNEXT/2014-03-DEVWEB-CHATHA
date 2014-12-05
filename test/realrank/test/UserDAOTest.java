@@ -33,10 +33,10 @@ public class UserDAOTest {
 		System.out.println(gson.fromJson("{\"userId\":\"user\"}", User.class));
 		
 		
-	/*	User user = new User("mymy", "1@1.1", "2", "asdf", "f",
+		User user = new User("mymy2", "1@1.1", "2", "asdf", "f",
 				dao.parseDate("1986-11-24"));
 		System.out.println(user);
-		assertTrue(userdao.addUser(user));*/
+		assertTrue(userdao.addUser(user));
 	}
 
 }

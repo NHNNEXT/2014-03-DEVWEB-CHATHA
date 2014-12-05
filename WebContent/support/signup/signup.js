@@ -16,6 +16,7 @@ $(function() {
 	app.controller('SignUp', ['$http','$scope' , function($http, $scope) {
 		$scope.user = {};
 		$scope.state = {};
+		$scope.birthday = "";
 		$scope.submit = function() {
 			$http({
 				method: 'POST',
@@ -27,7 +28,7 @@ $(function() {
 						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 					return str.join("&");
 				},
-				data: { user : JSON.stringify($scope.user) }
+				data: { user : JSON.stringify($scope.user), birthday: $scope.birthday }
 			})
 			.success( function(result) {
 				if (result.success) {

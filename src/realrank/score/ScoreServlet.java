@@ -1,4 +1,4 @@
-package realrank.battle;
+package realrank.score;
 
 import java.io.IOException;
 
@@ -9,11 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import realrank.user.User;
-import realrank.user.UserDAO;
 
 @SuppressWarnings("serial")
 @WebServlet("/winner/*")
-public class BattleServlet extends HttpServlet {
+public class ScoreServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -27,10 +26,16 @@ public class BattleServlet extends HttpServlet {
 		}
 		
 		String[] path = request.getPathInfo().split("/");
-		UserDAO userdao = new UserDAO();
-		User winner = userdao.getUser(path[1]);
 		User loser = (User) request.getSession().getAttribute("user");
-		BattleManager bm = new BattleManager();
-		bm.addResult(winner, loser);
+		
+		if(loser.getUserId().equals(path[1])){
+			response.sendRedirect("/support/userinfo");
+			return;
+		}
+		
+		ScoreDAO scoredao = new ScoreDAO();
+		scoredao.urlWinner(path[1], loser.getUserId());
+		loser.setScore(loser.getScore()-10);
+		response.sendRedirect("/support/userinfo");
 	}
 }

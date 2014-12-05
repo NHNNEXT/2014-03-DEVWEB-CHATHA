@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import realrank.score.Score;
+
 import com.google.gson.Gson;
 
 public class User {
@@ -13,6 +15,8 @@ public class User {
 	private String nickname;
 	private String gender;
 	private Date birthday;
+	
+	private int score;
 
 	public User(String userId, String email, String password, String nickname,
 			String gender, Date birthday) {
@@ -87,7 +91,7 @@ public class User {
 	}
 	
 	public boolean setBirthday(String birthdayString){
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
 		Date birthday = null;
 		try {
 			birthday = date.parse(birthdayString);
@@ -98,10 +102,27 @@ public class User {
 		this.birthday = birthday;
 		return true;
 	}
+	
+	public String getJson(){
+		Gson gson = new Gson();
+		return gson.toJson(this);
+	}
 
 	public static User fromJson(String jsonString) {
 		Gson gson = new Gson();
 		return gson.fromJson(jsonString, User.class);
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public void setScore(Score score) {
+		this.score = score.getScore();
 	}
 
 }

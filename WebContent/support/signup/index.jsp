@@ -19,18 +19,17 @@
 						placeholder="Password"> <input type="password"
 						class="form-control" placeholder="Password Confirm"> <br>
 					<input ng-model="user.email" type="text" class="form-control"
-						placeholder="Email"> <input type="radio"
-						ng-model="user.gender" value="m"> 남<br> <input
-						type="radio" ng-model="user.gender" value="f"> 여<br>
-			Birthday: <input ng-model="user.birthday" type="text" id="datepicker">
-<br><br>
+						placeholder="Email"> <input ng-model="user.nickname"
+						type="text" class="form-control" placeholder="NickName"> <input
+						type="radio" ng-model="user.gender" value="m"> 남<br>
+					<input type="radio" ng-model="user.gender" value="f"> 여<br>
+					Birthday: <input ng-model="birthday" type="text" id="datepicker">
+					<br> <br>
 					<div ng-click="submit()" class="btn btn-lg btn-primary btn-block">Sign
 						in</div>
-					<h4>
-						{{state.errorMessage}}
-						</h5>
+					<h4>{{state.errorMessage}}</h4>
 				</div>
-				
+
 			</div>
 		</div>
 	</div>

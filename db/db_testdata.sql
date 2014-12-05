@@ -10,3 +10,10 @@ INSERT INTO `user` VALUES (
 INSERT INTO `user` VALUES (
 	'chal', 'chal@example.com', 'asdf', 'challenger', 'F', '1988-04-07'
 );
+
+INSERT INTO `score` VALUES (
+	'champ', 0
+);
+INSERT INTO `score` VALUES (
+	'chal', 0
+);

@@ -49,3 +49,14 @@ CREATE TABLE `battle` (
 	`winner` VARCHAR(32) NULL,
 	PRIMARY KEY(`id`)
 ) ENGINE = InnoDB;
+
+
+USE `realrank`;
+DROP TABLE IF EXISTS `score`;
+
+-- Table `user`
+CREATE TABLE `score` (
+	`id` VARCHAR(32) NOT NULL,
+	`score` TINYINT NOT NULL,
+	PRIMARY KEY(`id`)
+) ENGINE = InnoDB;
