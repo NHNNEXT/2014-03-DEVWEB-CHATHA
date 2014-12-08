@@ -125,4 +125,16 @@ public class User {
 		this.score = score.getScore();
 	}
 
+	public static String mailAddress(String cid) {
+		String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+		if (cid.matches(emailRegex)) {
+			return cid;
+		}
+		UserDAO champDAO = new UserDAO();
+		User champ = champDAO.getUser(cid);
+		if (champ == null) {
+			
+		}
+		return champ.getEmail();
+	}
 }

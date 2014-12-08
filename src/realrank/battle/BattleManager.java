@@ -102,4 +102,8 @@ class BattleManager {
 		dao.addParameters(userId);
 		return dao.getRecords();
 	}
+
+	public static String makeLink(String uid) {
+		return "<a href=#> "+ uid + " </a>";
+	}
 }

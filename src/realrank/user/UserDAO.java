@@ -16,9 +16,15 @@ public class UserDAO {
 		if (result.size() == 0)
 			return null;
 		
-		User user = new User((String) result.get(0), (String) result.get(1),
-				(String) result.get(2), (String) result.get(3), result.get(4)
-				.toString(), dao.parseDate(result.get(5)));
+		parameters.add(userId);
+//		Changed because the return type's change of selectQuery
+		result = (dao.selectQuery(sql, parameters, 6)).get(0);
+		if (result == null) {
+			return null;
+		}
+		return new User((String) result.get(0), (String) result.get(1),
+			(String) result.get(2), (String) result.get(3), result.get(4)
+			.toString(), dao.parseDate(result.get(5)));
 		
 		user.setScore(new ScoreDAO().getScore(userId));
 		return user;

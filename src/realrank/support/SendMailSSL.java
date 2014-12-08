@@ -13,7 +13,7 @@ import javax.mail.internet.MimeMessage;
 public class SendMailSSL {
 	static Properties props = new Properties();
 	
-	static void sendTo (MessageMod msg) {
+	public static void sendTo (MessageMod msg) {
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
 		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");

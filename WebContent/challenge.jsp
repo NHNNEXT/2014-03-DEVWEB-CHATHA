@@ -7,8 +7,8 @@
 <title>Challenge</title>
 </head>
 <body>
-<form action="/sendChallenge" method="post">
-<input type="text" name="pid" id="pid">
+<form action="/email_challenge" method="post">
+<input type="text" name="cid" id="cid">
 <input type="submit" value="도전">
 </form>
 </body>
