@@ -25,6 +25,7 @@ public class RequestBattleServlet extends HttpServlet {
 		String uid = (String) session.getAttribute("user");
 		String cid = request.getParameter("pid");
 		BattleManager.challengeTo(uid, cid);
+		
 	}
 
 }
