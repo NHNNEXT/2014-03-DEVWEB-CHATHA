@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import realrank.setting.Setting;
+
 public class DAO {
 
 	private ArrayList<Object> parameters = new ArrayList<Object>();
@@ -31,17 +33,18 @@ public class DAO {
 	}
 
 	public Connection getConnection() throws SQLException {
+		Setting setting = Setting.getInstance();
 		Connection conn = null;
-		String url = "jdbc:mysql://10.73.45.136:3306/realrank?useUnicode=true&characterEncoding=utf8";
-		String id = "realrank_test";
-		String pw = "1234";
+		String url = setting.db().getUrl();
+		String id = setting.db().getId();
+		String password = setting.db().getPassword();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		conn = DriverManager.getConnection(url, id, pw);
+		conn = DriverManager.getConnection(url, id, password);
 
 		return conn;
 	}

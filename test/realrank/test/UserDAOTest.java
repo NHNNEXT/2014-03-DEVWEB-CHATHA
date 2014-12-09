@@ -21,7 +21,7 @@ public class UserDAOTest {
 
 	@Test
 	public void getUserTest() {
-		User user = userdao.getUser("mymy");
+		User user = userdao.getUser("champ");
 		System.out.println(user);
 		assertTrue(true);
 		
