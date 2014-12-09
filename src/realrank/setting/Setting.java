@@ -28,18 +28,7 @@ public class Setting {
 			while (reader.hasNext()) {
 				String name = reader.nextName();
 				if (name.equals("database")) {
-					reader.beginObject();
-					while (reader.hasNext()) {
-						String dbn = reader.nextName();
-						if (dbn.equals("url")) {
-							db.setUrl(reader.nextString());
-						} else if (dbn.equals("id")) {
-							db.setId(reader.nextString());
-						} else if (dbn.equals("password")) {
-							db.setPassword(reader.nextString());
-						}
-					}
-					reader.endObject();
+					readDBSettings(reader);
 				} else {
 					reader.skipValue(); // avoid some unhandle events
 				}
@@ -51,6 +40,21 @@ public class Setting {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void readDBSettings(JsonReader reader) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String dbn = reader.nextName();
+			if (dbn.equals("url")) {
+				db.setUrl(reader.nextString());
+			} else if (dbn.equals("id")) {
+				db.setId(reader.nextString());
+			} else if (dbn.equals("password")) {
+				db.setPassword(reader.nextString());
+			}
+		}
+		reader.endObject();
 	}
 
 }
