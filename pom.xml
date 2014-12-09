@@ -89,7 +89,7 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.9</version>
 				<configuration>
-					<excludeGroupIds>javax.servlet, junit, javax.servlet.jsp,
+					<excludeGroupIds>junit, javax.servlet.jsp,
 						org.apache.tomcat</excludeGroupIds>
 					<outputDirectory>${project.basedir}/WebContent/WEB-INF/lib</outputDirectory>
 					<overWriteReleases>false</overWriteReleases>
