@@ -6,6 +6,13 @@
 	app.controller('LoginController', ['$http','$scope' , function($http, $scope) {
 		$scope.user = {};
 		$scope.state = {};
+		$scope.check = function(target) {
+			if (! $scope.user.userId)
+				$scope.state.errorMessage = "아이디를 입력하세요";
+			else if (! $scope.user.password)
+				$scope.state.errorMessage = "비밀번호를 입력하세요";
+			return target.$valid;
+		};
 		$scope.submit = function() {
 			$http({
 				method: 'POST',

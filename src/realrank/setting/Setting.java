@@ -7,9 +7,9 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 
 public class Setting {
-
+	private final static String FILE_PATH_LOCAL = "setting.realrank";
+	private final static String FILE_PATH_DEFAULT = "/etc/realrank";
 	private static Setting instance = new Setting();
-	
 	private DatabaseSetting db = new DatabaseSetting();
 
 	public DatabaseSetting db() {
@@ -22,8 +22,7 @@ public class Setting {
 
 	private Setting() {
 		try {
-			JsonReader reader = new JsonReader(new FileReader(
-					"setting.realrank"));
+			JsonReader reader = new JsonReader(new FileReader(FILE_PATH_LOCAL));
 			reader.beginObject();
 			while (reader.hasNext()) {
 				String name = reader.nextName();
@@ -36,7 +35,8 @@ public class Setting {
 			reader.endObject();
 			reader.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.err.println(e.getLocalizedMessage());
+			System.err.println("Current Path: " + System.getProperty("user.dir"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
