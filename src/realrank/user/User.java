@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import realrank.score.Score;
-
 import com.google.gson.Gson;
 
 public class User {
@@ -119,10 +117,6 @@ public class User {
 
 	public void setScore(int score) {
 		this.score = score;
-	}
-
-	public void setScore(Score score) {
-		this.score = score.getScore();
 	}
 
 	public static String mailAddress(String cid) {

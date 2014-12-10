@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import realrank.support.DAO;
 
 public class ScoreDAO {
-	public Score getScore(String userId) {
+	public int getScore(String userId) {
 		DAO dao = new DAO();
 		dao.setSql("select * from score where id=?");
 		dao.addParameters(userId);
 		dao.setResultSetLength(2);
 		ArrayList<Object> result = dao.getRecord();
 		if (result.size() == 0)
-			return null;
-		return new Score((String) result.get(0), (int) result.get(1));
+			return 0;
+		return (int) result.get(1);
 	}
 
 	public boolean urlWinner(String winner, String loser) {
