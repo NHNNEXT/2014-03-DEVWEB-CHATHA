@@ -38,9 +38,9 @@ CREATE TABLE `user` (
 USE `realrank`;
 DROP TABLE IF EXISTS `battle`;
 
--- Table `user`
+-- Table `battle`
 CREATE TABLE `battle` (
-	`id` VARCHAR(32) NOT NULL,
+	`id` int NOT NULL AUTO_INCREMENT,
 	`challenger` VARCHAR(32) NOT NULL,
 	`champion` VARCHAR(32) NOT NULL,
 	`req_time` DATETIME NOT NULL,
