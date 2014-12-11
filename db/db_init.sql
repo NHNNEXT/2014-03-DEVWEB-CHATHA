@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS `battle`;
 
 -- Table `user`
 CREATE TABLE `battle` (
-	`id` VARCHAR(32) NOT NULL,
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
 	`challenger` VARCHAR(32) NOT NULL,
 	`champion` VARCHAR(32) NOT NULL,
 	`req_time` DATETIME NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE `battle` (
 USE `realrank`;
 DROP TABLE IF EXISTS `score`;
 
--- Table `user`
+-- Table `score`
 CREATE TABLE `score` (
 	`id` VARCHAR(32) NOT NULL,
 	`score` TINYINT NOT NULL,

@@ -4,16 +4,25 @@
 USE `realrank`;
 
 DELETE FROM `user`;
-INSERT INTO `user` VALUES (
-	'champ', 'champ@example.com', 'asdf', 'champion', 'M', '1990-05-05'
-);
-INSERT INTO `user` VALUES (
-	'chal', 'chal@example.com', 'asdf', 'challenger', 'F', '1988-04-07'
-);
+INSERT INTO `user` VALUES
+	('champ', 'champ@example.com', 'asdf', 'champion', 'M', '1990-05-05'),
+	('chal', 'chal@example.com', 'asdf', 'challenger', 'F', '1988-04-07');
 
-INSERT INTO `score` VALUES (
-	'champ', 0
-);
-INSERT INTO `score` VALUES (
-	'chal', 0
-);
+DELETE FROM `score`;
+INSERT INTO `score` VALUES
+	('champ', 0),
+	('chal', 0);
+
+-- state field: 0(acceptable and not validated) 1(canceled) 2(timeout) 3(canceled) 4(denied)
+DELETE FROM `battle`;
+INSERT INTO `battle` VALUES
+	(NULL, 'chal', 'champ', '2014-12-09 09:00:00', NULL, 1, NULL),
+	(NULL, 'champ', 'chal', '2014-12-09 09:00:00', NULL, 1, NULL),
+	(NULL, 'chal', 'champ', '2014-12-10 10:00:00', NULL, 2, NULL),
+	(NULL, 'champ', 'chal', '2014-12-10 10:00:00', NULL, 2, NULL),
+	(NULL, 'chal', 'champ', '2014-12-11 11:00:00', NULL, 3, NULL),
+	(NULL, 'champ', 'chal', '2014-12-11 11:00:00', NULL, 3, NULL),
+	(NULL, 'chal', 'champ', '2014-12-12 12:00:00', NULL, 4, NULL),
+	(NULL, 'champ', 'chal', '2014-12-12 12:00:00', NULL, 4, NULL),
+	(NULL, 'chal', 'champ', CURDATE(), NULL, 0, NULL),
+	(NULL, 'champ', 'chal', CURDATE(), NULL, 0, NULL);

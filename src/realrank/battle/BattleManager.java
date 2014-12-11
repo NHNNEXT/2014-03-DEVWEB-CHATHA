@@ -6,6 +6,11 @@ import java.util.Date;
 import realrank.support.DAO;
 
 class BattleManager {
+	private final static int STATE_ACCEPTED	= 1;
+	private final static int STATE_OUTDATED	= 2;
+	private final static int STATE_CANCELED	= 3;
+	private final static int STATE_DENIED	= 4;
+
 	static boolean challengeTo(String userId, String champId) {
 		DAO dao = new DAO();
 		dao.setSql("insert into battle (challenger, champion, req_time, state) values(?,?, now(),?)");
@@ -31,7 +36,7 @@ class BattleManager {
 		challengeList.forEach(curChallenge -> {
 			Date reqTime = (Date) (curChallenge.get(3));
 			if (!determineTimeValidity(reqTime)) {
-				if (!setState((long) (curChallenge.get(0)), 2)) {
+				if (!setState((long) (curChallenge.get(0)), STATE_OUTDATED)) {
 					errorChallenges.add(curChallenge);
 				}
 				removeObject.add(curChallenge);
@@ -52,22 +57,19 @@ class BattleManager {
 	static boolean acceptChallenge(long battleId) {
 		Date reqTime;
 		DAO dao = new DAO();
-		// -1 means canceled.
 		dao.setSql("select req_time from battle where id = ? and state <> -1");
 		dao.addParameters(battleId);
 		dao.setResultSetLength(1);
 		reqTime = (Date) dao.getRecord().get(0);
 		if (determineTimeValidity(reqTime)) {
-			// 1 means accepted.
-			return setState(battleId, 1);
+			return setState(battleId, STATE_ACCEPTED);
 		}
-		setState(battleId, 2);
+		setState(battleId, STATE_OUTDATED);
 		return false;
 	}
 
 	static boolean denyChallenge(long battleId) {
-		// -2 means denied.
-		return setState(battleId, -2);
+		return setState(battleId, STATE_DENIED);
 	}
 
 	static boolean setState(long battleId, int state) {
