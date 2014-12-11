@@ -10,7 +10,7 @@ public class BattleManagerTest {
 
 	@Test
 	public void testChallengeTo() {
-		BattleManager.challengeTo("chal", "champ");
+		BattleManager.challengeTo("champ", "chal");
 	}
 
 	@Test
