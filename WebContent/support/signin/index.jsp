@@ -24,7 +24,7 @@
 						<fieldset class="form-group">
 						<input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign in" />
 						</fieldset>
-						<h4>{{state.errorMessage}}</h5>
+						<h4>{{state.errorMessage}}</h4>
 					</div>
 					<a href="/support/signup/" class="text-center new-account">Create an account </a>
 				</form>

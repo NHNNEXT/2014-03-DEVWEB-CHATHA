@@ -3,7 +3,11 @@
 (function() {
 	var app = angular.module('login', []);
 
-	app.controller('LoginController', ['$http','$scope' , function($http, $scope) {
+	app.config(function($locationProvider) {
+		$locationProvider.html5Mode(true);
+	});
+
+	app.controller('LoginController', ['$http', '$scope', '$location' , function($http, $scope, $location) {
 		$scope.user = {};
 		$scope.state = {};
 		$scope.check = function(target) {
@@ -28,7 +32,8 @@
 			})
 			.success( function(result) {
 				if (result.success) {
-					location.href="/support/userinfo";
+					var redirectPath = $location.search().redirect;
+					location.href = (redirectPath ? redirectPath : "/support/userinfo");
 				} else {
 					$scope.state = result;
 				}
