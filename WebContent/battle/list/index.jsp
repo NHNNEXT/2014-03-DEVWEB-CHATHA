@@ -7,39 +7,39 @@
 <link href="/battle/list/battlelist.css">
 <title>BattleList - RealRank</title>
 </head>
-<body>
+<body ng-app="BattleList">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-6 col-md-4 col-md-offset-4">
-				<div class="page-header">
-				  <h1>Champ <small>battle list</small></h1>
+			<div class="col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
+				<div class="page-header" ng-controller="UserController">
+				  <h1>Champ <small>champ@gmail.cm</small></h1>
 				</div>
 
-				<div class="panel-group" id="accordion">
+				<div class="panel-group" id="accordion" ng-controller="BattleController">
 				
 					<!-- 내가 신청 -->
 					<div class="panel panel-default battles-send">
 						<div class="panel-heading">
 							<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion"
-									href="#battles-send">내가 보낸 도전</a>
+									href="#battles-send">보낸 도전</a>
 								<span class="badge">3</span>
 							</h4>
 						</div>
 						<div id="battles-send" class="panel-collapse collapse in">
 							<ul class="list-group">
-							  <li class="list-group-item">Chal
-							  	<button type="button" class="btn btn-default btn-xs">
+							  <li class="list-group-item">Champ vs Chal
+							  	<button type="button" class="btn btn-default btn-xs pull-right">
 								  <span class="glyphicon glyphicon-remove"></span>cancel
 								</button>
 							  </li>
-							  <li class="list-group-item">Chal
-							  	<button type="button" class="btn btn-default btn-xs">
+							  <li class="list-group-item">Champ vs Chal
+							  	<button type="button" class="btn btn-default btn-xs pull-right">
 								  <span class="glyphicon glyphicon-remove"></span>cancel
 								</button>
 							  </li>
-							  <li class="list-group-item">Chal
-							  	<button type="button" class="btn btn-default btn-xs">
+							  <li class="list-group-item">Champ vs Chal
+							  	<button type="button" class="btn btn-default btn-xs pull-right">
 								  <span class="glyphicon glyphicon-remove"></span>cancel
 								</button>
 							  </li>
@@ -52,19 +52,31 @@
 						<div class="panel-heading">
 							<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion"
-									href="#battles-recieve">내가 보낸 도전</a> <span class="badge">4</span>
+									href="#battles-recieve">받은 도전</a> <span class="badge">4</span>
 							</h4>
 						</div>
 						<div id="battles-recieve" class="panel-collapse collapse in">
 							<ul class="list-group">
-								<li class="list-group-item">Chal
-									<button type="button" class="btn btn-default">
-  										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Star
+								<li class="list-group-item">Champ vs Chal
+									<button type="button" class="btn btn-default btn-xs pull-right">
+										<span class="glyphicon glyphicon-ok"></span>accept
 									</button>
 								</li>
-								<li class="list-group-item">Chal</li>
-								<li class="list-group-item">Chal</li>
-								<li class="list-group-item">Chal</li>
+								<li class="list-group-item">Champ vs Chal
+									<button type="button" class="btn btn-default btn-xs pull-right">
+										<span class="glyphicon glyphicon-ok"></span>accept
+									</button>
+								</li>
+								<li class="list-group-item">Champ vs Chal
+									<button type="button" class="btn btn-default btn-xs pull-right">
+										<span class="glyphicon glyphicon-ok"></span>accept
+									</button>
+								</li>
+								<li class="list-group-item">Champ vs Chal
+									<button type="button" class="btn btn-default btn-xs pull-right">
+										<span class="glyphicon glyphicon-ok"></span>accept
+									</button>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -76,14 +88,26 @@
 						<div class="panel-heading">
 							<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion"
-									href="#battles-in-progress">진행중인 도전</a> <span class="badge">14</span>
+									href="#battles-in-progress">진행중인 도전</a> <span class="badge">3</span>
 							</h4>
 						</div>
 						<div id="battles-in-progress" class="panel-collapse collapse in">
 							<ul class="list-group">
-								<li class="list-group-item">Chal</li>
-								<li class="list-group-item">Chal</li>
-								<li class="list-group-item">Chal</li>
+								<li class="list-group-item">Champ vs Chal
+									<button type="button" class="btn btn-default btn-xs pull-right">
+										<span class="glyphicon glyphicon-play"></span>play
+									</button>
+								</li>
+								<li class="list-group-item">Champ vs Chal
+									<button type="button" class="btn btn-default btn-xs pull-right">
+										<span class="glyphicon glyphicon-play"></span>play
+									</button>
+								</li>
+								<li class="list-group-item">Champ vs Chal
+									<button type="button" class="btn btn-default btn-xs pull-right">
+										<span class="glyphicon glyphicon-play"></span>play
+									</button>
+								</li>
 							</ul>
 						</div>
 					</div>
