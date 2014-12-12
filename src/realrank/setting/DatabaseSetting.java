@@ -2,9 +2,9 @@ package realrank.setting;
 
 public class DatabaseSetting {
 	
-	private String url = "jdbc:mysql://10.73.45.136:3306/realrank?useUnicode=true&characterEncoding=utf8";
-	private String id = "realrank_test";
-	private String password = "1234";
+	private String url;
+	private String id;
+	private String password;
 
 	public String getUrl() {
 		return url;
