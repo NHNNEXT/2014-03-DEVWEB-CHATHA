@@ -35,9 +35,9 @@ public class DAO {
 	public Connection getConnection() throws SQLException {
 		Setting setting = Setting.getInstance();
 		Connection conn = null;
-		String url = setting.db().getUrl();
-		String id = setting.db().getId();
-		String password = setting.db().getPassword();
+		String url = setting.getDb().getUrl();
+		String id = setting.getDb().getId();
+		String password = setting.getDb().getPassword();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

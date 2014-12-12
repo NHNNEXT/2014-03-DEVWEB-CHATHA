@@ -1,4 +1,4 @@
-package realrank.support;
+package realrank.support.mail;
 
 public class MessageMod {
 	private String from;

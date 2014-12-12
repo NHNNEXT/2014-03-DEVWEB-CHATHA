@@ -11,13 +11,13 @@ public class SettingTest {
 	@Test
 	public void test() {
 		Setting setting = Setting.getInstance();
-		String id = setting.db().getId();
-		String password = setting.db().getPassword();
-		String url = setting.db().getUrl();
+		String id = setting.getDb().getId();
+		String password = setting.getDb().getPassword();
+		String url = setting.getDb().getUrl();
 		System.out.println(id);
 		System.out.println(password);
 		System.out.println(url);
-		assertNotNull(setting.db());
+		assertNotNull(setting.getDb());
 	}
 
 }
