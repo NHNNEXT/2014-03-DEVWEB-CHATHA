@@ -7,8 +7,8 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 
 public class Setting {
-	private final static String FILE_PATH_LOCAL = "setting.realrank";
-	private final static String FILE_PATH_DEFAULT = "/etc/realrank";
+	private final static String FILE_PATH = "WebContent/WEB-INF/setting.realrank";
+	
 	private static Setting instance = new Setting();
 	private DatabaseSetting db = new DatabaseSetting();
 
@@ -22,7 +22,7 @@ public class Setting {
 
 	private Setting() {
 		try {
-			JsonReader reader = new JsonReader(new FileReader(FILE_PATH_LOCAL));
+			JsonReader reader = new JsonReader(new FileReader(FILE_PATH));
 			reader.beginObject();
 			while (reader.hasNext()) {
 				String name = reader.nextName();
