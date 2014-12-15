@@ -12,15 +12,15 @@ public class Setting {
 	private static Setting instance = new Setting();
 	private DatabaseSetting db = new DatabaseSetting();
 
-	// private DomainSetting domainSetting = new DomainSetting("temp");
+	private DomainSetting domainSetting = new DomainSetting("/");
 
 	public DatabaseSetting getDb() {
 		return db;
 	}
 
-	// public DomainSetting getDomain() {
-	// return domainSetting;
-	// }
+	public DomainSetting getDomain() {
+		return domainSetting;
+	}
 
 	public static Setting getInstance() {
 		return instance;
