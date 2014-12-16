@@ -1,9 +1,10 @@
 package realrank.test;
 import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import realrank.support.DAO;
+import realrank.dao.DAO;
 import realrank.user.User;
 import realrank.user.UserDAO;
 

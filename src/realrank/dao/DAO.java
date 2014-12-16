@@ -1,4 +1,4 @@
-package realrank.support;
+package realrank.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,15 +20,15 @@ public class DAO {
 	private String sql;
 	private int resultSetLength;
 
-	public void setResultSetLength(int resultSetLength) {
-		this.resultSetLength = resultSetLength;
+	public void setResultSize(int resultSetsize) {
+		this.resultSetLength = resultSetsize;
 	}
 
 	public void setSql(String sql) {
 		this.sql = sql;
 	}
 
-	public void addParameters(Object obj) {
+	public void addParameter(Object obj) {
 		parameters.add(obj);
 	}
 
@@ -49,7 +49,7 @@ public class DAO {
 		return conn;
 	}
 
-	public boolean executeQuery() {
+	public boolean doQuery() {
 		PreparedStatement pstmt = null;
 		Connection conn = null;
 		try {

@@ -2,14 +2,14 @@ package realrank.score;
 
 import java.util.ArrayList;
 
-import realrank.support.DAO;
+import realrank.dao.DAO;
 
 public class ScoreDAO {
 	public int getScore(String userId) {
 		DAO dao = new DAO();
 		dao.setSql("select * from score where id=?");
-		dao.addParameters(userId);
-		dao.setResultSetLength(2);
+		dao.addParameter(userId);
+		dao.setResultSize(2);
 		ArrayList<Object> result = dao.getRecord();
 		if (result.size() == 0)
 			return 0;
@@ -23,17 +23,17 @@ public class ScoreDAO {
 	public boolean raiseScore(String userId, int amount){
 		DAO dao = new DAO();
 		dao.setSql("update score set score= score + ? where id=?");
-		dao.addParameters(amount);
-		dao.addParameters(userId);
-		return dao.executeQuery();
+		dao.addParameter(amount);
+		dao.addParameter(userId);
+		return dao.doQuery();
 	}
 	
 	public boolean reduceScore(String userId, int amount){
 		DAO dao = new DAO();
 		dao.setSql("update score set score= score - ? where id=?");
-		dao.addParameters(amount);
-		dao.addParameters(userId);
-		return dao.executeQuery();
+		dao.addParameter(amount);
+		dao.addParameter(userId);
+		return dao.doQuery();
 	}
 	
 	
