@@ -6,6 +6,7 @@ import java.util.Date;
 import realrank.support.DAO;
 
 class BattleManager {
+	private final static int STATE_NEW		= 0;
 	private final static int STATE_ACCEPTED	= 1;
 	private final static int STATE_OUTDATED	= 2;
 	private final static int STATE_CANCELED	= 3;
@@ -20,36 +21,51 @@ class BattleManager {
 		return dao.executeQuery();
 	}
 
-	static ArrayList<ArrayList<Object>> getAcceptibleChallenges(String userId) {
+	static ArrayList<BattleInfo> getAcceptibleChallenges(String userId) {
 		DAO dao = new DAO();
-		// 0 means acceptable and validated
-		dao.setSql("select * from battle where champion = ? and state = 0");
+
+		dao.setSql("select * from battle where champion = ? and state = " + STATE_NEW);
 		dao.addParameters(userId);
 		dao.setResultSetLength(7);
-		return maskUnacceptibleChallenges(dao.getRecords());
+
+		ArrayList<ArrayList<Object>> queryResults = dao.getRecords();
+
+		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
+		queryResults.forEach(result -> {
+			battleList.add(new BattleInfo((Integer)result.get(0), (String)result.get(1),
+					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
+					(Integer)result.get(5), (String)result.get(6)));
+		});
+
+		return maskUnacceptibleChallenges(battleList);
+
 	}
 
-	private static ArrayList<ArrayList<Object>> maskUnacceptibleChallenges(
-			ArrayList<ArrayList<Object>> challengeList) {
-		ArrayList<Object> removeObject = new ArrayList<Object>();
-		ArrayList<Object> errorChallenges = new ArrayList<Object>();
+	private static ArrayList<BattleInfo> maskUnacceptibleChallenges(ArrayList<BattleInfo> challengeList) {
+		ArrayList<BattleInfo> removeObject = new ArrayList<BattleInfo>();
+		ArrayList<BattleInfo> errorChallenges = new ArrayList<BattleInfo>();
+		
 		challengeList.forEach(curChallenge -> {
-			Date reqTime = (Date) (curChallenge.get(3));
+			Date reqTime = curChallenge.getReqTime();
 			if (!determineTimeValidity(reqTime)) {
-				if (!setState((long) (curChallenge.get(0)), STATE_OUTDATED)) {
+				if (!setState(curChallenge.getId(), STATE_OUTDATED)) {
 					errorChallenges.add(curChallenge);
 				}
 				removeObject.add(curChallenge);
 			}
 		});
+		
 		removeObject.forEach(obj -> {
 			challengeList.remove(obj);
 		});
+		
 		handleErrorChallenges(errorChallenges);
+		
 		return challengeList;
+		
 	}
 
-	private static void handleErrorChallenges(ArrayList<Object> errorChallenges) {
+	private static void handleErrorChallenges(ArrayList<BattleInfo> errorChallenges) {
 		// TODO Auto-generated method stub
 
 	}

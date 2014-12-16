@@ -3,7 +3,7 @@ package realrank.battle;
 import java.util.Date;
 
 class BattleInfo {
-	private String id;
+	private int id;
 	private String challengerId;
 	private String champId;
 	private Date reqTime;
@@ -11,7 +11,7 @@ class BattleInfo {
 	private int state;
 	private String winnerId;
 	
-	protected BattleInfo(String id, String challengerId, String champId,
+	protected BattleInfo(int id, String challengerId, String champId,
 			Date reqTime, Date accTime, int state, String winnerId) {
 		super();
 		this.id = id;
@@ -23,11 +23,11 @@ class BattleInfo {
 		this.winnerId = winnerId;
 	}
 
-	String getId() {
+	int getId() {
 		return id;
 	}
 
-	void setId(String id) {
+	void setId(int id) {
 		this.id = id;
 	}
 
@@ -77,5 +77,13 @@ class BattleInfo {
 
 	void setWinnerId(String winnerId) {
 		this.winnerId = winnerId;
+	}
+
+	@Override
+	public String toString() {
+		return "BattleInfo [id=" + id + ", challengerId=" + challengerId
+				+ ", champId=" + champId + ", reqTime=" + reqTime
+				+ ", accTime=" + accTime + ", state=" + state + ", winnerId="
+				+ winnerId + "]";
 	}
 }
