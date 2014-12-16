@@ -15,7 +15,7 @@ public class BattleManagerTest {
 
 	@Test
 	public void testGetAcceptibleChallenges() throws Exception {
-		ArrayList<BattleInfo> ret = BattleManager.getAcceptibleChallenges("champ");
+		ArrayList<BattleInfo> ret = BattleManager.getReceivedChallenges("champ");
 		ret.forEach(battle -> {
 			System.out.println(battle.toString());
 		});

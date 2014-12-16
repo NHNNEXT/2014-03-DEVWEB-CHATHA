@@ -21,7 +21,25 @@ class BattleManager {
 		return dao.executeQuery();
 	}
 
-	static ArrayList<BattleInfo> getAcceptibleChallenges(String userId) {
+	static ArrayList<BattleInfo> getSentChallenges(String userId) {
+		DAO dao = new DAO();
+		dao.setSql("select * from battle where challenger = ? and state = " + STATE_NEW);
+		dao.addParameters(userId);
+		dao.setResultSetLength(7);
+
+		ArrayList<ArrayList<Object>> queryResults = dao.getRecords();
+
+		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
+		queryResults.forEach(result -> {
+			battleList.add(new BattleInfo((Integer)result.get(0), (String)result.get(1),
+					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
+					(Integer)result.get(5), (String)result.get(6)));
+		});
+
+		return battleList;
+	}
+
+	static ArrayList<BattleInfo> getReceivedChallenges(String userId) {
 		DAO dao = new DAO();
 
 		dao.setSql("select * from battle where champion = ? and state = " + STATE_NEW);
@@ -38,7 +56,25 @@ class BattleManager {
 		});
 
 		return maskUnacceptibleChallenges(battleList);
+	}
+	
+	static ArrayList<BattleInfo> getAcceptedChallenges(String userId) {
+		DAO dao = new DAO();
+		dao.setSql("select * from battle where (challenger = ? or champion = ?) and state = " + STATE_ACCEPTED);
+		dao.addParameters(userId);
+		dao.addParameters(userId);
+		dao.setResultSetLength(7);
 
+		ArrayList<ArrayList<Object>> queryResults = dao.getRecords();
+
+		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
+		queryResults.forEach(result -> {
+			battleList.add(new BattleInfo((Integer)result.get(0), (String)result.get(1),
+					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
+					(Integer)result.get(5), (String)result.get(6)));
+		});
+
+		return battleList;
 	}
 
 	private static ArrayList<BattleInfo> maskUnacceptibleChallenges(ArrayList<BattleInfo> challengeList) {
