@@ -41,6 +41,7 @@ public class UserServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF8"); // this line solves the problem
 		response.setContentType("application/json");
+		
 		// users/로 들어오는 모든 요청을 받아 두번쨰 파라미터에 따라 다른 실행
 		String[] path = request.getPathInfo().split("/");
 		if (path.length == 2) {
