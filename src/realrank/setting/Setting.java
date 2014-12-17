@@ -3,43 +3,59 @@ package realrank.setting;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gson.stream.JsonReader;
 
 public class Setting {
-	private final static String FILE_PATH = "WebContent/WEB-INF/setting.realrank";
-	
-	private static Setting instance = new Setting();
-	private DatabaseSetting db = new DatabaseSetting();
 
-	public DatabaseSetting db() {
-		return db;
-	}
+	private static Setting setting = new Setting();
 
-	public static Setting getInstance() {
-		return instance;
-	}
+	private Map<String, String> db = new HashMap<String, String>();
+	private Map<String, String> general = new HashMap<String, String>();
 
 	private Setting() {
+		String path = Setting.class.getResource("/").getPath();
+
 		try {
-			JsonReader reader = new JsonReader(new FileReader(FILE_PATH));
+			JsonReader reader = new JsonReader(new FileReader(path
+					+ "../setting.realrank"));
 			reader.beginObject();
 			while (reader.hasNext()) {
 				String name = reader.nextName();
 				if (name.equals("database")) {
 					readDBSettings(reader);
-				} else {
-					reader.skipValue(); // avoid some unhandle events
+					continue;
 				}
+				if (name.equals("general")) {
+					readGeneralSettings(reader);
+					continue;
+				}
+				reader.skipValue();
 			}
 			reader.endObject();
 			reader.close();
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getLocalizedMessage());
-			System.err.println("Current Path: " + System.getProperty("user.dir"));
+			System.err.println("Current Path: "
+					+ System.getProperty("user.dir"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	public static Map<String, String> get(String type) {
+		switch (type) {
+		case "db":
+			return setting.db;
+		case "general":
+			return setting.general;
+		default:
+			return null;
+		}
+
 	}
 
 	private void readDBSettings(JsonReader reader) throws IOException {
@@ -47,11 +63,26 @@ public class Setting {
 		while (reader.hasNext()) {
 			String dbn = reader.nextName();
 			if (dbn.equals("url")) {
-				db.setUrl(reader.nextString());
+				db.put("url", reader.nextString());
 			} else if (dbn.equals("id")) {
-				db.setId(reader.nextString());
+				db.put("id", reader.nextString());
 			} else if (dbn.equals("password")) {
-				db.setPassword(reader.nextString());
+				db.put("password", reader.nextString());
+			}
+		}
+		reader.endObject();
+	}
+
+	private void readGeneralSettings(JsonReader reader) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String dbn = reader.nextName();
+			if (dbn.equals("url")) {
+				general.put("url", reader.nextString());
+			} else if (dbn.equals("controllerPath")) {
+				general.put("controllerPath", reader.nextString());
+			} else if (dbn.equals("jspPath")) {
+				general.put("jspPath", reader.nextString());
 			}
 		}
 		reader.endObject();

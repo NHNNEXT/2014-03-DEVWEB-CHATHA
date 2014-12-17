@@ -10,14 +10,9 @@ public class SettingTest {
 
 	@Test
 	public void test() {
-		Setting setting = Setting.getInstance();
-		String id = setting.db().getId();
-		String password = setting.db().getPassword();
-		String url = setting.db().getUrl();
-		System.out.println(id);
-		System.out.println(password);
-		System.out.println(url);
-		assertNotNull(setting.db());
+		System.out.println(Setting.get("db"));
+		assertEquals("realrank_test", Setting.get("db").get("id"));
+
 	}
 
 }
