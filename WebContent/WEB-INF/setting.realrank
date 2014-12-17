@@ -6,7 +6,7 @@
 	},
 	"general" : {
 		"url" : "http://localhost:8080",
-		"controllerPath" : "realrank",
+		"controllerPath" : "realrank.controller",
 		"jspPath" : "jsp/"
 	}
 }

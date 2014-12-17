@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import realrank.annotation.NotThisDB;
 import realrank.annotation.PrimaryKey;
 import realrank.annotation.TableName;
 
@@ -12,18 +13,19 @@ import com.google.gson.Gson;
 @TableName("user")
 public class User {
 	@PrimaryKey
-	private String userId;
+	private String userid;
 	private String email;
 	private String password;
 	private String nickname;
 	private String gender;
 	private Date birthday;
 	
+	@NotThisDB
 	private int score;
 
 	public User(String userId, String email, String password, String nickname,
 			String gender, Date birthday) {
-		this.userId = userId;
+		this.userid = userId;
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;
@@ -40,17 +42,17 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", email=" + email + ", password="
+		return "User [userId=" + userid + ", email=" + email + ", password="
 				+ password + ", nickname=" + nickname + ", gender=" + gender
 				+ ", birthday=" + birthday + "]";
 	}
 
 	public String getUserId() {
-		return userId;
+		return userid;
 	}
 
 	public void setUserId(String userId) {
-		this.userId = userId;
+		this.userid = userId;
 	}
 
 	public String getEmail() {
