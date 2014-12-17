@@ -12,15 +12,15 @@ public class Setting {
 	private static Setting instance = new Setting();
 	private DatabaseSetting db = new DatabaseSetting();
 
-	// private DomainSetting domainSetting = new DomainSetting("temp");
+	private DomainSetting domainSetting;
 
 	public DatabaseSetting getDb() {
 		return db;
 	}
 
-	// public DomainSetting getDomain() {
-	// return domainSetting;
-	// }
+	public DomainSetting getDomain() {
+		return domainSetting;
+	}
 
 	public static Setting getInstance() {
 		return instance;
@@ -37,8 +37,7 @@ public class Setting {
 					continue;
 				}
 				if (name.equals("domain")) {
-					System.out.println("asdf");
-					// readDomainSetting(reader);
+					readDomainSetting(reader);
 					continue;
 				}
 				reader.skipValue(); // avoid some unhandle events
@@ -54,16 +53,16 @@ public class Setting {
 		}
 	}
 
-	// private void readDomainSetting(JsonReader reader) throws IOException {
-	// reader.beginObject();
-	// while (reader.hasNext()) {
-	// String domain = reader.nextName();
-	// if (domain.equals("url")) {
-	// DomainSetting domainSetting = new DomainSetting(reader.nextString());
-	// }
-	// }
-	// reader.endObject();
-	// }
+	private void readDomainSetting(JsonReader reader) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String domain = reader.nextName();
+			if (domain.equals("url")) {
+				domainSetting = new DomainSetting(reader.nextString());
+			}
+		}
+		reader.endObject();
+	}
 
 	private void readDBSettings(JsonReader reader) throws IOException {
 		reader.beginObject();

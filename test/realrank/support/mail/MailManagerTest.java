@@ -11,4 +11,8 @@ public class MailManagerTest {
 		MailManager.sendSimpleBattleMsg("chul", "chul");
 	}
 
+	@Test
+	public void testChallengeAlert() throws Exception {
+		MailManager.sendChallegeAlert("chul", "chul");
+	}
 }
