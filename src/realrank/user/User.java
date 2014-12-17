@@ -4,9 +4,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import realrank.annotation.PrimaryKey;
+import realrank.annotation.TableName;
+
 import com.google.gson.Gson;
 
+@TableName("user")
 public class User {
+	@PrimaryKey
 	private String userId;
 	private String email;
 	private String password;
