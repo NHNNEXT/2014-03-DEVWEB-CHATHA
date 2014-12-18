@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import realrank.annotation.NotThisDB;
+import realrank.annotation.DBExclude;
 import realrank.annotation.PrimaryKey;
 import realrank.annotation.TableName;
 
@@ -20,7 +20,7 @@ public class User {
 	private String gender;
 	private Date birthday;
 	
-	@NotThisDB
+	@DBExclude
 	private int score;
 
 	public User(String userId, String email, String password, String nickname,

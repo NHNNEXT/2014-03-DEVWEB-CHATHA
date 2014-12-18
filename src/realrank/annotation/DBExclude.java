@@ -1,5 +1,5 @@
 package realrank.annotation;
 
-public @interface NotThisDB {
+public @interface DBExclude {
 
 }
