@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import realrank.support.MessageMod;
-import realrank.support.SendMailSSL;
+import realrank.support.mail.MessageMod;
+import realrank.support.mail.SendMailSSL;
 import realrank.user.User;
 
 /**
