@@ -11,7 +11,6 @@ public class Setting {
 
 	private static Setting instance = new Setting();
 	private DatabaseSetting db = new DatabaseSetting();
-
 	private DomainSetting domainSetting;
 
 	public DatabaseSetting getDb() {
