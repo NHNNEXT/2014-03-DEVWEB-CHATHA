@@ -3,31 +3,24 @@ package realrank.setting;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gson.stream.JsonReader;
 
 public class Setting {
-	private final static String FILE_PATH = "WebContent/WEB-INF/setting.realrank";
 
-	private static Setting instance = new Setting();
-	private DatabaseSetting db = new DatabaseSetting();
-	private DomainSetting domainSetting;
+	private static Setting setting = new Setting();
 
-	public DatabaseSetting getDb() {
-		return db;
-	}
-
-	public DomainSetting getDomain() {
-		return domainSetting;
-	}
-
-	public static Setting getInstance() {
-		return instance;
-	}
+	private Map<String, String> db = new HashMap<String, String>();
+	private Map<String, String> general = new HashMap<String, String>();
 
 	private Setting() {
+		String path = Setting.class.getResource("/").getPath();
+
 		try {
-			JsonReader reader = new JsonReader(new FileReader(FILE_PATH));
+			JsonReader reader = new JsonReader(new FileReader(path
+					+ "../setting.realrank"));
 			reader.beginObject();
 			while (reader.hasNext()) {
 				String name = reader.nextName();
@@ -36,10 +29,14 @@ public class Setting {
 					continue;
 				}
 				if (name.equals("domain")) {
-					readDomainSetting(reader);
+					readDomainSettings(reader);
 					continue;
 				}
-				reader.skipValue(); // avoid some unhandle events
+				if (name.equals("general")) {
+					readGeneralSettings(reader);
+					continue;
+				}
+				reader.skipValue();
 			}
 			reader.endObject();
 			reader.close();
@@ -50,17 +47,19 @@ public class Setting {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
-	private void readDomainSetting(JsonReader reader) throws IOException {
-		reader.beginObject();
-		while (reader.hasNext()) {
-			String domain = reader.nextName();
-			if (domain.equals("url")) {
-				domainSetting = new DomainSetting(reader.nextString());
-			}
+	public static String get(String type, String key) {
+		switch (type) {
+		case "db":
+			return setting.db.get(key);
+		case "general":
+			return setting.general.get(key);
+		default:
+			return null;
 		}
-		reader.endObject();
+
 	}
 
 	private void readDBSettings(JsonReader reader) throws IOException {
@@ -68,11 +67,37 @@ public class Setting {
 		while (reader.hasNext()) {
 			String dbn = reader.nextName();
 			if (dbn.equals("url")) {
-				db.setUrl(reader.nextString());
+				db.put("url", reader.nextString());
 			} else if (dbn.equals("id")) {
-				db.setId(reader.nextString());
+				db.put("id", reader.nextString());
 			} else if (dbn.equals("password")) {
-				db.setPassword(reader.nextString());
+				db.put("password", reader.nextString());
+			}
+		}
+		reader.endObject();
+	}
+	
+	private void readDomainSettings(JsonReader reader) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String dbn = reader.nextName();
+			if (dbn.equals("url")) {
+				db.put("url", reader.nextString());
+			} 
+		}
+		reader.endObject();
+	}
+
+	private void readGeneralSettings(JsonReader reader) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String dbn = reader.nextName();
+			if (dbn.equals("url")) {
+				general.put("url", reader.nextString());
+			} else if (dbn.equals("controllerPath")) {
+				general.put("controllerPath", reader.nextString());
+			} else if (dbn.equals("jspPath")) {
+				general.put("jspPath", reader.nextString());
 			}
 		}
 		reader.endObject();

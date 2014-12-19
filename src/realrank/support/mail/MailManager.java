@@ -22,8 +22,7 @@ public class MailManager {
 	}
 	
 	private static String makeLink(String path, String msg) {
-		Setting setting = Setting.getInstance();
-		return "<a href='" + setting.getDomain().getDOMAIN_URL() + path + "'>" + msg + "</a>";
+		return "<a href='" + Setting.get("domain", "url") + path + "'>" + msg + "</a>";
 	}
 	
 	private static void sendMail(String from, String to, String subject, String contents) {
