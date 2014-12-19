@@ -3,14 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:if test="${empty sessionScope.user}">
-	<c:redirect url="/support/signin" />
+	<c:redirect url="/pages/signin" />
 </c:if>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <%@ include file="/components/_css.jspf"%>
 <link rel='stylesheet' media="screen"
-	href="/support/userinfo/userinfo.css">
+	href="/userinfo.css">
 <title>Real RANK!</title>
 </head>
 <body ng-app="userinfo">
@@ -53,6 +53,6 @@
 	<script>
 		var user = ${sessionScope.user.json};
 	</script>
-	<script src="/support/userinfo/userinfo.js"></script>
+	<script src="/userinfo.js"></script>
 </body>
 </html>

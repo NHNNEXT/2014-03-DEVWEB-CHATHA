@@ -33,7 +33,7 @@
 			.success( function(result) {
 				if (result.success) {
 					var redirectPath = $location.search().redirect;
-					location.href = (redirectPath ? redirectPath : "/support/userinfo");
+					location.href = (redirectPath ? redirectPath : "/pages/support/userinfo");
 				} else {
 					$scope.state = result;
 				}

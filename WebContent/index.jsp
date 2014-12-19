@@ -4,9 +4,9 @@
 
 <c:choose>
 	<c:when test="${empty sessionScope.user}">
-		<c:redirect url="/support/signin" />
+		<c:redirect url="/pages/login" />
 	</c:when>
 	<c:otherwise>
-		<c:redirect url="/support/userinfo" />
+		<c:redirect url="/pages/register" />
 	</c:otherwise>
 </c:choose>

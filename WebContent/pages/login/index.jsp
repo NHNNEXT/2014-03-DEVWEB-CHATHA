@@ -4,8 +4,8 @@
 <head>
 <%@ include file="/components/_css.jspf"%>
 <%@ include file="/components/_imports.jspf"%>
-	<link href="/support/signin/signin.css">
-	<script src="/support/signin/signin.js"></script>
+	<link href="signin.css">
+	<script src="signin.js"></script>
 	<title>Welcome - RealRank</title>
 </head>
 <body ng-app="login">

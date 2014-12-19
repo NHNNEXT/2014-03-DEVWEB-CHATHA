@@ -4,7 +4,7 @@
 <html>
 <head>
 <%@ include file="/components/_css.jspf"%>
-<link href="/support/signup/signup.css">
+<link href="signup.css">
 <title>Welcome - RealRank</title>
 </head>
 <body ng-app="signup">
@@ -34,6 +34,6 @@
 		</div>
 	</div>
 	<%@ include file="/components/_imports.jspf"%>
-	<script src="/support/signup/signup.js"></script>
+	<script src="signup.js"></script>
 </body>
 </html>

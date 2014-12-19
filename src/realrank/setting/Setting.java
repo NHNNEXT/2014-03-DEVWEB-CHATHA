@@ -13,6 +13,7 @@ public class Setting {
 	private static Setting setting = new Setting();
 
 	private Map<String, String> db = new HashMap<String, String>();
+	private Map<String, String> domain = new HashMap<String, String>();
 	private Map<String, String> general = new HashMap<String, String>();
 
 	private Setting() {
@@ -56,6 +57,8 @@ public class Setting {
 			return setting.db.get(key);
 		case "general":
 			return setting.general.get(key);
+		case "domain":
+			return setting.domain.get(key);
 		default:
 			return null;
 		}
@@ -82,7 +85,7 @@ public class Setting {
 		while (reader.hasNext()) {
 			String dbn = reader.nextName();
 			if (dbn.equals("url")) {
-				db.put("url", reader.nextString());
+				domain.put("url", reader.nextString());
 			} 
 		}
 		reader.endObject();
