@@ -31,7 +31,7 @@ class BattleManager {
 
 		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
 		queryResults.forEach(result -> {
-			battleList.add(new BattleInfo((Integer)result.get(0), (String)result.get(1),
+			battleList.add(new BattleInfo((long)result.get(0), (String)result.get(1),
 					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
 					(Integer)result.get(5), (String)result.get(6)));
 		});
@@ -50,7 +50,7 @@ class BattleManager {
 
 		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
 		queryResults.forEach(result -> {
-			battleList.add(new BattleInfo((Integer)result.get(0), (String)result.get(1),
+			battleList.add(new BattleInfo((long)result.get(0), (String)result.get(1),
 					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
 					(Integer)result.get(5), (String)result.get(6)));
 		});
@@ -69,7 +69,7 @@ class BattleManager {
 
 		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
 		queryResults.forEach(result -> {
-			battleList.add(new BattleInfo((Integer)result.get(0), (String)result.get(1),
+			battleList.add(new BattleInfo((long)result.get(0), (String)result.get(1),
 					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
 					(Integer)result.get(5), (String)result.get(6)));
 		});

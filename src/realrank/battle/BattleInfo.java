@@ -2,16 +2,21 @@ package realrank.battle;
 
 import java.util.Date;
 
+import com.google.gson.annotations.SerializedName;
+
 class BattleInfo {
-	private int id;
+	private long id;
+	@SerializedName("challenger")
 	private String challengerId;
+	@SerializedName("champ")
 	private String champId;
+	@SerializedName("req_time")
 	private Date reqTime;
 	private Date accTime;
 	private int state;
 	private String winnerId;
 	
-	protected BattleInfo(int id, String challengerId, String champId,
+	protected BattleInfo(long id, String challengerId, String champId,
 			Date reqTime, Date accTime, int state, String winnerId) {
 		super();
 		this.id = id;
@@ -23,7 +28,7 @@ class BattleInfo {
 		this.winnerId = winnerId;
 	}
 
-	int getId() {
+	long getId() {
 		return id;
 	}
 

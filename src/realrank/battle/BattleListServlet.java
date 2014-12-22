@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import realrank.user.User;
 
 /**
@@ -31,6 +33,12 @@ public class BattleListServlet extends HttpServlet {
 		ArrayList<BattleInfo> sentList = BattleManager.getSentChallenges(user.getUserId());
 		ArrayList<BattleInfo> receivedList = BattleManager.getReceivedChallenges(user.getUserId());
 		ArrayList<BattleInfo> acceptedList = BattleManager.getAcceptedChallenges(user.getUserId());
+		
+		Gson gson = new Gson();
+		response.getWriter().write( "{" +
+				"'sent' : " + gson.toJson(sentList) + "," +
+				"'received' : " + gson.toJson(receivedList) + "," +
+				"'accepted' : " + gson.toJson(acceptedList) + "}" );
 	}
 
 }

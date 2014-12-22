@@ -18,10 +18,15 @@ public class Setting {
 
 	private Setting() {
 		String path = Setting.class.getResource("/").getPath();
+		if ( path.contains("/WEB-INF/") ) {
+			path += "../";
+		} else {
+			path = "./WebContent/WEB-INF/";
+		}
 
 		try {
 			JsonReader reader = new JsonReader(new FileReader(path
-					+ "../setting.realrank"));
+					+ "setting.realrank"));
 			reader.beginObject();
 			while (reader.hasNext()) {
 				String name = reader.nextName();
@@ -43,8 +48,7 @@ public class Setting {
 			reader.close();
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getLocalizedMessage());
-			System.err.println("Current Path: "
-					+ System.getProperty("user.dir"));
+			System.err.println("Current Path: " + path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
