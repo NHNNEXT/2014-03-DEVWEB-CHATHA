@@ -1,0 +1,6 @@
+{
+	"url" : "http://localhost:8080",
+	"controllerPath" : "realrank.controller",
+	"jspPath" : "/jsp/",
+	"charEncoding" : "utf-8"
+}

@@ -1,10 +1,12 @@
 package realrank.battle;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
+
+import realrank.objects.Battle;
 
 public class BattleManagerTest {
 
@@ -15,7 +17,7 @@ public class BattleManagerTest {
 
 	@Test
 	public void testGetAcceptibleChallenges() throws Exception {
-		ArrayList<BattleInfo> ret = BattleManager.getReceivedChallenges("champ");
+		List<Battle> ret = BattleManager.getReceivedChallenges("champ");
 		ret.forEach(battle -> {
 			System.out.println(battle.toString());
 		});

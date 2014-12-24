@@ -10,7 +10,7 @@
 <head>
 <%@ include file="/components/_css.jspf"%>
 <link rel='stylesheet' media="screen"
-	href="/userinfo.css">
+	href="/pages/support/userinfo/userinfo.css">
 <title>Real RANK!</title>
 </head>
 <body ng-app="userinfo">
@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<div class="row" ng-controller="user">
-			<a href="/users/logout">logout</a>
+			<a href="/users/logout.rk">logout</a>
 			<div id='myProfile' class="col-md-8">
 				<center>
 					<img src="http://www.efmaefm.org/0CONTACTUS/default.jpg"
@@ -51,8 +51,8 @@
 	</div>
 	<%@ include file="/components/_imports.jspf"%>
 	<script>
-		var user = ${sessionScope.user.json};
+		var user = ${user};
 	</script>
-	<script src="/userinfo.js"></script>
+	<script src="/pages/support/userinfo/userinfo.js"></script>
 </body>
 </html>
