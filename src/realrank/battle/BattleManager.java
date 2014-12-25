@@ -15,6 +15,10 @@ public class BattleManager {
 	public final static int STATE_CANCELED = 3;
 	public final static int STATE_DENIED = 4;
 
+	private static String forCondition(String String){
+		return "'" + String + "'";
+	}
+
 	public static boolean challengeTo(String userId, String champId) {
 		Battle battle = new Battle();
 		battle.setChallenger(userId);
@@ -25,15 +29,15 @@ public class BattleManager {
 	}
 
 	public static List<Battle> getSentChallenges(String userId) {
-		return DBMethods.getList(Battle.class, "challenger = '" + userId + "' and state = " + STATE_NEW);
+		return DBMethods.getList(Battle.class, "challenger = " + forCondition(userId), "state = " + STATE_NEW);
 	}
 
 	public static List<Battle> getReceivedChallenges(String userId) {
-		return maskUnacceptibleChallenges(DBMethods.getList(Battle.class, "champion = '" + userId + "' and state = " + STATE_NEW));
+		return maskUnacceptibleChallenges(DBMethods.getList(Battle.class, "champion = " + forCondition(userId), "state = " + STATE_NEW));
 	}
 
 	public static List<Battle> getAcceptedChallenges(String userId) {
-		return DBMethods.getList(Battle.class, "(challenger = '" + userId + "' or champion = '" + userId + "') and state = " + STATE_ACCEPTED);
+		return DBMethods.getList(Battle.class, "(challenger = " + userId + "' or champion = '" + userId + "') and state = " + STATE_ACCEPTED);
 	}
 
 	private static List<Battle> maskUnacceptibleChallenges(List<Battle> challengeList) {
