@@ -46,7 +46,7 @@ public class BattleController {
 	}
 	
 	@Post("/battle/email_challenge.rk")
-	protected void emailChallenge(Http http) {
+	public void emailChallenge(Http http) {
 		String uid = http.getSessionAttribute(User.class, "user").getId();
 		String cid = http.getParameter("cid");
 		BattleManager.challengeTo(uid, cid);
