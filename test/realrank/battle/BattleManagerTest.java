@@ -25,7 +25,7 @@ public class BattleManagerTest {
 		System.out.println(rc);
 		System.out.println(ac);
 		System.out.println(sc);
-		Date reqTime = DBMethods.get(Battle.class, 1, "state <> -1").getReq_time();
+		Date reqTime = DBMethods.get(Battle.class, 1, "state <> -1", "state <> -1").getReq_time();
 		System.out.println(reqTime);
 	}
 	
