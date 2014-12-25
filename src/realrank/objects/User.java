@@ -6,10 +6,9 @@ import easyjdbc.annotation.Exclude;
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
 import easyjdbc.dao.DBMethods;
-import easyjdbc.dao.Record;
 
 @Table("user")
-public class User implements Record {
+public class User {
 
 	@Key
 	private String id;
@@ -26,15 +25,6 @@ public class User implements Record {
 	@Exclude
 	private int score;
 
-	@Override
-	public void set(Object... params) {
-		id = params.length < 1 ? null : (String) params[0];
-		email = params.length < 3 ? null : (String) params[1];
-		password = params.length < 2 ? null : (String) params[2];
-		nickname = params.length < 4 ? null : (String) params[3];
-		gender = params.length < 5 ? null : (String) params[4];
-		birthday = params.length < 6 ? null : (Date) params[5];
-	}
 
 	public String getId() {
 		return id;
@@ -56,6 +46,30 @@ public class User implements Record {
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", nickname=" + nickname + ", gender=" + gender + ", birthday="
 				+ birthday + ", score=" + score + "]";
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public String getEmail() {

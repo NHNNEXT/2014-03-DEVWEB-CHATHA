@@ -4,11 +4,10 @@ import java.util.Date;
 
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
-import easyjdbc.dao.Record;
 
 @Table("battle")
-public class Battle implements Record {
-
+public class Battle {
+	
 	@Key
 	private Integer id;
 	private String challenger;
@@ -17,17 +16,6 @@ public class Battle implements Record {
 	private Date acc_time;
 	private Integer state;
 	private String winner;
-
-	@Override
-	public void set(Object... params) {
-		id = params.length < 1 ? null : (Integer) params[0];
-		challenger = params.length < 3 ? null : (String) params[1];
-		champion = params.length < 2 ? null : (String) params[2];
-		req_time = params.length < 4 ? null : (Date) params[3];
-		acc_time = params.length < 5 ? null : (Date) params[4];
-		state = params.length < 6 ? null : (Integer) params[5];
-		winner = params.length < 7 ? null : (String) params[6];
-	}
 
 	public Integer getId() {
 		return id;

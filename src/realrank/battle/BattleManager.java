@@ -17,7 +17,10 @@ public class BattleManager {
 
 	public static boolean challengeTo(String userId, String champId) {
 		Battle battle = new Battle();
-		battle.set(null, userId, champId, new Date(), 0);
+		battle.setChallenger(userId);
+		battle.setChampion(champId);
+		battle.setReq_time(new Date());
+		battle.setState(BattleManager.STATE_NEW);
 		return DBMethods.insert(battle);
 	}
 
@@ -30,7 +33,7 @@ public class BattleManager {
 	}
 
 	public static List<Battle> getAcceptedChallenges(String userId) {
-		return DBMethods.getList(Battle.class, "where (challenger = " + userId + " or champion = '" + userId + "') and state = " + STATE_ACCEPTED);
+		return DBMethods.getList(Battle.class, "(challenger = '" + userId + "' or champion = '" + userId + "') and state = " + STATE_ACCEPTED);
 	}
 
 	private static List<Battle> maskUnacceptibleChallenges(List<Battle> challengeList) {
@@ -62,12 +65,7 @@ public class BattleManager {
 	}
 
 	static boolean acceptChallenge(long battleId) {
-		Date reqTime;
-		DAO dao = new DAO();
-		dao.setSql("select req_time from battle where id = ? and state <> -1");
-		dao.addParameter(battleId);
-		dao.setResultSize(1);
-		reqTime = (Date) dao.getRecord().get(0);
+		Date reqTime = DBMethods.get(Battle.class, battleId, "state <> -1").getReq_time();
 		if (determineTimeValidity(reqTime)) {
 			return setState(battleId, STATE_ACCEPTED);
 		}
@@ -81,7 +79,8 @@ public class BattleManager {
 
 	static boolean setState(long battleId, int state) {
 		Battle battle = new Battle();
-		battle.set(battleId, null, null, null, null, state);
+		battle.setId((int) battleId);
+		battle.setState(state);
 		return DBMethods.update(battle);
 	}
 

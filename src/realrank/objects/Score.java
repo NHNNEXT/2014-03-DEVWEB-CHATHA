@@ -2,10 +2,9 @@ package realrank.objects;
 
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
-import easyjdbc.dao.Record;
 
 @Table("score")
-public class Score implements Record {
+public class Score {
 	@Key
 	String id;
 	Integer score;
@@ -14,9 +13,19 @@ public class Score implements Record {
 		score +=i;
 	}
 
-	@Override
-	public void set(Object... params) {
-		id = params.length < 1 ? null : (String) params[0];
-		score = params.length < 2 ? null : (Integer) params[1];
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 }
