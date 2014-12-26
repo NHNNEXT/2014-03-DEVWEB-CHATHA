@@ -31,8 +31,8 @@
 		};
 		
 		$http({
-			method: 'POST',
-			url: 'sampleBattle.json',
+			method: 'GET',
+			url: '/battle/list.json',
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			transformRequest: function(obj) {
 				var str = [];

@@ -18,7 +18,7 @@ import realrank.user.User;
  * @author JinWoo Lee
  */
 @SuppressWarnings("serial")
-@WebServlet("/battle_list")
+@WebServlet("/battle/list.json")
 public class BattleListServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,9 +36,9 @@ public class BattleListServlet extends HttpServlet {
 		
 		Gson gson = new Gson();
 		response.getWriter().write( "{" +
-				"'sent' : " + gson.toJson(sentList) + "," +
-				"'received' : " + gson.toJson(receivedList) + "," +
-				"'accepted' : " + gson.toJson(acceptedList) + "}" );
+				"\"sent\" : " + gson.toJson(sentList) + "," +
+				"\"received\" : " + gson.toJson(receivedList) + "," +
+				"\"accepted\" : " + gson.toJson(acceptedList) + "}" );
 	}
 
 }
