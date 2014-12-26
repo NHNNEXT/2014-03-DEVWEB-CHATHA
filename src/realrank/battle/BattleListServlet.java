@@ -27,7 +27,9 @@ public class BattleListServlet extends HttpServlet {
 
 		User user = (User)request.getSession().getAttribute("user");
 		if (user == null) {
-			// TODO: 400 Bad Request
+			// 400 Bad Request
+			response.sendError(400);
+			return;
 		}
 		
 		ArrayList<BattleInfo> sentList = BattleManager.getSentChallenges(user.getUserId());
