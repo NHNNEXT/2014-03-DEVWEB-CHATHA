@@ -9,7 +9,7 @@ import easyjdbc.annotation.Table;
 public class Battle {
 	
 	@Key
-	private Integer id;
+	private long id;
 	private String challenger;
 	private String champion;
 	private Date req_time;
@@ -17,11 +17,11 @@ public class Battle {
 	private Integer state;
 	private String winner;
 
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
