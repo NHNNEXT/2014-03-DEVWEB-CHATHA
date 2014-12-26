@@ -31,6 +31,7 @@ public class BattleController {
 		User user = http.getSessionAttribute(User.class, "user");
 		if (user == null) {
 			http.sendError(404, "Not Logged");
+			return null;
 		}
 
 		List<Battle> sentList = BattleManager.getSentChallenges(user.getId());
