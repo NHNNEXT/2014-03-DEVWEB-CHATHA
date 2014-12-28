@@ -69,7 +69,7 @@ public class BattleManager {
 	}
 
 	static boolean acceptChallenge(long battleId) {
-		Date reqTime = DBMethods.get(Battle.class, battleId, "state <> -1").getReq_time();
+		Date reqTime = DBMethods.get(Battle.class, "id=? and state <> -1", battleId).getReq_time();
 		if (determineTimeValidity(reqTime)) {
 			return setState(battleId, STATE_ACCEPTED);
 		}
