@@ -15,7 +15,7 @@ public class MailManager {
 
 	public static void sendChallegeAlert(String chalId, String recpId) {
 		String subject = "Challenge has Arrived!!";
-		String path = "battle/list/index.jsp";
+		String path = "/battle/battle_list.rk";
 		String msg = "링크";
 		String contents = makeLink(path, msg) + "를 누르시면 도전 리스트 화면으로 이동합니다.";
 		sendMail(chalId, recpId, subject, contents);
@@ -33,7 +33,7 @@ public class MailManager {
 	
 	public static void sendChallegeDeniedAlert(String chalId, String recpId) {
 		String subject = "Challenge Denied";
-		String path = "battle/list/index.jsp";
+		String path = "/battle/battle_list.rk";
 		String msg = "링크";
 		String contents = recpId + "님께서 도전을 거절하셨습니다. " + makeLink(path, msg) + "를 누르시면 도전 리스트 화면으로 이동합니다.";
 		sendMail(recpId, chalId, subject, contents);

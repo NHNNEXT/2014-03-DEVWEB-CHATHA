@@ -1,5 +1,6 @@
 package realrank.controller;
 
+import realrank.battle.RatingCalculator;
 import realrank.objects.Score;
 import realrank.objects.User;
 import easyjdbc.dao.DBMethods;
@@ -22,12 +23,17 @@ public class ScoreController {
 			http.sendRedirect("/support/userinfo");
 			return;
 		}
-		Score winnerscore = DBMethods.get(Score.class, winnerId);
-		Score loserscore = DBMethods.get(Score.class, loser.getId());
-		winnerscore.add(10);
-		loserscore.add(-10);
-		DBMethods.update(winnerscore);
-		DBMethods.update(loserscore);
+		User winner = DBMethods.get(User.class, winnerId);
+		Score winnerScore = DBMethods.get(Score.class, winnerId);
+		Score loserScore = DBMethods.get(Score.class, loser.getId());
+		
+		int gain = RatingCalculator.getWinnerRating(winner, winnerScore, loserScore);
+		int lose =RatingCalculator.getLoserRating(winner, winnerScore, loserScore);
+		
+		winnerScore.add(gain);
+		loserScore.add(lose);
+		DBMethods.update(winnerScore);
+		DBMethods.update(loserScore);
 		http.sendRedirect("/support/userinfo");
 	}
 }

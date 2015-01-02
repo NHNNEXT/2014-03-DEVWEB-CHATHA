@@ -17,6 +17,7 @@ public class User {
 	private String nickname;
 	private String gender;
 	private Date birthday;
+	@Exclude
 	private int games;
 
 	public int getGames() {

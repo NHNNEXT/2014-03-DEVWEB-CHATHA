@@ -5,8 +5,8 @@ USE `realrank`;
 
 DELETE FROM `user`;
 INSERT INTO `user` VALUES
-	('champ', 'champ1234asdf@gmail.com', 'asdf', 'champion', 'M', '1990-05-05'),
-	('chal', 'chal1234asdf@gmail.com', 'asdf', 'challenger', 'F', '1988-04-07');
+	('champ', 'champ1234asdf@gmail.com', 'asdf', 'champion', 'M', '1990-05-05', 10),
+	('chal', 'chal1234asdf@gmail.com', 'asdf', 'challenger', 'F', '1988-04-07', 30);
 
 DELETE FROM `score`;
 INSERT INTO `score` VALUES
