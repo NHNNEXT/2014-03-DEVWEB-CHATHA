@@ -17,6 +17,15 @@ public class User {
 	private String nickname;
 	private String gender;
 	private Date birthday;
+	private int games;
+
+	public int getGames() {
+		return games;
+	}
+
+	public void setGames(int games) {
+		this.games = games;
+	}
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
