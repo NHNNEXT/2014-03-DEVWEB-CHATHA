@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import realrank.objects.Battle;
+import realrank.support.Notification;
 import easyjdbc.dao.DAO;
 import easyjdbc.dao.DBMethods;
 
@@ -25,6 +26,7 @@ public class BattleManager {
 		battle.setChampion(champId);
 		battle.setReq_time(new Date());
 		battle.setState(BattleManager.STATE_NEW);
+		
 		return DBMethods.insert(battle);
 	}
 
@@ -68,16 +70,17 @@ public class BattleManager {
 
 	}
 
-	static boolean acceptChallenge(long battleId) {
+	public static boolean acceptChallenge(long battleId) {
 		Date reqTime = DBMethods.get(Battle.class, "id=? and state <> -1", battleId).getReq_time();
 		if (determineTimeValidity(reqTime)) {
+			
 			return setState(battleId, STATE_ACCEPTED);
 		}
 		setState(battleId, STATE_OUTDATED);
 		return false;
 	}
 
-	static boolean denyChallenge(long battleId) {
+	public static boolean denyChallenge(long battleId) {
 		return setState(battleId, STATE_DENIED);
 	}
 
