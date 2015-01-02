@@ -25,13 +25,17 @@ public class BattleController {
 	@Post("/battle/battle_send.rk")
 	public void battleRequest(Http http){
 		String uid = http.getSessionAttribute(User.class, "user").getId();
-		String cid = http.getParameter("pid");
+		String cid = http.getParameter("champId");
 		BattleManager.challengeTo(uid, cid);
 	}
 	
 	@Get("/battle/battle_send.rk")
 	public Response getBattleRequestForm(Http http){
 		User user = http.getSessionAttribute(User.class, "user");
+		if (user == null) {
+			http.sendError(401, "Bad Request : Not logged on");
+			return null;
+		}
 		Jsp jsp = new Jsp("battle_send.jsp");
 		Gson gson = new Gson();
 		jsp.put("user", gson.toJson(user));
@@ -41,6 +45,10 @@ public class BattleController {
 	@Get("/battle/battle_list.rk")
 	public Response getBattleListView(Http http){
 		User user = http.getSessionAttribute(User.class, "user");
+		if (user == null) {
+			http.sendError(401);
+			return null;
+		}
 		Jsp jsp = new Jsp("battle_list.jsp");
 		Gson gson = new Gson();
 		jsp.put("user", gson.toJson(user));

@@ -30,17 +30,16 @@ public class BattleManager {
 		
 		return DBMethods.insert(battle);
 	}
-
 	public static BattleList getSentChallenges(String userId) {
-		return new BattleList(DBMethods.getList(Battle.class, "challenger = " + forCondition(userId), "state = " + STATE_NEW));
+		return new BattleList(DBMethods.getList(Battle.class, "challenger = ? and state = ?", userId, STATE_NEW));
 	}
 
 	public static BattleList getReceivedChallenges(String userId) {
-		return maskUnacceptibleChallenges(DBMethods.getList(Battle.class, "champion = " + forCondition(userId), "state = " + STATE_NEW));
+		return maskUnacceptibleChallenges(DBMethods.getList(Battle.class, "champion = ? and state = ?", userId, STATE_NEW));
 	}
 
 	public static BattleList getAcceptedChallenges(String userId) {
-		return new BattleList(DBMethods.getList(Battle.class, "(challenger = " + userId + "' or champion = '" + userId + "') and state = " + STATE_ACCEPTED));
+		return new BattleList(DBMethods.getList(Battle.class, "(challenger = ? or champion = ?) and state = ?", userId, userId, STATE_ACCEPTED));
 	}
 
 	private static BattleList maskUnacceptibleChallenges(List<Battle> challengeList) {

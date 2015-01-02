@@ -1,8 +1,13 @@
 package realrank.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import realrank.objects.User;
 import realrank.support.Result;
 import realrank.support.Utility;
+import realrank.user.UserManager;
 
 import com.google.gson.Gson;
 
@@ -18,7 +23,16 @@ import easymapping.response.Response;
 @Controller
 public class UserController {
 	
+	@Get("/users/user_search.json")
+	public Response userSearch(Http http) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		System.out.println(http.getParameter("champId"));
+		List searchResultList = UserManager.getUserByIdOrEmail(http.getParameter("champId"));
+		result.put("userList", searchResultList);
+		return new Json(result);
+	}
 	
+
 	@Get("/users/userinfo.rk")
 	public Response userinfo(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
@@ -67,8 +81,4 @@ public class UserController {
 		}
 		return new Json(new Result(true, null));
 	}
-	
-
-
-
 }

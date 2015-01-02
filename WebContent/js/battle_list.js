@@ -1,12 +1,11 @@
 'usr strict';
 
-
 (function() {
 	var app = angular.module('BattleList', []);
-
 	app.controller('UserController', ['$http','$scope' , function($http, $scope) {
-		
+		$scope.user = user;
 	}]);
+	
 	app.controller('BattleController', ['$http','$scope' , function($http, $scope) {
 		$scope.dateFormatter = function(dateString){
 			var dateObject = new Date(dateString),

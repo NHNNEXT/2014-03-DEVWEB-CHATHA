@@ -5,6 +5,7 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/include/_css.jspf"%>
+<%@ include file="/WEB-INF/include/_imports.jspf"%>
 <link href="/battle/send/battlesend.css">
 <title>BattleList - RealRank</title>
 </head>
@@ -14,22 +15,26 @@
 		
 			<div class="col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
 				<%@ include file="/WEB-INF/include/_userheader.jspf"%>
-				<div class="panel-group" id="accordion" ng-controller="BattleController">
+				<div class="panel-group" id="accordion">
 				
 					<!-- 내가 신청 -->
 					<div class="panel panel-default battles-send">
 						<div class="panel-heading">
 							<h4 class="panel-title">도전 보내기</h4>
 						</div>
-						<div id="battles-send" class="panel-collapse collapse in">
+						<div class="panel-body" ng-controller="battleSendFormController">
+							<form name="battleSendFrom" class="battleSendFrom">
+								<div class="input-group" ng-class="{'has-error has-feedback' : battleSendFrom.champId.$error.required}">
+									<input type="text" class="form-control" ng-model="champId" ng-change="search(champId)" name ="champId" placeholder="champ@example.com" required> 
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button">Go!</button>
+									</span>
+								</div>
+							</form>
 							<ul class="list-group">
-							  <li class="list-group-item" ng-repeat="sentBattle in battleList.sent">
-							  	{{sentBattle.champion}} vs {{sentBattle.challenger}}
-							  	<span class="date">{{dateFormatter(sentBattle.req_time)}}</span><span class="time">{{timeFormatter(sentBattle.req_time)}}</span>
-							  	<button type="button" class="btn btn-default btn-xs pull-right">
-								  <span class="glyphicon glyphicon-remove"></span>cancel
-								</button>
-							  </li>
+								<li class="list-group-item" ng-repeat="user in searchedUserList">
+									{{user.nickname}} <small> {{user.email}}</small>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -40,8 +45,9 @@
 		</div>
 		<!--div.row-->
 	</div>
-	
-	<%@ include file="/WEB-INF/include/_imports.jspf"%>
-	<script src="/js/battlesend.js"></script>
+	<script>
+		var user = ${user};
+	</script>
+	<script src="/js/battle_send.js"></script>
 </body>
 </html>

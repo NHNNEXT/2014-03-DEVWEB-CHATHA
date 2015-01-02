@@ -4,20 +4,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ include file="/WEB-INF/include/_css.jspf"%>
-<link href="/css/battlelist.css">
 <title>BattleList - RealRank</title>
+	<%@ include file="/WEB-INF/include/_imports.jspf"%>
+	<%@ include file="/WEB-INF/include/_css.jspf"%>
+<link href="/css/battlelist.css">
 </head>
 <body ng-app="BattleList">
 	<div class="container">
 		<div class="row">
-		
-		
 			<div class="col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
-				<div class="page-header" ng-controller="UserController">
-				  <h1>Champ <small>champ@gmail.cm</small></h1>
-				</div>
-
+				<%@ include file="/WEB-INF/include/_userheader.jspf"%>
 				<div class="panel-group" id="accordion" ng-controller="BattleController">
 				
 					<!-- 내가 신청 -->
@@ -41,6 +37,7 @@
 							</ul>
 						</div>
 					</div>
+					<!-- battles-send -->
 	
 					<!-- 신청 받음 -->
 					<div class="panel panel-default battles-recieve">
@@ -62,7 +59,7 @@
 							</ul>
 						</div>
 					</div>
-	
+					<!-- .battles-recieve -->
 					
 	
 					<!-- 결투중 -->
@@ -75,22 +72,24 @@
 						</div>
 						<div id="battles-in-progress" class="panel-collapse collapse in">
 							<ul class="list-group">
-								<li class="list-group-item" ng-repeat="progressBattle in battleList.progress">
-									{{progressBattle.champion}} vs {{progressBattle.challenger}}
-									<span class="date">{{dateFormatter(progressBattle.req_time)}}</span><span class="time">{{timeFormatter(progressBattle.req_time)}}</span>
+								<li class="list-group-item" ng-repeat="acceptedBattle in battleList.accepted">
+									{{acceptedBattle.champion}} vs {{acceptedBattle.challenger}}
+									<span class="date">{{dateFormatter(acceptedBattle.req_time)}}</span><span class="time">{{timeFormatter(acceptedBattle.req_time)}}</span>
 									<button type="button" class="btn btn-default btn-xs pull-right">
-										<span class="glyphicon glyphicon-ok"></span>accept
+										<span class="glyphicon glyphicon-ok"></span>GO
 									</button>
 								</li>
 							</ul>
 						</div>
 					</div>
+					<!-- .battles-in-progress -->
 				</div>
 			</div>			
 		</div>
 	</div>
-	
-	<%@ include file="/WEB-INF/include/_imports.jspf"%>
-	<script src="/js/battlelist.js"></script>
+	<script>
+		var user = ${user};
+	</script>
+	<script src="/js/battle_list.js"></script>	
 </body>
 </html>

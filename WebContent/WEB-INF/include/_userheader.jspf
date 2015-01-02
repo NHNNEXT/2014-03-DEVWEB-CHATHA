@@ -1,0 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<div class="page-header ng-scope" ng-controller="UserController">
+	 <h1 class="ng-binding">{{user.nickname}}<small class="ng-binding">{{user.email}}</small></h1>
+</div>
