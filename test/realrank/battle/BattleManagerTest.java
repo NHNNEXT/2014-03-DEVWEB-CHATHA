@@ -1,10 +1,14 @@
 package realrank.battle;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
+
+import easyjdbc.dao.DBMethods;
+import realrank.objects.Battle;
 
 public class BattleManagerTest {
 
@@ -14,11 +18,15 @@ public class BattleManagerTest {
 	}
 
 	@Test
-	public void testGetAcceptibleChallenges() throws Exception {
-		ArrayList<BattleInfo> ret = BattleManager.getReceivedChallenges("champ");
-		ret.forEach(battle -> {
-			System.out.println(battle.toString());
-		});
+	public void testGetChallengeList() throws Exception {
+		List<Battle> rc = BattleManager.getReceivedChallenges("champ");
+		List<Battle> ac = BattleManager.getAcceptedChallenges("champ");
+		List<Battle> sc = BattleManager.getSentChallenges("champ");
+		System.out.println(rc);
+		System.out.println(ac);
+		System.out.println(sc);
+		Date reqTime = DBMethods.get(Battle.class, "id=? and state <> -1", 36).getReq_time();
+		System.out.println(reqTime);
 	}
 	
 	@Test

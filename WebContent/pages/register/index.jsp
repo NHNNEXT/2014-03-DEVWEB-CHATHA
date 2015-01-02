@@ -13,7 +13,7 @@
 			<div class="col-sm-6 col-md-4 col-md-offset-4" ng-controller="SignUp">
 				<h1 class="text-center login-title">RealRank SignUp</h1>
 				<div class="account-wall">
-					<input ng-model="user.userId" type="text" class="form-control"
+					<input ng-model="user.id" type="text" class="form-control"
 						placeholder="User ID" autofocus> <input
 						ng-model="user.password" type="password" class="form-control"
 						placeholder="Password"> <input type="password"

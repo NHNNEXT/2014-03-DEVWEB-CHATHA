@@ -16,7 +16,7 @@
 					<h1 class="text-center login-title">RealRank Login</h1>
 					<div class="account-wall">
 						<fieldset class="form-group">
-						<input ng-model="user.userId" type="text" class="form-control" placeholder="User ID" autofocus required />
+						<input ng-model="user.id" type="text" class="form-control" placeholder="User ID" autofocus required />
 						</fieldset>
 						<fieldset class="form-group">
 						<input ng-model="user.password" type="password" class="form-control" placeholder="Password" required /><br/>
@@ -26,7 +26,7 @@
 						</fieldset>
 						<h4>{{state.errorMessage}}</h4>
 					</div>
-					<a href="/support/signup/" class="text-center new-account">Create an account </a>
+					<a href="/pages/register/" class="text-center new-account">Create an account </a>
 				</form>
 			</div>
 		</div>

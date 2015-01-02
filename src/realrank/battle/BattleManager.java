@@ -2,87 +2,50 @@ package realrank.battle;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import realrank.support.DAO;
+import realrank.objects.Battle;
+import easyjdbc.dao.DAO;
+import easyjdbc.dao.DBMethods;
 
-class BattleManager {
-	private final static int STATE_NEW		= 0;
-	private final static int STATE_ACCEPTED	= 1;
-	private final static int STATE_OUTDATED	= 2;
-	private final static int STATE_CANCELED	= 3;
-	private final static int STATE_DENIED	= 4;
+public class BattleManager {
+	public final static int STATE_NEW = 0;
+	public final static int STATE_ACCEPTED = 1;
+	public final static int STATE_OUTDATED = 2;
+	public final static int STATE_CANCELED = 3;
+	public final static int STATE_DENIED = 4;
 
-	static boolean challengeTo(String userId, String champId) {
-		DAO dao = new DAO();
-		dao.setSql("insert into battle (challenger, champion, req_time, state) values(?,?, now(),?)");
-		dao.addParameters(userId);
-		dao.addParameters(champId);
-		dao.addParameters(0);
-		return dao.executeQuery();
+	private static String forCondition(String String){
+		return "'" + String + "'";
 	}
 
-	static ArrayList<BattleInfo> getSentChallenges(String userId) {
-		DAO dao = new DAO();
-		dao.setSql("select * from battle where challenger = ? and state = " + STATE_NEW);
-		dao.addParameters(userId);
-		dao.setResultSetLength(7);
-
-		ArrayList<ArrayList<Object>> queryResults = dao.getRecords();
-
-		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
-		queryResults.forEach(result -> {
-			battleList.add(new BattleInfo((long)result.get(0), (String)result.get(1),
-					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
-					(Integer)result.get(5), (String)result.get(6)));
-		});
-
-		return battleList;
+	public static boolean challengeTo(String userId, String champId) {
+		Battle battle = new Battle();
+		battle.setChallenger(userId);
+		battle.setChampion(champId);
+		battle.setReq_time(new Date());
+		battle.setState(BattleManager.STATE_NEW);
+		return DBMethods.insert(battle);
 	}
 
-	static ArrayList<BattleInfo> getReceivedChallenges(String userId) {
-		DAO dao = new DAO();
-
-		dao.setSql("select * from battle where champion = ? and state = " + STATE_NEW);
-		dao.addParameters(userId);
-		dao.setResultSetLength(7);
-
-		ArrayList<ArrayList<Object>> queryResults = dao.getRecords();
-
-		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
-		queryResults.forEach(result -> {
-			battleList.add(new BattleInfo((long)result.get(0), (String)result.get(1),
-					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
-					(Integer)result.get(5), (String)result.get(6)));
-		});
-
-		return maskUnacceptibleChallenges(battleList);
-	}
-	
-	static ArrayList<BattleInfo> getAcceptedChallenges(String userId) {
-		DAO dao = new DAO();
-		dao.setSql("select * from battle where (challenger = ? or champion = ?) and state = " + STATE_ACCEPTED);
-		dao.addParameters(userId);
-		dao.addParameters(userId);
-		dao.setResultSetLength(7);
-
-		ArrayList<ArrayList<Object>> queryResults = dao.getRecords();
-
-		ArrayList<BattleInfo> battleList = new ArrayList<BattleInfo>();
-		queryResults.forEach(result -> {
-			battleList.add(new BattleInfo((long)result.get(0), (String)result.get(1),
-					(String)result.get(2), (Date)result.get(3), (Date)result.get(4),
-					(Integer)result.get(5), (String)result.get(6)));
-		});
-
-		return battleList;
+	public static List<Battle> getSentChallenges(String userId) {
+		return DBMethods.getList(Battle.class, "challenger = " + forCondition(userId), "state = " + STATE_NEW);
 	}
 
-	private static ArrayList<BattleInfo> maskUnacceptibleChallenges(ArrayList<BattleInfo> challengeList) {
-		ArrayList<BattleInfo> removeObject = new ArrayList<BattleInfo>();
-		ArrayList<BattleInfo> errorChallenges = new ArrayList<BattleInfo>();
-		
+	public static List<Battle> getReceivedChallenges(String userId) {
+		return maskUnacceptibleChallenges(DBMethods.getList(Battle.class, "champion = " + forCondition(userId), "state = " + STATE_NEW));
+	}
+
+	public static List<Battle> getAcceptedChallenges(String userId) {
+		return DBMethods.getList(Battle.class, "(challenger = " + userId + "' or champion = '" + userId + "') and state = " + STATE_ACCEPTED);
+	}
+
+	private static List<Battle> maskUnacceptibleChallenges(List<Battle> challengeList) {
+		ArrayList<Battle> removeObject = new ArrayList<Battle>();
+		ArrayList<Battle> errorChallenges = new ArrayList<Battle>();
+
 		challengeList.forEach(curChallenge -> {
-			Date reqTime = curChallenge.getReqTime();
+			Date reqTime = curChallenge.getReq_time();
 			if (!determineTimeValidity(reqTime)) {
 				if (!setState(curChallenge.getId(), STATE_OUTDATED)) {
 					errorChallenges.add(curChallenge);
@@ -90,29 +53,23 @@ class BattleManager {
 				removeObject.add(curChallenge);
 			}
 		});
-		
+
 		removeObject.forEach(obj -> {
 			challengeList.remove(obj);
 		});
-		
+
 		handleErrorChallenges(errorChallenges);
-		
+
 		return challengeList;
-		
+
 	}
 
-	private static void handleErrorChallenges(ArrayList<BattleInfo> errorChallenges) {
-		// TODO Auto-generated method stub
+	private static void handleErrorChallenges(List<Battle> errorChallenges) {
 
 	}
 
 	static boolean acceptChallenge(long battleId) {
-		Date reqTime;
-		DAO dao = new DAO();
-		dao.setSql("select req_time from battle where id = ? and state <> -1");
-		dao.addParameters(battleId);
-		dao.setResultSetLength(1);
-		reqTime = (Date) dao.getRecord().get(0);
+		Date reqTime = DBMethods.get(Battle.class, "id=? and state <> -1", battleId).getReq_time();
 		if (determineTimeValidity(reqTime)) {
 			return setState(battleId, STATE_ACCEPTED);
 		}
@@ -125,17 +82,16 @@ class BattleManager {
 	}
 
 	static boolean setState(long battleId, int state) {
-		DAO dao = new DAO();
-		dao.setSql("update battle set state = ? where id = ?");
-		dao.addParameters(state);
-		dao.addParameters(battleId);
-		return dao.executeQuery();
+		Battle battle = new Battle();
+		battle.setId((int) battleId);
+		battle.setState(state);
+		return DBMethods.update(battle);
 	}
 
 	static Date getServerTime() {
 		DAO dao = new DAO();
 		dao.setSql("select now()");
-		dao.setResultSetLength(1);
+		dao.setResultSize(1);
 		return (Date) (dao.getRecord().get(0));
 	}
 
@@ -151,13 +107,13 @@ class BattleManager {
 		DAO dao = new DAO();
 		// 챔피언이랑 챌린저랑 같은이유 ..?
 		dao.setSql("select * from battle where (challenger = ? or champion = ?) and state = 1");
-		dao.setResultSetLength(7);
-		dao.addParameters(userId);
-		dao.addParameters(userId);
+		dao.setResultSize(7);
+		dao.addParameter(userId);
+		dao.addParameter(userId);
 		return dao.getRecords();
 	}
 
 	public static String makeLink(String uid) {
-		return "<a href=#> "+ uid + " </a>";
+		return "<a href=#> " + uid + " </a>";
 	}
 }

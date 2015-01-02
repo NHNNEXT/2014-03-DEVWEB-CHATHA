@@ -45,6 +45,25 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>easy</groupId>
+			<artifactId>easyjdbc</artifactId>
+			<version>0.0.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/easyjdbc-0.0.1.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>easy</groupId>
+			<artifactId>easymapping</artifactId>
+			<version>0.0.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/easymapping-0.0.1.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>

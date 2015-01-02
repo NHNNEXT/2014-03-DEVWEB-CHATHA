@@ -11,7 +11,7 @@
 		$scope.user = {};
 		$scope.state = {};
 		$scope.check = function(target) {
-			if (! $scope.user.userId)
+			if (! $scope.user.id)
 				$scope.state.errorMessage = "아이디를 입력하세요";
 			else if (! $scope.user.password)
 				$scope.state.errorMessage = "비밀번호를 입력하세요";
@@ -20,7 +20,7 @@
 		$scope.submit = function() {
 			$http({
 				method: 'POST',
-				url: '/users/login',
+				url: '/users/login.rk',
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				transformRequest: function(obj) {
 					var str = [];
@@ -33,7 +33,7 @@
 			.success( function(result) {
 				if (result.success) {
 					var redirectPath = $location.search().redirect;
-					location.href = (redirectPath ? redirectPath : "/pages/support/userinfo");
+					location.href = (redirectPath ? redirectPath : "/users/userinfo.rk");
 				} else {
 					$scope.state = result;
 				}

@@ -20,7 +20,7 @@ $(function() {
 		$scope.submit = function() {
 			$http({
 				method: 'POST',
-				url: '/users/signup',
+				url: '/users/signup.rk',
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				transformRequest: function(obj) {
 					var str = [];
@@ -32,7 +32,7 @@ $(function() {
 			})
 			.success( function(result) {
 				if (result.success) {
-					location.href="/userinfo.jsp";
+					location.href="/users/userinfo.rk";
 				} else {
 					$scope.state = result;
 				}
