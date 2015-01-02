@@ -6,7 +6,7 @@ import realrank.support.Utility;
 
 import com.google.gson.Gson;
 
-import easyjdbc.dao.DBMethods;
+import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
 import easymapping.annotation.Post;
@@ -17,8 +17,7 @@ import easymapping.response.Response;
 
 @Controller
 public class UserController {
-	
-	
+
 	@Get("/users/userinfo.rk")
 	public Response userinfo(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
@@ -27,15 +26,15 @@ public class UserController {
 		jsp.put("user", gson.toJson(user));
 		return jsp;
 	}
-	
+
 	@Get("/users/login.rk")
 	public Response loginGet(Http http) {
 		Jsp jsp = new Jsp("login.jsp");
 		return jsp;
 	}
-	
+
 	@Get("/users/logout.rk")
-	public void logout(Http http){
+	public void logout(Http http) {
 		http.removeSessionAttribute("user");
 		http.sendRedirect("/");
 	}
@@ -45,10 +44,9 @@ public class UserController {
 		User user = http.getJsonObject(User.class, "user");
 		if (user == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
-
-		User fromDB = DBMethods.get(User.class, user.getId());
-		System.out.println(user);
-		System.out.println(fromDB);
+		QueryExecuter qe = new QueryExecuter();
+		User fromDB = qe.get(User.class, user.getId());
+		qe.close();
 		if (fromDB == null)
 			return new Json(new Result(false, "없는 아이디입니다."));
 		if (!fromDB.isPasswordCorrect(user))
@@ -56,19 +54,19 @@ public class UserController {
 		http.setSessionAttribute("user", fromDB);
 		return new Json(new Result(true, null));
 	}
-	
+
 	@Post("/users/signup.rk")
 	public Response signup(Http http) {
 		User user = http.getJsonObject(User.class, "user");
 		user.setBirthday(Utility.parseDate("MM/dd/yyyy", http.getParameter("birthday")));
-		if (!DBMethods.insert(user)) {
+		QueryExecuter qe = new QueryExecuter();
+		int result = qe.insert(user);
+		qe.close();
+		if (result == 0) {
 			http.setSessionAttribute("user", user);
 			return new Json(new Result(false, "회원 가입 실패"));
 		}
 		return new Json(new Result(true, null));
 	}
-	
-
-
 
 }

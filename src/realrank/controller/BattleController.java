@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import realrank.battle.BattleList;
 import realrank.battle.BattleManager;
-import realrank.objects.Battle;
 import realrank.objects.BattleInfo;
 import realrank.objects.User;
 import realrank.support.Notification;

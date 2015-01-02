@@ -5,7 +5,7 @@ import java.util.Date;
 import easyjdbc.annotation.Exclude;
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
-import easyjdbc.dao.DBMethods;
+import easyjdbc.query.QueryExecuter;
 
 @Table("user")
 public class User {
@@ -45,7 +45,9 @@ public class User {
 		if (cid.matches(emailRegex)) {
 			return cid;
 		}
-		User champ = DBMethods.get(User.class, cid);
+		QueryExecuter qe = new QueryExecuter();
+		User champ = qe.get(User.class, cid);
+		qe.close();
 		if (champ == null) {
 			return null;
 		}

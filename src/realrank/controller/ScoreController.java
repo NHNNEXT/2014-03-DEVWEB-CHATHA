@@ -4,7 +4,7 @@ import realrank.battle.RatingCalculator;
 import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Notification;
-import easyjdbc.dao.DBMethods;
+import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
 import easymapping.mapping.Http;
@@ -37,14 +37,17 @@ public class ScoreController {
 			http.sendRedirect("/users/userinfo.rk");
 			return;
 		}
-		User winner = DBMethods.get(User.class, winnerId);
-		Score winnerScore = DBMethods.get(Score.class, winnerId);
-		Score loserScore = DBMethods.get(Score.class, loser.getId());
+		QueryExecuter qe = new QueryExecuter();
+		User winner = qe.get(User.class, winnerId);
+		Score winnerScore = qe.get(Score.class, winnerId);
+		Score loserScore = qe.get(Score.class, loser.getId());
 		
 		setCalculatedScore(winner, winnerScore, loserScore);
 		
-		DBMethods.update(winnerScore);
-		DBMethods.update(loserScore);
+		qe.update(winnerScore);
+		qe.update(loserScore);
+		
+		qe.close();
 		
 		Notification.sendBattleResult(winnerId, loser.getId());
 		
