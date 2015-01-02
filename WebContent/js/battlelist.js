@@ -1,8 +1,6 @@
 'usr strict';
 
 
-
-
 (function() {
 	var app = angular.module('BattleList', []);
 
@@ -32,7 +30,7 @@
 		
 		$http({
 			method: 'GET',
-			url: '/battle/list.json',
+			url: '/battle/battle_list.json',
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			transformRequest: function(obj) {
 				var str = [];

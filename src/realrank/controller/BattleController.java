@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
 import realrank.battle.BattleList;
 import realrank.battle.BattleManager;
 import realrank.objects.Battle;
@@ -14,21 +15,40 @@ import easymapping.annotation.Get;
 import easymapping.annotation.Post;
 import easymapping.mapping.Http;
 import easymapping.response.Json;
+import easymapping.response.Jsp;
 import easymapping.response.Response;
 
 @Controller
 public class BattleController {
 	
 
-	@Post("/battle/requestbattle.rk")
-	public void requestBattle(Http http){
+	@Post("/battle/battle_send.rk")
+	public void battleRequest(Http http){
 		String uid = http.getSessionAttribute(User.class, "user").getId();
 		String cid = http.getParameter("pid");
 		BattleManager.challengeTo(uid, cid);
 	}
 	
+	@Get("/battle/battle_send.rk")
+	public Response getBattleRequestForm(Http http){
+		User user = http.getSessionAttribute(User.class, "user");
+		Jsp jsp = new Jsp("battle_send.jsp");
+		Gson gson = new Gson();
+		jsp.put("user", gson.toJson(user));
+		return jsp;
+	}
+	
+	@Get("/battle/battle_list.rk")
+	public Response getBattleListView(Http http){
+		User user = http.getSessionAttribute(User.class, "user");
+		Jsp jsp = new Jsp("battle_list.jsp");
+		Gson gson = new Gson();
+		jsp.put("user", gson.toJson(user));
+		return jsp;
+	}
+	
 	@Get("/battle/battle_list.json")
-	public Response getBattleList(Http http){
+	public Response getBattleListData(Http http){
 		User user = http.getSessionAttribute(User.class, "user");
 		if (user == null) {
 			http.sendError(400, "Bad Request : Not logged on");

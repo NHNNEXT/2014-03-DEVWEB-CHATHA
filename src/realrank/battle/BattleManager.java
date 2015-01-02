@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import realrank.objects.Battle;
-import realrank.support.Notification;
 import easyjdbc.dao.DAO;
 import easyjdbc.dao.DBMethods;
 

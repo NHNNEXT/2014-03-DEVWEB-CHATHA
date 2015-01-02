@@ -1,0 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<div ng-app="userinfo">
+	<div class="page-header" ng-controller="user">
+		 <h1>{{user.nickname}}<small>{{user.email}}</small></h1>
+		 <script>
+			var user = ${user};
+		</script>
+		<script src="/js/userinfo.js"></script>
+	</div>
+</div>
