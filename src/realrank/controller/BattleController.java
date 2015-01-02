@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import realrank.battle.BattleList;
 import realrank.battle.BattleManager;
 import realrank.objects.Battle;
 import realrank.objects.User;
@@ -34,14 +35,14 @@ public class BattleController {
 			return null;
 		}
 
-		List<Battle> sentList = BattleManager.getSentChallenges(user.getId());
-		List<Battle> receivedList = BattleManager.getReceivedChallenges(user.getId());
-		List<Battle> acceptedList = BattleManager.getAcceptedChallenges(user.getId());
+		BattleList sentList = BattleManager.getSentChallenges(user.getId());
+		BattleList receivedList = BattleManager.getReceivedChallenges(user.getId());
+		BattleList acceptedList = BattleManager.getAcceptedChallenges(user.getId());
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("sent", sentList);
-		result.put("received", receivedList);
-		result.put("accepted", acceptedList);
+		result.put("sent", sentList.getList());
+		result.put("received", receivedList.getList());
+		result.put("accepted", acceptedList.getList());
 		
 		return new Json(result);
 	}
