@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import realrank.objects.Battle;
-import realrank.support.Notification;
 import easyjdbc.dao.DAO;
 import easyjdbc.dao.DBMethods;
 
