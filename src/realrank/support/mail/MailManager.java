@@ -1,6 +1,6 @@
 package realrank.support.mail;
 
-import easyjdbc.dao.DBMethods;
+import easyjdbc.query.QueryExecuter;
 import realrank.objects.User;
 import realrank.setting.Setting;
 
@@ -60,7 +60,9 @@ public class MailManager {
 	}
 
 	private static void sendMail(String from, String to, String subject, String contents) {
-		User recp = DBMethods.get(User.class, to);
+		QueryExecuter qe = new QueryExecuter();
+		User recp = qe.get(User.class, to);
+		qe.close();
 		MessageMod msg = new MessageMod(from, recp.getEmail(), subject, contents);
 		SendMailSSL.sendTo(msg);
 	}

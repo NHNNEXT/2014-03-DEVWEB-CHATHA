@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import easyjdbc.query.GetRecordQuery;
+import easyjdbc.query.GetRecordsQuery;
+import easyjdbc.query.QueryExecuter;
 import realrank.objects.Battle;
-import easyjdbc.dao.DAO;
-import easyjdbc.dao.DBMethods;
+import realrank.objects.BattleInfo;
 
 public class BattleManager {
 	public final static int STATE_NEW = 0;
@@ -17,7 +19,7 @@ public class BattleManager {
 	public final static int STATE_CANCELED = 3;
 	public final static int STATE_DENIED = 4;
 
-	private static String forCondition(String String){
+	private static String forCondition(String String) {
 		return "'" + String + "'";
 	}
 
@@ -27,53 +29,53 @@ public class BattleManager {
 		battle.setChampion(champId);
 		battle.setReq_time(new Date());
 		battle.setState(BattleManager.STATE_NEW);
-		
-		return DBMethods.insert(battle);
-	}
-	public static BattleList getSentChallenges(String userId) {
-		return new BattleList(DBMethods.getList(Battle.class, "challenger = ? and state = ?", userId, STATE_NEW));
-	}
-
-	public static BattleList getReceivedChallenges(String userId) {
-		return maskUnacceptibleChallenges(DBMethods.getList(Battle.class, "champion = ? and state = ?", userId, STATE_NEW));
+		QueryExecuter qe = new QueryExecuter();
+		int result = qe.insert(battle);
+		qe.close();
+		return result != 0;
 	}
 
-	public static BattleList getAcceptedChallenges(String userId) {
-		return new BattleList(DBMethods.getList(Battle.class, "(challenger = ? or champion = ?) and state = ?", userId, userId, STATE_ACCEPTED));
-	}
+	public static List<BattleInfo> getSentChallenges(String userId, int state) {
+		QueryExecuter qe = new QueryExecuter();
+		String sql = "SELECT b.*, s.score, s.reputation FROM battle b INNER JOIN score s WHERE b.champion = s.id and " + "challenger = "
+				+ forCondition(userId) + " and state = " + state;
+		GetRecordsQuery query = new GetRecordsQuery(9, sql);
+		@SuppressWarnings("unchecked")
+		List<List<Object>> records = (List<List<Object>>) qe.execute(query);
+		qe.close();
 
-	private static BattleList maskUnacceptibleChallenges(List<Battle> challengeList) {
-		ArrayList<Battle> removeObject = new ArrayList<Battle>();
-		ArrayList<Battle> errorChallenges = new ArrayList<Battle>();
-
-		challengeList.forEach(curChallenge -> {
-			Date reqTime = curChallenge.getReq_time();
-			if (!determineTimeValidity(reqTime)) {
-				if (!setState(curChallenge.getId(), STATE_OUTDATED)) {
-					errorChallenges.add(curChallenge);
-				}
-				removeObject.add(curChallenge);
-			}
+		List<BattleInfo> list = new ArrayList<BattleInfo>();
+		records.forEach(record -> {
+			list.add(new BattleInfo((Integer) record.get(0), (String) record.get(1), (String) record.get(2), (Date) record.get(3), (Date) record
+					.get(4), (Integer) record.get(5), (String) record.get(6), (Integer) record.get(7), 0));
 		});
 
-		removeObject.forEach(obj -> {
-			challengeList.remove(obj);
-		});
-
-		handleErrorChallenges(errorChallenges);
-
-		return new BattleList(challengeList);
-
+		return list;
 	}
 
-	private static void handleErrorChallenges(List<Battle> errorChallenges) {
+	public static List<BattleInfo> getReceivedChallenges(String userId, int state) {
+		String sql = "SELECT b.*, s.score, s.reputation FROM battle b INNER JOIN score s WHERE b.challenger = s.id and " + "champion = "
+				+ forCondition(userId) + " and state = " + state;
 
+		QueryExecuter qe = new QueryExecuter();
+		GetRecordsQuery query = new GetRecordsQuery(9, sql);
+		@SuppressWarnings("unchecked")
+		List<List<Object>> records = (List<List<Object>>) qe.execute(query);
+		qe.close();
+		List<BattleInfo> list = new ArrayList<BattleInfo>();
+		records.forEach(record -> {
+			list.add(new BattleInfo((Integer) record.get(0), (String) record.get(1), (String) record.get(2), (Date) record.get(3), (Date) record
+					.get(4), (Integer) record.get(5), (String) record.get(6), (Integer) record.get(7), 0));
+		});
+
+		return list;
 	}
 
 	public static boolean acceptChallenge(long battleId) {
-		Date reqTime = DBMethods.get(Battle.class, "id=? and state <> -1", battleId).getReq_time();
+		QueryExecuter qe = new QueryExecuter();
+		Date reqTime = qe.get(Battle.class, "id=? and state <> -1", battleId).getReq_time();
+		qe.close();
 		if (determineTimeValidity(reqTime)) {
-			
 			return setState(battleId, STATE_ACCEPTED);
 		}
 		setState(battleId, STATE_OUTDATED);
@@ -88,14 +90,17 @@ public class BattleManager {
 		Battle battle = new Battle();
 		battle.setId((int) battleId);
 		battle.setState(state);
-		return DBMethods.update(battle);
+		QueryExecuter qe = new QueryExecuter();
+		int result = qe.update(battle);
+		return result != 0;
 	}
 
 	static Date getServerTime() {
-		DAO dao = new DAO();
-		dao.setSql("select now()");
-		dao.setResultSize(1);
-		return (Date) (dao.getRecord().get(0));
+		QueryExecuter qe = new QueryExecuter();
+		GetRecordQuery query = new GetRecordQuery(1, "select now()");
+		Date date = (Date) qe.execute(query);
+		qe.close();
+		return date;
 	}
 
 	static boolean determineTimeValidity(Date reqTime) {
@@ -106,14 +111,15 @@ public class BattleManager {
 		return false;
 	}
 
-	static ArrayList<ArrayList<Object>> showAcceptedChallenges(String userId) {
-		DAO dao = new DAO();
+	static List<List<Object>> showAcceptedChallenges(String userId) {
 		// 챔피언이랑 챌린저랑 같은이유 ..?
-		dao.setSql("select * from battle where (challenger = ? or champion = ?) and state = 1");
-		dao.setResultSize(7);
-		dao.addParameter(userId);
-		dao.addParameter(userId);
-		return dao.getRecords();
+		QueryExecuter qe = new QueryExecuter();
+		GetRecordsQuery query = new GetRecordsQuery(7, "select * from battle where (challenger = ? or champion = ?) and state = 1");
+		query.addParameters(userId);
+		query.addParameters(userId);
+		List<List<Object>> result = new ArrayList<List<Object>>();
+		qe.close();
+		return result;
 	}
 
 	public static String makeLink(String uid) {

@@ -28,7 +28,7 @@
 						<div id="battles-send" class="panel-collapse collapse in">
 							<ul class="list-group">
 							  <li class="list-group-item" ng-repeat="sentBattle in battleList.sent">
-							  	{{sentBattle.champion}} vs {{sentBattle.challenger}}
+							  	대전 상대 : {{sentBattle.challenger}} (Score : {{sentBattle.opponentScore}}, Reputation : {{sentBattle.opponentScore}})
 							  	<span class="date">{{dateFormatter(sentBattle.req_time)}}</span><span class="time">{{timeFormatter(sentBattle.req_time)}}</span>
 							  	<button type="button" class="btn btn-default btn-xs pull-right">
 								  <span class="glyphicon glyphicon-remove"></span>cancel
@@ -50,7 +50,7 @@
 						<div id="battles-recieve" class="panel-collapse collapse in">
 							<ul class="list-group">
 								<li class="list-group-item" ng-repeat="receivedBattle in battleList.received">
-									{{receivedBattle.champion}} vs {{receivedBattle.challenger}}
+									대전 상대 : {{receivedBattle.champion}} (Score : {{receivedBattle.opponentScore}}, Reputation : {{receivedBattle.opponentScore}})
 									<span class="date">{{dateFormatter(receivedBattle.req_time)}}</span><span class="time">{{timeFormatter(receivedBattle.req_time)}}</span>
 									<button type="button" class="btn btn-default btn-xs pull-right">
 										<span class="glyphicon glyphicon-ok"></span>accept
