@@ -58,6 +58,6 @@ DROP TABLE IF EXISTS `score`;
 -- Table `score`
 CREATE TABLE `score` (
 	`id` VARCHAR(32) NOT NULL,
-	`score` TINYINT NOT NULL,
+	`score` INT NOT NULL,
 	PRIMARY KEY(`id`)
 ) ENGINE = InnoDB;
