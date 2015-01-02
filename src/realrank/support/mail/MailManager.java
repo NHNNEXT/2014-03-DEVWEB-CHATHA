@@ -41,7 +41,7 @@ public class MailManager {
 	
 	public static void sendVictoryMsg(String chalId, String recpId) {
 		String subject = "You Win!!";
-		String path = "/";
+		String path = "/users/userinfo.rk";
 		String msg = "링크";
 		String contents = chalId + "님과의 대결에서 승리하였습니다! " + makeLink(path, msg) + "를 누르시면 내 정보 화면으로 이동합니다.";
 		sendMail(recpId, chalId, subject, contents);
@@ -49,7 +49,7 @@ public class MailManager {
 	
 	public static void sendDefeatMsg(String chalId, String recpId) {
 		String subject = "You Lose";
-		String path = "/";
+		String path = "/users/userinfo.rk";
 		String msg = "링크";
 		String contents = chalId + "님과의 대결에서 패배하였습니다. " + makeLink(path, msg) + "를 누르시면 내 정보 화면으로 이동합니다.";
 		sendMail(recpId, chalId, subject, contents);
