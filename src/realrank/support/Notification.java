@@ -20,11 +20,16 @@ public class Notification {
 		MailManager.sendChallegeDeniedAlert(chalId, recpId);
 	}
 	
-	public static void sendVictoryMsg(String chalId, String recpId) {
+	public static void sendBattleResult(String winnerId, String loserId){
+		sendVictoryMsg(loserId, winnerId);
+		sendDefeatMsg(winnerId, loserId);
+	}
+	
+	private static void sendVictoryMsg(String chalId, String recpId) {
 		MailManager.sendVictoryMsg(chalId, recpId);
 	}
 	
-	public static void sendDefeatMsg(String chalId, String recpId) {
+	private static void sendDefeatMsg(String chalId, String recpId) {
 		MailManager.sendDefeatMsg(chalId, recpId);
 	}
 }

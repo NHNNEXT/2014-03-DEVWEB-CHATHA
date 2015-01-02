@@ -104,8 +104,5 @@ public class BattleController {
 		};
 		http.sendRedirect("/");
 	}
-	
 
-	
-	
 }
