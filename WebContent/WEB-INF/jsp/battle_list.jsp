@@ -4,8 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ include file="/components/_css.jspf"%>
-<link href="/battle/list/battlelist.css">
+<%@ include file="/WEB-INF/include/_css.jspf"%>
+<link href="/css/battlelist.css">
 <title>BattleList - RealRank</title>
 </head>
 <body ng-app="BattleList">
@@ -90,7 +90,7 @@
 		</div>
 	</div>
 	
-	<%@ include file="/components/_imports.jspf"%>
-	<script src="/battle/list/battlelist.js"></script>
+	<%@ include file="/WEB-INF/include/_imports.jspf"%>
+	<script src="/js/battlelist.js"></script>
 </body>
 </html>

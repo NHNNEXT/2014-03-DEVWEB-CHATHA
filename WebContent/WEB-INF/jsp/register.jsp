@@ -3,8 +3,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ include file="/components/_css.jspf"%>
-<link href="signup.css">
+<%@ include file="/WEB-INF/include/_css.jspf"%>
+<link href="/css/register.css">
 <title>Welcome - RealRank</title>
 </head>
 <body ng-app="signup">
@@ -33,7 +33,7 @@
 			</div>
 		</div>
 	</div>
-	<%@ include file="/components/_imports.jspf"%>
-	<script src="signup.js"></script>
+	<%@ include file="/WEB-INF/include/_imports.jspf"%>
+	<script src="/js/register.js"></script>
 </body>
 </html>

@@ -18,6 +18,22 @@ import easymapping.response.Response;
 @Controller
 public class UserController {
 	
+	
+	@Get("/users/userinfo.rk")
+	public Response userinfo(Http http) {
+		User user = http.getSessionAttribute(User.class, "user");
+		Jsp jsp = new Jsp("userinfo.jsp");
+		Gson gson = new Gson();
+		jsp.put("user", gson.toJson(user));
+		return jsp;
+	}
+	
+	@Get("/users/login.rk")
+	public Response loginGet(Http http) {
+		Jsp jsp = new Jsp("login.jsp");
+		return jsp;
+	}
+	
 	@Get("/users/logout.rk")
 	public void logout(Http http){
 		http.removeSessionAttribute("user");
@@ -52,14 +68,7 @@ public class UserController {
 		return new Json(new Result(true, null));
 	}
 	
-	@Get("/users/userinfo.rk")
-	public Response userinfo(Http http) {
-		User user = http.getSessionAttribute(User.class, "user");
-		Jsp jsp = new Jsp("userinfo.jsp");
-		Gson gson = new Gson();
-		jsp.put("user", gson.toJson(user));
-		return jsp;
-	}
+
 
 
 }

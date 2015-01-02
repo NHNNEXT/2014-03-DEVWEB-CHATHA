@@ -18,6 +18,7 @@ import easymapping.response.Response;
 
 @Controller
 public class BattleController {
+	
 
 	@Post("/battle/requestbattle.rk")
 	public void requestBattle(Http http){
@@ -26,7 +27,7 @@ public class BattleController {
 		BattleManager.challengeTo(uid, cid);
 	}
 	
-	@Get("/battle/battle_list.rk")
+	@Get("/battle/battle_list.json")
 	public Response getBattleList(Http http){
 		User user = http.getSessionAttribute(User.class, "user");
 		if (user == null) {

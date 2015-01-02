@@ -13,6 +13,7 @@
 	<servlet-mapping>
 		<servlet-name>easymapping</servlet-name>
 		<url-pattern>*.rk</url-pattern>
+		<url-pattern>*.json</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
