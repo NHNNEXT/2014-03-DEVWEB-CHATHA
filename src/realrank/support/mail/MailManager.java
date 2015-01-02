@@ -27,16 +27,16 @@ public class MailManager {
 		// TODO 배틀 화면 링크를 새로 따야 함. 
 		String path = "battle/";
 		String msg = "링크";
-		String contents = recpId + "님께서 도전을 수락하셨습니다! " + makeLink(path, msg) + "를 누르시면 배틀 화면으로 이동합니다.";
-		sendMail(recpId, chalId, subject, contents);
+		String contents = chalId + "님께서 도전을 수락하셨습니다! " + makeLink(path, msg) + "를 누르시면 배틀 화면으로 이동합니다.";
+		sendMail(chalId, recpId, subject, contents);
 	}
 	
 	public static void sendChallegeDeniedAlert(String chalId, String recpId) {
 		String subject = "Challenge Denied";
 		String path = "/battle/battle_list.rk";
 		String msg = "링크";
-		String contents = recpId + "님께서 도전을 거절하셨습니다. " + makeLink(path, msg) + "를 누르시면 도전 리스트 화면으로 이동합니다.";
-		sendMail(recpId, chalId, subject, contents);
+		String contents = chalId + "님께서 도전을 거절하셨습니다. " + makeLink(path, msg) + "를 누르시면 도전 리스트 화면으로 이동합니다.";
+		sendMail(chalId, recpId, subject, contents);
 	}
 	
 	public static void sendVictoryMsg(String chalId, String recpId) {
@@ -44,7 +44,7 @@ public class MailManager {
 		String path = "/users/userinfo.rk";
 		String msg = "링크";
 		String contents = chalId + "님과의 대결에서 승리하였습니다! " + makeLink(path, msg) + "를 누르시면 내 정보 화면으로 이동합니다.";
-		sendMail(recpId, chalId, subject, contents);
+		sendMail(chalId, recpId, subject, contents);
 	}
 	
 	public static void sendDefeatMsg(String chalId, String recpId) {
@@ -52,7 +52,7 @@ public class MailManager {
 		String path = "/users/userinfo.rk";
 		String msg = "링크";
 		String contents = chalId + "님과의 대결에서 패배하였습니다. " + makeLink(path, msg) + "를 누르시면 내 정보 화면으로 이동합니다.";
-		sendMail(recpId, chalId, subject, contents);
+		sendMail(chalId, recpId, subject, contents);
 	}
 
 	private static String makeLink(String path, String msg) {

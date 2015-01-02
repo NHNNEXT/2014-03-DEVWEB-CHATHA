@@ -3,6 +3,7 @@ package realrank.controller;
 import realrank.battle.RatingCalculator;
 import realrank.objects.Score;
 import realrank.objects.User;
+import realrank.support.Notification;
 import easyjdbc.dao.DBMethods;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
@@ -31,9 +32,15 @@ public class ScoreController {
 		int lose =RatingCalculator.getLoserRating(winner, winnerScore, loserScore);
 		
 		winnerScore.add(gain);
-		loserScore.add(lose);
+		loserScore.add(-lose);
+		
 		DBMethods.update(winnerScore);
 		DBMethods.update(loserScore);
+		System.out.println("loser: "+ loser.getId());
+		System.out.println("winner: "+ winnerId);
+		Notification.sendVictoryMsg(loser.getId(), winnerId);
+		Notification.sendDefeatMsg(winnerId, loser.getId());
+		
 		http.sendRedirect("/support/userinfo");
 	}
 }
