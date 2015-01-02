@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import realrank.objects.Battle;
+import realrank.objects.BattleInfo;
 import easyjdbc.dao.DAO;
 import easyjdbc.dao.DBMethods;
 
@@ -31,44 +32,44 @@ public class BattleManager {
 		return DBMethods.insert(battle);
 	}
 
-	public static BattleList getSentChallenges(String userId) {
-		return new BattleList(DBMethods.getList(Battle.class, "challenger = " + forCondition(userId), "state = " + STATE_NEW));
-	}
+	public static List<BattleInfo> getSentChallenges(String userId, int state) {
+		DAO dao = new DAO();
+		String sql = "SELECT b.*, s.score, s.reputation FROM battle b INNER JOIN score s WHERE b.champion = s.id and " + "challenger = " + forCondition(userId) + " and state = " + state;
 
-	public static BattleList getReceivedChallenges(String userId) {
-		return maskUnacceptibleChallenges(DBMethods.getList(Battle.class, "champion = " + forCondition(userId), "state = " + STATE_NEW));
-	}
+		dao.setSql(sql);
+		dao.setResultSize(9);
+		List<ArrayList<Object>> records = dao.getRecords();
 
-	public static BattleList getAcceptedChallenges(String userId) {
-		return new BattleList(DBMethods.getList(Battle.class, "(challenger = " + userId + "' or champion = '" + userId + "') and state = " + STATE_ACCEPTED));
-	}
-
-	private static BattleList maskUnacceptibleChallenges(List<Battle> challengeList) {
-		ArrayList<Battle> removeObject = new ArrayList<Battle>();
-		ArrayList<Battle> errorChallenges = new ArrayList<Battle>();
-
-		challengeList.forEach(curChallenge -> {
-			Date reqTime = curChallenge.getReq_time();
-			if (!determineTimeValidity(reqTime)) {
-				if (!setState(curChallenge.getId(), STATE_OUTDATED)) {
-					errorChallenges.add(curChallenge);
-				}
-				removeObject.add(curChallenge);
-			}
+		List<BattleInfo> list = new ArrayList<BattleInfo>();
+		records.forEach(record -> {
+			list.add(new BattleInfo((Integer)record.get(0),
+					(String)record.get(1), (String)record.get(2),
+					(Date)record.get(3), (Date)record.get(4),
+					(Integer)record.get(5), (String)record.get(6),
+					(Integer)record.get(7), 0));
 		});
-
-		removeObject.forEach(obj -> {
-			challengeList.remove(obj);
-		});
-
-		handleErrorChallenges(errorChallenges);
-
-		return new BattleList(challengeList);
-
+		
+		return list;
 	}
 
-	private static void handleErrorChallenges(List<Battle> errorChallenges) {
+	public static List<BattleInfo> getReceivedChallenges(String userId, int state) {
+		DAO dao = new DAO();
+		String sql = "SELECT b.*, s.score, s.reputation FROM battle b INNER JOIN score s WHERE b.challenger = s.id and " + "champion = " + forCondition(userId) + " and state = " + state;
 
+		dao.setSql(sql);
+		dao.setResultSize(9);
+		List<ArrayList<Object>> records = dao.getRecords();
+
+		List<BattleInfo> list = new ArrayList<BattleInfo>();
+		records.forEach(record -> {
+			list.add(new BattleInfo((Integer)record.get(0),
+					(String)record.get(1), (String)record.get(2),
+					(Date)record.get(3), (Date)record.get(4),
+					(Integer)record.get(5), (String)record.get(6),
+					(Integer)record.get(7), 0));
+		});
+		
+		return list;
 	}
 
 	public static boolean acceptChallenge(long battleId) {

@@ -39,7 +39,7 @@ CREATE TABLE `user` (
 USE `realrank`;
 DROP TABLE IF EXISTS `battle`;
 
--- Table `user`
+-- Table `battle`
 CREATE TABLE `battle` (
 	`id` INTEGER NOT NULL AUTO_INCREMENT,
 	`challenger` VARCHAR(32) NOT NULL,
@@ -51,7 +51,6 @@ CREATE TABLE `battle` (
 	PRIMARY KEY(`id`)
 ) ENGINE = InnoDB;
 
-
 USE `realrank`;
 DROP TABLE IF EXISTS `score`;
 
@@ -59,5 +58,6 @@ DROP TABLE IF EXISTS `score`;
 CREATE TABLE `score` (
 	`id` VARCHAR(32) NOT NULL,
 	`score` INT NOT NULL,
+	`reputation` INTEGER DEFAULT 100,
 	PRIMARY KEY(`id`)
 ) ENGINE = InnoDB;

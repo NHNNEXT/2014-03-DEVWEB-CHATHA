@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import realrank.battle.BattleList;
 import realrank.battle.BattleManager;
 import realrank.objects.Battle;
+import realrank.objects.BattleInfo;
 import realrank.objects.User;
 import realrank.support.Notification;
 import easymapping.annotation.Controller;
@@ -55,14 +56,15 @@ public class BattleController {
 			return null;
 		}
 
-		BattleList sentList = BattleManager.getSentChallenges(user.getId());
-		BattleList receivedList = BattleManager.getReceivedChallenges(user.getId());
-		BattleList acceptedList = BattleManager.getAcceptedChallenges(user.getId());
+		List<BattleInfo> sentList = BattleManager.getSentChallenges(user.getId(), BattleManager.STATE_NEW);
+		List<BattleInfo> receivedList = BattleManager.getReceivedChallenges(user.getId(), BattleManager.STATE_NEW);
+		List<BattleInfo> acceptedList = BattleManager.getSentChallenges(user.getId(), BattleManager.STATE_ACCEPTED);
+		acceptedList.addAll(BattleManager.getReceivedChallenges(user.getId(), BattleManager.STATE_ACCEPTED));
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("sent", sentList.getList());
-		result.put("received", receivedList.getList());
-		result.put("accepted", acceptedList.getList());
+		result.put("sent", sentList);
+		result.put("received", receivedList);
+		result.put("accepted", acceptedList);
 		
 		return new Json(result);
 	}
