@@ -30,7 +30,7 @@ CREATE TABLE `user` (
 	`nickname` VARCHAR(64) NULL,
 	`gender` CHAR(1) NULL,
 	`birthday` DATE NOT NULL,
-	'games' INT,
+	`games` INT NULL,
 	PRIMARY KEY(`id`)
 ) ENGINE = InnoDB;
 
