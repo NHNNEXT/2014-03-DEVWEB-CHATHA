@@ -3,6 +3,8 @@ package realrank.battle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import realrank.objects.Battle;
 import easyjdbc.dao.DAO;
@@ -29,19 +31,19 @@ public class BattleManager {
 		return DBMethods.insert(battle);
 	}
 
-	public static List<Battle> getSentChallenges(String userId) {
-		return DBMethods.getList(Battle.class, "challenger = " + forCondition(userId), "state = " + STATE_NEW);
+	public static BattleList getSentChallenges(String userId) {
+		return new BattleList(DBMethods.getList(Battle.class, "challenger = " + forCondition(userId), "state = " + STATE_NEW));
 	}
 
-	public static List<Battle> getReceivedChallenges(String userId) {
+	public static BattleList getReceivedChallenges(String userId) {
 		return maskUnacceptibleChallenges(DBMethods.getList(Battle.class, "champion = " + forCondition(userId), "state = " + STATE_NEW));
 	}
 
-	public static List<Battle> getAcceptedChallenges(String userId) {
-		return DBMethods.getList(Battle.class, "(challenger = " + userId + "' or champion = '" + userId + "') and state = " + STATE_ACCEPTED);
+	public static BattleList getAcceptedChallenges(String userId) {
+		return new BattleList(DBMethods.getList(Battle.class, "(challenger = " + userId + "' or champion = '" + userId + "') and state = " + STATE_ACCEPTED));
 	}
 
-	private static List<Battle> maskUnacceptibleChallenges(List<Battle> challengeList) {
+	private static BattleList maskUnacceptibleChallenges(List<Battle> challengeList) {
 		ArrayList<Battle> removeObject = new ArrayList<Battle>();
 		ArrayList<Battle> errorChallenges = new ArrayList<Battle>();
 
@@ -61,7 +63,7 @@ public class BattleManager {
 
 		handleErrorChallenges(errorChallenges);
 
-		return challengeList;
+		return new BattleList(challengeList);
 
 	}
 
@@ -117,5 +119,10 @@ public class BattleManager {
 
 	public static String makeLink(String uid) {
 		return "<a href=#> " + uid + " </a>";
+	}
+
+	public static Map<String, Long> getReputation(Set<String> userList) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
