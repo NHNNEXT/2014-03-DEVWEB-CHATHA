@@ -1,8 +1,9 @@
-'usr strict';
+'use strict';
 
 (function() {
 	var app = angular.module('userinfo', []);
 	app.controller('user', ['$http','$scope' , function($http, $scope) {
-		$scope.user = user;		
+		$scope.user = user;	
+		$scope.score = score;
 	}]);
 })();

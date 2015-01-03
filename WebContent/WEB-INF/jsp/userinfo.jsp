@@ -37,7 +37,7 @@
 			</div>
 			<div class="col-md-4">
 				<div id="myPosition">
-					<h2>Point : {{user.score}}</h2>
+					<h2>Point : {{score.score}}</h2>
 					내 위치 >
 				</div>
 
@@ -49,6 +49,7 @@
 	<%@ include file="/WEB-INF/include/_imports.jspf"%>
 	<script>
 		var user = ${user};
+		var score = ${score};
 	</script>
 	<script src="/js/userinfo.js"></script>
 </body>
