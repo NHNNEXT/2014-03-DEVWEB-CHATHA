@@ -1,4 +1,4 @@
-'usr strict';
+'use strict';
 
 (function() {
 	var app = angular.module('BattleList', []);

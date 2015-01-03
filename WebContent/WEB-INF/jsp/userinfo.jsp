@@ -19,14 +19,16 @@
 		</div>
 		<div class="row" ng-controller="user">
 			<a href="/users/logout.rk">logout</a>
+			<div type="button" class="btn"><a href="/battle/battle_list.rk">Challenge List</a></div>
+			<div type="button" class="btn"><a href="/battle/battle_send.rk">Send Challenge</a></div>			
 			<div id='myProfile' class="col-md-8">
 				<center>
 					<img src="http://www.efmaefm.org/0CONTACTUS/default.jpg"
 						width="140" height="140" border="0" class="img-circle"></a>
 					<h3 class="media-heading">
-						{{user.nickname}} <small> {{user.userId}}</small>
+						{{user.nickname}} <small> {{user.id}}</small>
 					</h3>
-					My WinnerLink : <a href="#">http://localhost:8080/winner/{{user.userId}}</a>
+					My WinnerLink : <a href="#">http://localhost:8080/winner/{{user.id}}</a>
 					<div>
 						<span><strong>Achievements: </strong></span> <span
 							class="label label-warning">VETERAN</span> <span
