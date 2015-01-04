@@ -36,7 +36,10 @@ public class UserController {
 	@Get("/users/userinfo.rk")
 	public Response userinfo(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
-
+		if (user == null) {
+			http.sendRedirect("/users/login.rk");
+			return null;
+		}
 		QueryExecuter qe = new QueryExecuter();
 		Score score = qe.get(Score.class, user.getId());
 		qe.close();
