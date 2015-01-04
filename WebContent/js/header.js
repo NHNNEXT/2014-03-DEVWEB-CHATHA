@@ -30,9 +30,10 @@ app
 							}, true);
 
 							function update() {
-								$('.flash').fadeIn(500).delay(3000).fadeOut(
+								$('.flash').fadeIn(500).delay(1000).fadeOut(
 										500, function() {
 											$rootScope.successMsg.splice(0);
+											$rootScope.$apply();
 										});
 							}
 						}

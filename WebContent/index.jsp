@@ -3,4 +3,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
-<c:redirect url="/index.rk" />
+<c:redirect url="/battle/battle_list.rk" />
