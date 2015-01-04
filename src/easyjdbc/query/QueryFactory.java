@@ -15,7 +15,7 @@ public class QueryFactory {
 	private QueryFactory() {
 	}
 
-	public static Query getInsertQuery(Object record) {
+	public static ExecuteQuery getInsertQuery(Object record) {
 		Table anotation = record.getClass().getAnnotation(Table.class);
 		String tableName = anotation.value();
 		List<Field> fields = excludeNotThisDB(record.getClass());
@@ -41,7 +41,7 @@ public class QueryFactory {
 		return new ExecuteQuery(sql, parameters);
 	}
 
-	public static Query insertIfNotExistIgnore(Object record) {
+	public static ExecuteQuery insertIfNotExistIgnore(Object record) {
 		Table anotation = record.getClass().getAnnotation(Table.class);
 		String tableName = anotation.value();
 		List<Field> fields = excludeNotThisDB(record.getClass());
@@ -67,7 +67,7 @@ public class QueryFactory {
 		return new ExecuteQuery(sql, parameters);
 	}
 
-	public static Query insertIfExistUpdate(Object record) {
+	public static ExecuteQuery insertIfExistUpdate(Object record) {
 		Table anotation = record.getClass().getAnnotation(Table.class);
 		String tableName = anotation.value();
 		List<Field> fields = excludeNotThisDB(record.getClass());
@@ -95,7 +95,7 @@ public class QueryFactory {
 		return new ExecuteQuery(sql, parameters);
 	}
 
-	public static Query getUpdateQuery(Object record) {
+	public static ExecuteQuery getUpdateQuery(Object record) {
 		String tableName = record.getClass().getAnnotation(Table.class).value();
 		List<Field> excludedFields = excludeNotThisDB(record.getClass());
 		PrimaryFields primaryField = new PrimaryFields(excludedFields);
@@ -108,7 +108,7 @@ public class QueryFactory {
 		return new ExecuteQuery(sql, parameters);
 	}
 
-	public static Query getDeleteQuery(Object record) {
+	public static ExecuteQuery getDeleteQuery(Object record) {
 		String tableName = record.getClass().getAnnotation(Table.class).value();
 		PrimaryFields primaryField = new PrimaryFields(record.getClass());
 		Object[] primaryKey;
@@ -119,7 +119,7 @@ public class QueryFactory {
 		return new ExecuteQuery(sql, parameters);
 	}
 
-	public static Query getRecordQuery(Class<?> cLass, Object... primaryKey) {
+	public static GetRecordQuery getRecordQuery(Class<?> cLass, Object... primaryKey) {
 		Table anotation = cLass.getAnnotation(Table.class);
 		List<Field> excludedFields = excludeNotThisDB(cLass);
 		PrimaryFields primaryField = new PrimaryFields(excludedFields);
@@ -131,7 +131,7 @@ public class QueryFactory {
 		return new GetRecordQuery(excludedFields.size(), sql, parameters);
 	}
 	
-	public static Query getRecordQuery(Class<?> cLass) {
+	public static GetRecordQuery getRecordQuery(Class<?> cLass) {
 		Table anotation = cLass.getAnnotation(Table.class);
 		List<Field> excludedFields = excludeNotThisDB(cLass);
 		String sql = "select * from " + anotation.value();
@@ -141,7 +141,7 @@ public class QueryFactory {
 
 	
 
-	public static Query getRecordsQuery(Class<?> cLass, String condition, Object... objects) {
+	public static GetRecordsQuery getRecordsQuery(Class<?> cLass, String condition, Object... objects) {
 		Table anotation = cLass.getAnnotation(Table.class);
 		List<Field> excludedFields = excludeNotThisDB(cLass);
 		String sql;

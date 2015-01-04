@@ -8,6 +8,7 @@ public class Score {
 	@Key
 	String id;
 	Integer score;
+	Integer reputation;
 	
 	public void add(int i) {
 		score +=i;
@@ -27,5 +28,13 @@ public class Score {
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+
+	public Integer getReputation() {
+		return reputation;
+	}
+
+	public void setReputation(Integer reputation) {
+		this.reputation = reputation;
 	}
 }

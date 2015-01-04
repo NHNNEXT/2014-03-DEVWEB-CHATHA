@@ -9,8 +9,11 @@ import com.google.gson.Gson;
 import realrank.battle.BattleManager;
 import realrank.objects.Battle;
 import realrank.objects.BattleInfo;
+import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Notification;
+import realrank.support.Result;
+import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
 import easymapping.annotation.Post;
@@ -24,10 +27,23 @@ public class BattleController {
 	
 
 	@Post("/battle/battle_send.rk")
-	public void battleRequest(Http http){
+	public Response battleRequest(Http http){
 		String uid = http.getSessionAttribute(User.class, "user").getId();
-		String cid = http.getParameter("champId");
-		BattleManager.challengeTo(uid, cid);
+		String sendTo = http.getParameter("champId");
+		if (sendTo == null)
+			return new Json(new Result(false, "유효하지 않은 접근입니다."));
+		QueryExecuter qe = new QueryExecuter();
+		User fromDB = qe.get(User.class, sendTo);
+
+		if (fromDB == null)
+			return new Json(new Result(false, "없는 아이디입니다."));
+		qe.close();
+		http.setSessionAttribute("user", fromDB);
+
+		BattleManager.challengeTo(uid, sendTo);
+		Notification.sendChallegeAlert(uid, sendTo);
+		
+		return new Json(new Result(true, null));
 	}
 	
 	@Get("/battle/battle_send.rk")
