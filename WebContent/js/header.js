@@ -22,7 +22,7 @@ app
 								+ '</div>',
 						link : function($rootScope, scope, element, attrs) {
 							$rootScope.$watch('successMsg', function(val) {
-								if(val.length !== undefined){
+								if(val !== undefined){
 									if (val.length) {
 										update();
 									}
