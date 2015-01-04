@@ -18,7 +18,7 @@
 				<h1>RealRank</h1>
 			</div>
 		</div>
-		<div class="row" ng-controller="user">
+		<div class="row" ng-controller="userController">
 			<div id='myProfile' class="col-md-8">
 				<center>
 					<img src="http://www.efmaefm.org/0CONTACTUS/default.jpg"
