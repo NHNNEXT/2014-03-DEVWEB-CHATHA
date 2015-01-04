@@ -34,6 +34,10 @@ public class Score {
 		return reputation;
 	}
 
+	public void setReputation(Integer reputation) {
+		this.reputation = reputation;
+	}
+
 	public void Reputation(Integer reputation) {
 		this.reputation = reputation;
 	}

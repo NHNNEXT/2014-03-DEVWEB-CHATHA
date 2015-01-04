@@ -40,23 +40,6 @@ public class UserController {
 		return new Json(result);
 	}
 
-	@Get("/users/userinfo.rk")
-	public Response userinfo(Http http) {
-		User user = http.getSessionAttribute(User.class, "user");
-		if (user == null) {
-			http.sendRedirect("/users/login.rk");
-			return null;
-		}
-		QueryExecuter qe = new QueryExecuter();
-		Score score = qe.get(Score.class, user.getId());
-		qe.close();
-
-		Jsp jsp = new Jsp("userinfo.jsp");
-		Gson gson = new Gson();
-		jsp.put("user", gson.toJson(user));
-		jsp.put("score", gson.toJson(score));
-		return jsp;
-	}
 
 	@Get("/users/login.rk")
 	public Response loginGet(Http http) {
@@ -76,7 +59,6 @@ public class UserController {
 	}
 	
 
-	@SuppressWarnings({ "unused" })
 	@Post("/users/login.rk")
 	public Response login(Http http) {
 		User user = http.getJsonObject(User.class, "user");
@@ -137,8 +119,12 @@ public class UserController {
 	
 	@Get("/users/modify.rk")
 	public Response modify(Http http) {
+		User user = http.getSessionAttribute(User.class, "user");
 		Jsp jsp = new Jsp("modify.jsp");
-		jsp.put("user", http.getSessionAttribute(User.class, "user"));
+		jsp.put("user", user.toJson());
+		QueryExecuter qe = new QueryExecuter();
+		jsp.put("score", user.getScoreJson(qe));
+		qe.close();
 		return jsp;
 	}
 

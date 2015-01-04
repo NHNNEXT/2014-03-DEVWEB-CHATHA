@@ -26,6 +26,31 @@
 			return amPm +" "+hours+"시"+minutes+"분";
 		};
 		
+		
+		$scope.updateList = function(){
+			$http({
+				method: 'GET',
+				url: '/battle/battle_list.json',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				transformRequest: function(obj) {
+					var str = [];
+					for(var p in obj)
+						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					return str.join("&");
+				},
+				data: { user : JSON.stringify($scope.user) }
+			})
+			.success( function(result) {
+				$scope.battleList = result;
+			})
+			.error( function(result) {
+				$scope.state = result;
+			});
+		}
+		
+		
+		
+		
 		$http({
 			method: 'GET',
 			url: '/battle/battle_list.json',
@@ -35,8 +60,7 @@
 				for(var p in obj)
 					str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
-			},
-			data: { user : JSON.stringify($scope.user) }
+			}
 		})
 		.success( function(result) {
 			$scope.battleList = result;
