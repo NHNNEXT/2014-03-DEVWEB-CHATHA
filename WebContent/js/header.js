@@ -32,7 +32,7 @@ app.controller('LoginController', ['$http','$scope' , function($http, $scope) {
 	
 	$scope.user = {};
 	$scope.submit = function() {
-		$http(postRequest('/users/login.my', { user : JSON.stringify($scope.user) }))
+		$http(postRequest('/users/login.rk', { user : JSON.stringify($scope.user) }))
 		.success( function(result) {
 			if (result.success) {
 				location.reload();
