@@ -29,6 +29,7 @@ public class BattleController {
 		String uid = http.getSessionAttribute(User.class, "user").getId();
 		
 		String sendTo = http.getParameter("champId");
+		System.out.println(sendTo);
 		if (sendTo == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
 		
