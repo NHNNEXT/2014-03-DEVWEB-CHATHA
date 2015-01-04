@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.GetRecordQuery;
 import easyjdbc.query.GetRecordsQuery;
 import easyjdbc.query.QueryExecuter;
@@ -15,9 +16,11 @@ import realrank.objects.BattleInfo;
 public class BattleManager {
 	public final static int STATE_NEW = 0;
 	public final static int STATE_ACCEPTED = 1;
-	public final static int STATE_OUTDATED = 2;
-	public final static int STATE_CANCELED = 3;
-	public final static int STATE_DENIED = 4;
+	public final static int STATE_FINISHED = 2;
+	public final static int STATE_DRAWED = 3;
+	public final static int STATE_CANCELED = 4;
+	public final static int STATE_DENIED = 5;
+	public final static int STATE_OUTDATED = 6;
 
 	private static String forCondition(String String) {
 		return "'" + String + "'";
@@ -70,15 +73,28 @@ public class BattleManager {
 
 		return list;
 	}
+	
+	public static void updateBattleTimeout(String championId) {
+		String sql = "UPDATE battle SET state=" + STATE_OUTDATED + 
+				" WHERE champion=" + "'" + championId + "'" +
+				" AND state=" + STATE_NEW +
+				" AND TIMEDIFF(NOW(), req_time) > " + "'24:00:00'";
+		System.out.println("[DEBUG] " + sql);
+
+		QueryExecuter qe = new QueryExecuter();
+		ExecuteQuery query = new ExecuteQuery(sql);
+		qe.execute(query);
+		qe.close();
+	}
 
 	public static boolean acceptChallenge(long battleId) {
 		QueryExecuter qe = new QueryExecuter();
-		Date reqTime = qe.getWhere(Battle.class, "id=? and state <> -1", battleId).getReq_time();
+		Battle battle = qe.getWhere(Battle.class, "id=? and state=?", battleId, STATE_NEW);
 		qe.close();
-		if (determineTimeValidity(reqTime)) {
+		if (determineTimeValidity(battle.getReq_time())) {
 			return setState(battleId, STATE_ACCEPTED);
 		}
-		setState(battleId, STATE_OUTDATED);
+		updateBattleTimeout(battle.getChampion());
 		return false;
 	}
 
@@ -109,11 +125,8 @@ public class BattleManager {
 	}
 
 	static boolean determineTimeValidity(Date reqTime) {
-//		Date currentTime = getServerTime();
-//		if (currentTime.getTime() - reqTime.getTime() < 1800000000) {
-			return true;
-//		}
-//		return false;
+		Date currentTime = getServerTime();
+		return (currentTime.getTime() - reqTime.getTime()) < (1000L * 60 * 60 * 24);
 	}
 
 	static List<List<Object>> showAcceptedChallenges(String userId) {
