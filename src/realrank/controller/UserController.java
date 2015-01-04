@@ -33,8 +33,10 @@ public class UserController {
 	public Response userSearch(Http http) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		System.out.println(http.getParameter("champId"));
-		List searchResultList = UserManager.getUserByIdOrEmail(http
-				.getParameter("champId"));
+		List<User> searchResultList = UserManager.getUserByKeyword(http.getParameter("champId"));
+		searchResultList.forEach(user -> {
+			user.setPassword("");
+		});
 		result.put("userList", searchResultList);
 		return new Json(result);
 	}

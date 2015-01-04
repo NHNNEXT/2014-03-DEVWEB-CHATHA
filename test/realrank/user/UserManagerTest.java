@@ -11,13 +11,13 @@ public class UserManagerTest {
 
 	@Test
 	public void getNoUser() {
-		List result = UserManager.getUserByIdOrEmail("xxx");
+		List result = UserManager.getUserByKeyword("xxx");
 		assertNull(result);
 	}
 	
 	@Test
 	public void likeSearchTest() {
-		List result = UserManager.getUserByIdOrEmail("cha");
+		List result = UserManager.getUserByKeyword("cha");
 		Iterator ir = result.iterator();
 		while(ir.hasNext()){
 			System.out.println(ir.next());
