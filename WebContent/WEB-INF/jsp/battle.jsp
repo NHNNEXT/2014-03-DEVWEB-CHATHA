@@ -22,6 +22,9 @@
 
 				<input type="submit" class="btn btn-lg btn-primary btn-block" value="LOSE" ng-click="endBattle(battle)"/>
 					
+				<div ng-click="gotoMypage()">
+					<h4>{{state.errorMessage}}</h4>
+				</div>
 			</div>
 		</div>
 	</div>
