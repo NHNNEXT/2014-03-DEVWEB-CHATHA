@@ -29,9 +29,9 @@
 						<div id="battles-send" class="panel-collapse collapse in">
 							<ul class="list-group">
 							  <li class="list-group-item" ng-repeat="sentBattle in battleList.sent">
-							  	대전 상대 : {{sentBattle.challenger}} (Score : {{sentBattle.opponentScore}}, Reputation : {{sentBattle.opponentScore}})
+							  	대전 상대 : {{sentBattle.champion}} (Score : {{sentBattle.opponentScore}}, Reputation : {{sentBattle.opponentScore}})
 							  	<span class="date">{{dateFormatter(sentBattle.req_time)}}</span><span class="time">{{timeFormatter(sentBattle.req_time)}}</span>
-							  	<button type="button" class="btn btn-default btn-xs pull-right">
+							  	<button type="button" class="btn btn-default btn-xs pull-right" ng-click="cancelChallenge(sentBattle)">
 								  <span class="glyphicon glyphicon-remove"></span>cancel
 								</button>
 							  </li>
@@ -51,10 +51,14 @@
 						<div id="battles-recieve" class="panel-collapse collapse in">
 							<ul class="list-group">
 								<li class="list-group-item" ng-repeat="receivedBattle in battleList.received">
-									대전 상대 : {{receivedBattle.champion}} (Score : {{receivedBattle.opponentScore}}, Reputation : {{receivedBattle.opponentScore}})
+									대전 상대 : {{receivedBattle.challenger}} (Score : {{receivedBattle.opponentScore}}, Reputation : {{receivedBattle.opponentScore}})
 									<span class="date">{{dateFormatter(receivedBattle.req_time)}}</span><span class="time">{{timeFormatter(receivedBattle.req_time)}}</span>
-									<button type="button" class="btn btn-default btn-xs pull-right">
-										<span class="glyphicon glyphicon-ok"></span>accept
+									
+									<button type="button" class="btn btn-default btn-xs pull-right" ng-click="acceptChallenge(receivedBattle)">
+										<span class="glyphicon glyphicon-ok" ></span>accept
+									</button>
+									<button type="button" class="btn btn-default btn-xs pull-right" ng-click="denyChallenge(receivedBattle)">
+										<span class="glyphicon glyphicon-remove" ></span>deny
 									</button>
 								</li>
 							</ul>

@@ -45,6 +45,51 @@
 		.error( function(result) {
 			$scope.state = result;
 		});
+
+		$scope.cancelChallenge=function(sentBattle){
+			$http({
+				method: 'POST',
+				url: '/battle/battle_cancel.rk',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				transformRequest: function(obj) {
+					var str = [];
+					for(var p in obj)
+						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					return str.join("&");
+				},
+				data: { battleId : sentBattle.id }
+			})
+		}
+		
+		$scope.acceptChallenge=function(receivedBattle){
+			$http({
+				method: 'POST',
+				url: '/battle/battle_accept.rk',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				transformRequest: function(obj) {
+					var str = [];
+					for(var p in obj)
+						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					return str.join("&");
+				},
+				data: { battleId : receivedBattle.id, challengerId : receivedBattle.challenger}
+			})
+		}
+		
+		$scope.denyChallenge=function(receivedBattle){
+			$http({
+				method: 'POST',
+				url: '/battle/battle_deny.rk',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				transformRequest: function(obj) {
+					var str = [];
+					for(var p in obj)
+						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					return str.join("&");
+				},
+				data: { battleId : receivedBattle.id, challengerId : receivedBattle.challenger}
+			})
+		}
 	}]);
 	
 	

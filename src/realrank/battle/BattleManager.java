@@ -73,7 +73,7 @@ public class BattleManager {
 
 	public static boolean acceptChallenge(long battleId) {
 		QueryExecuter qe = new QueryExecuter();
-		Date reqTime = qe.get(Battle.class, "id=? and state <> -1", battleId).getReq_time();
+		Date reqTime = qe.getWhere(Battle.class, "id=? and state <> -1", battleId).getReq_time();
 		qe.close();
 		if (determineTimeValidity(reqTime)) {
 			return setState(battleId, STATE_ACCEPTED);
@@ -84,6 +84,10 @@ public class BattleManager {
 
 	public static boolean denyChallenge(long battleId) {
 		return setState(battleId, STATE_DENIED);
+	}
+	
+	public static boolean cancelChallenge(long battleId) {
+		return setState(battleId, STATE_CANCELED);
 	}
 
 	static boolean setState(long battleId, int state) {
@@ -98,17 +102,18 @@ public class BattleManager {
 	static Date getServerTime() {
 		QueryExecuter qe = new QueryExecuter();
 		GetRecordQuery query = new GetRecordQuery(1, "select now()");
-		Date date = (Date) qe.execute(query);
+		@SuppressWarnings("unchecked")
+		List<Object> l = (List<Object>) qe.execute(query);
 		qe.close();
-		return date;
+		return (Date) l.get(0);
 	}
 
 	static boolean determineTimeValidity(Date reqTime) {
-		Date currentTime = getServerTime();
-		if (currentTime.getTime() - reqTime.getTime() < 180000) {
+//		Date currentTime = getServerTime();
+//		if (currentTime.getTime() - reqTime.getTime() < 1800000000) {
 			return true;
-		}
-		return false;
+//		}
+//		return false;
 	}
 
 	static List<List<Object>> showAcceptedChallenges(String userId) {
@@ -130,4 +135,6 @@ public class BattleManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }
