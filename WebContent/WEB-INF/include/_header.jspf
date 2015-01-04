@@ -5,6 +5,7 @@
 <header class="navbar navbar-default navbar-fixed-top bs-docs-nav"
 	role="banner">
 	<div class="container">
+		<div sp-flash></div>
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target=".navbar-collapse">
@@ -14,20 +15,21 @@
 			<a class="navbar-brand" href="/">RealRank</a>
 		</div>
 		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li><a href="/battle/battle_list.rk" target="_self">Challenge List</a></li>
-				<li><a href="/battle/battle_send.rk" target="_self">Send Challenge</a></li>
-<div sp-flash>
+			<ul class="nav navbar-nav" ng-controller='TopMenuController'>
 				<c:choose>
 					<c:when test="${not empty sessionScope.user}">
-						<li><a href="/users/modify.rk">마이페이지</a></li>
-			</ul>
+				<li><a href="/battle/battle_list.rk" target="_self">Challenge
+						List</a></li>
+				<li><a href="/battle/battle_send.rk" target="_self">Send
+						Challenge</a></li>
+						<li><a href="/users/modify.rk">마이페이지</a></li></ul>
 			<form class="navbar-form navbar-right">
 				<a class="btn btn-primary" href="/users/logout.rk" target="_self">로그아웃</a>
 			</form>
 			</c:when>
 			<c:otherwise>
-
+				<li><a href="#" ng-click="alertLogin()">Challenge List</a></li>
+				<li><a href="#" ng-click="alertLogin()">Send Challenge</a></li>
 				</ul>
 				<form ng-controller='LoginController' ng-submit="submit()"
 					class="navbar-form navbar-right">
@@ -39,15 +41,18 @@
 						<input type="password" placeholder="Password"
 							ng-model='user.password' class="form-control">
 					</div>
-							<button type='submit' class="btn btn-primary">로그인</button>
-				<a class="btn btn-info" href="/users/register.rk" target="_self">회원 가입</a>
+					<button type='submit' class="btn btn-primary">로그인</button>
+					<a class="btn btn-info" href="/users/register.rk" target="_self">회원
+						가입</a>
 				</form>
-		</c:otherwise>
-		</c:choose>
+			</c:otherwise>
+			</c:choose>
 
-	</div>
-	<!--/.navbar-collapse -->
+		</div>
+		<!--/.navbar-collapse -->
 	</div>
 </header>
 
-<br><br><br>
+<br>
+<br>
+<br>

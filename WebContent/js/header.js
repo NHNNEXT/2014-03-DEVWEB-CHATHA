@@ -10,29 +10,32 @@ app.config(function($locationProvider) {
 	$locationProvider.html5Mode(true);
 });
 
-app.directive('spFlash', function() {
-	return {
-		restrict : 'A',
-		replace : true,
-		template : '<div class="flash row-fluid">'
-				+ '<div class="flash-inner span4 offset4 alert alert-success" data-ng-repeat="msg in successMsg">{{msg}}</div>'
-				+ '</div>',
-		link : function($rootScope, scope, element, attrs) {
-			$rootScope.$watch('successMsg', function(val) {
-				if (val.length) {
-					update();
-				}
-			}, true);
+app
+		.directive(
+				'spFlash',
+				function() {
+					return {
+						restrict : 'A',
+						replace : true,
+						template : '<div class="flash row-fluid">'
+								+ '<div class="flash-inner span4 offset4 alert alert-success" data-ng-repeat="msg in successMsg">{{msg}}</div>'
+								+ '</div>',
+						link : function($rootScope, scope, element, attrs) {
+							$rootScope.$watch('successMsg', function(val) {
+								if (val.length) {
+									update();
+								}
+							}, true);
 
-			function update() {
-				$('.flash').fadeIn(500).delay(3000).fadeOut(
-						500, function() {
-							$rootScope.successMsg.splice(0);
-						});
-			}
-		}
-	};
-});
+							function update() {
+								$('.flash').fadeIn(500).delay(3000).fadeOut(
+										500, function() {
+											$rootScope.successMsg.splice(0);
+										});
+							}
+						}
+					};
+				});
 
 function postRequest(url, data) {
 	return {
@@ -55,6 +58,11 @@ function postRequest(url, data) {
 function warning(msg) {
 	controllers.rootscope.successMsg.push(msg);
 }
+app.controller('TopMenuController', [ '$scope', function($scope) {
+	$scope.alertLogin = function() {
+		warning("로그인을 먼저 해주세요.");
+	}
+} ]);
 
 app.controller('LoginController', [ '$http', '$scope', '$rootScope',
 		function($http, $scope, $rootScope) {
