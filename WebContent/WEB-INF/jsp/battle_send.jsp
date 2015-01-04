@@ -26,8 +26,9 @@
 						<div class="panel-body" ng-controller="battleSendFormController">
 							<form name="battleSendFrom" class="battleSendFrom" >
 								<div id="search-result" class="dropdown">
-									<div class="input-group" ng-class="{'has-error has-feedback' : battleSendFrom.champId.$error.required}">
-										<input type="text" class="form-control" ng-model="champId" ng-change="search(champId)" ng-keyup="searchKeyPress($event)" name ="champId" placeholder="champ@example.com" required>
+									<div class="input-group" ng-class="{'has-error has-feedback' : battleSendFrom.keyword.$error.required}">
+										<input type="text" class="form-control" ng-model="keyword" ng-change="search(keyword)" ng-keyup="searchKeyPress($event)" name ="keyword" placeholder="champ@example.com" required>
+										<input type="hidden" ng-model="champId" name ="champId">
 										<span class="input-group-btn">
 											<input class="btn btn-default" type="submit" ng-click="sendChallenge(champId)">Go!</input>
 										</span>
@@ -36,12 +37,12 @@
 									<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 										<li role="presentation" ng-repeat-start="user in searchedUserList" ng-if="$first">
 											<a role="menuitem" href="#" tabindex="-1" class="btn-primary active" ng-click="SetQueryDo($event,$index)">
-										  		{{user.id}} <small> {{user.email}}</small>
+										  		<strong>{{user.id}}</strong> <small>{{user.nickname}} <u>{{user.email}}</u></small>
 									  		</a>
 									  	</li>
 									  	<li role="presentation" ng-repeat-end ng-if="!$first">
 									  		<a role="menuitem" href="#" tabindex="-1" ng-click="setQuery($event,$index)">
-										  		{{user.id}} <small> {{user.email}}</small>
+										  		<strong>{{user.id}}</strong> <small>{{user.nickname}} <u>{{user.email}}</u></small>
 									  		</a>
 									  	</div>
 									</ul>

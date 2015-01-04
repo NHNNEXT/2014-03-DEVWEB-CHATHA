@@ -24,11 +24,11 @@
 							str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 						return str.join("&");
 					},
-					params: {champId : query}
+					params: {keyword : query}
 				})
 				.success( function(result) {
 					$scope.searchedUserList = result.userList;
-					if(!$('#search-result').is('.open')){ //open
+					if(!$('#search-result').is('.open') && query !== undefined){ //open
 						$('#search-result .dropdown-Toggle').dropdown('toggle');
 						$scope.selected = 0;
 					}else if(query === undefined && $('#search-result').is('.open')){ //close
@@ -38,7 +38,7 @@
 				.error( function(result) {
 					$scope.state = result;
 				});
-			},500)
+			},100)
 			
 		};
 		
@@ -65,8 +65,14 @@
 		
 		$scope.setQuery=function(index){
 			var champion = $scope.searchedUserList[index];
-			$scope.champId = champion.id;   
+			$scope.keyword = champion.id;
+			$scope.setChampId(champion.id);
 		}
+		
+		$scope.setChampId=function(user){
+			$scope.champId = user.id;
+		}
+		
 		
 		$scope.sendChallenge=function(cid){
 			$http({
