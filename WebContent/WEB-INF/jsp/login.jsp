@@ -30,11 +30,11 @@
 							<input type="submit" class="btn btn-lg btn-primary btn-block"
 								value="Sign in" />
 						</fieldset>
-						<h4>{{state.errorMessage}}</h4>
+						<h4 ng-if="state != {}">{{state.errorMessage}}</h4>
 					</div>
-					<a href="/pages/register/" class="text-center new-account">Create
-						an account </a>
 				</form>
+					<a href="/users/register.rk" target="_self" class="text-center new-account">Create
+						an account </a>
 			</div>
 		</div>
 	</div>

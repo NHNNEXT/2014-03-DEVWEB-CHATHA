@@ -15,8 +15,8 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="/battle/battle_list.rk">Challenge List</a></li>
-				<li><a href="/battle/battle_send.rk">Send Challenge</a></li>
+				<li><a href="/battle/battle_list.rk" target="_self">Challenge List</a></li>
+				<li><a href="/battle/battle_send.rk" target="_self">Send Challenge</a></li>
 
 				<c:choose>
 					<c:when test="${not empty sessionScope.user}">
@@ -40,7 +40,7 @@
 							ng-model='user.password' class="form-control">
 					</div>
 							<button type='submit' class="btn btn-primary">로그인</button>
-				<a class="btn btn-info" href="/users/register.rk">회원 가입</a>
+				<a class="btn btn-info" href="/users/register.rk" target="_self">회원 가입</a>
 				</form>
 		</c:otherwise>
 		</c:choose>
