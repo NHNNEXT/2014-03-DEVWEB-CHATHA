@@ -218,7 +218,7 @@ public class QueryExecuter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T get(Class<T> cLass, String WhereClause, Object... keys) {
+	public <T> T getWhere(Class<T> cLass, String WhereClause, Object... keys) {
 		Query query = QueryFactory.getRecordQuery(cLass);
 		Object eachInstance = null;
 		List<Object> records = (List<Object>) execute(query);
