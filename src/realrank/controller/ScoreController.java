@@ -7,6 +7,7 @@ import realrank.support.Notification;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
+import easymapping.annotation.Post;
 import easymapping.mapping.Http;
 
 @Controller
@@ -19,7 +20,7 @@ public class ScoreController {
 		setBattleResult(http, loser, winnerId);
 	}
 	
-	@Get("/battle_end.rk")
+	@Post("/battle_end.rk")
 	public void setNormalBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getParameter("cid");
