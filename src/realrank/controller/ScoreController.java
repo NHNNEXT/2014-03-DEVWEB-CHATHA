@@ -27,6 +27,27 @@ public class ScoreController {
 
 	}
 	
+	public void setDraw(Http http, User challenger, User champion) {
+		QueryExecuter qe = new QueryExecuter();
+		
+		Score challengerScore = qe.get(Score.class, challenger.getId());
+		Score championScore = qe.get(Score.class, champion.getId());
+
+		calculateDraw(challenger, champion, challengerScore, championScore);
+		
+		qe.update(challengerScore);
+		qe.update(championScore);
+
+		qe.close();
+	}
+
+	void calculateDraw(User challenger, User champion, Score challengerScore, Score championScore) {
+		int challengerGain = RatingCalculator.getDrawRating(challenger, challengerScore, championScore);
+		int championGain = RatingCalculator.getDrawRating(champion, championScore, challengerScore);
+		
+		challengerScore.setScore(challengerGain);
+		championScore.setScore(championGain);
+	}
 	
 	private void setBattleResult(Http http, User loser, String winnerId){
 		if ( loser == null) {
@@ -60,8 +81,8 @@ public class ScoreController {
 		int gain = RatingCalculator.getWinnerRating(winner, winnerScore, loserScore);
 		int lose = RatingCalculator.getLoserRating(winner, winnerScore, loserScore);
 		
-		winnerScore.add(gain);
-		loserScore.add(-lose);
+		winnerScore.setScore(gain);
+		loserScore.setScore(lose);
 	}
 	
 	
