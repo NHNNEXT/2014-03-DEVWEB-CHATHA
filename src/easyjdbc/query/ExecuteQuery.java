@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExecuteQuery extends QueryProto {
+public class ExecuteQuery extends Query {
 
 	public ExecuteQuery(String sql, List<Object> parameters) {
 		this.sql = sql;
@@ -16,7 +16,6 @@ public class ExecuteQuery extends QueryProto {
 		}
 	}
 
-	@Override
 	public Boolean execute(Connection conn) throws SQLException {
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		if (parameters != null)
