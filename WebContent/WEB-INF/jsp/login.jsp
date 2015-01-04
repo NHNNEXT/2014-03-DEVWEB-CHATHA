@@ -9,7 +9,7 @@
 
 <title>Welcome - RealRank</title>
 </head>
-<body ng-app="login">
+<body ng-app="module">
 <%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">

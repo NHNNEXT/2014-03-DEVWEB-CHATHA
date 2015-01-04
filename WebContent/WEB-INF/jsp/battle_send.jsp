@@ -9,7 +9,7 @@
 <link href="/battle/send/battlesend.css">
 <title>BattleList - RealRank</title>
 </head>
-<body ng-app="BattleSend">
+<body ng-app="module">
 <%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">

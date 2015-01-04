@@ -1,7 +1,6 @@
 'use strict';
 
 (function() {
-	var app = angular.module('BattleList', []);
 	app.controller('UserController', ['$http','$scope' , function($http, $scope) {
 		$scope.user = user;
 	}]);
