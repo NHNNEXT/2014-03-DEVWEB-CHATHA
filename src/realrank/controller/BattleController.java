@@ -144,6 +144,20 @@ public class BattleController {
 	}
 	
 	@Get("/battle/battle_start.rk")
+	public Response getBattle(Http http){
+		User user = http.getSessionAttribute(User.class, "user");
+		QueryExecuter qe = new QueryExecuter();
+		Battle battle = qe.get(Battle.class, http.getParameter("bid"));
+		qe.close();
+		
+		Jsp jsp = new Jsp("battle.jsp");
+		Gson gson = new Gson();
+		jsp.put("user", gson.toJson(user));
+		jsp.put("battle", gson.toJson(battle));
+		return jsp;
+	}
+	
+	@Post("/battle/battle_start.rk")
 	public Response startChallenge(Http http){
 		User user = http.getSessionAttribute(User.class, "user");
 		QueryExecuter qe = new QueryExecuter();
