@@ -108,39 +108,43 @@ public class BattleController {
 	}
 	
 	@Post("/battle/battle_accept.rk")
-	public void acceptChallenge(Http http){
+	public Response acceptChallenge(Http http){
 		String recpId = http.getSessionAttribute(User.class,  "user").getId();
 		String bid = http.getParameter("battleId");
 		long battleId = Long.valueOf(bid);
 		String chalId = http.getParameter("challengerId");
 			
-		BattleManager.acceptChallenge(battleId);
-		Notification.sendChallegeAcceptedAlert(recpId, chalId);
+		if(!BattleManager.acceptChallenge(battleId)){
+			return new Json(new Result(false, "오류가 발생했습니다. 다시 시도해주세요. "));
+		}
+		Notification.sendChallegeAcceptedAlert(recpId, chalId);	
 		
-		http.sendRedirect("/");
+		return new Json(new Result(true, null));
 	}
 	
 	@Post("/battle/battle_deny.rk")
-	public void denyChallenge(Http http){
+	public Response denyChallenge(Http http){
 		String recpId = http.getSessionAttribute(User.class,  "user").getId();
 		String bid = http.getParameter("battleId");
 		long battleId = Long.valueOf(bid);
 		String chalId = http.getParameter("challengerId");
 
-		BattleManager.denyChallenge(battleId);
+		if(!BattleManager.denyChallenge(battleId)){
+			return new Json(new Result(false, "오류가 발생했습니다. 다시 시도해주세요. "));
+		}
 		Notification.sendChallegeDeniedAlert(recpId, chalId);
-		
-		http.sendRedirect("/");
+		return new Json(new Result(true, null));
 	}
 	
 	@Post("/battle/battle_cancel.rk")
-	public void cancelChallenge(Http http){
+	public Response cancelChallenge(Http http){
 		String bid = http.getParameter("battleId");
 		long battleId = Long.valueOf(bid);
 
-		BattleManager.cancelChallenge(battleId);
-		
-		http.sendRedirect("/");
+		if(!BattleManager.cancelChallenge(battleId)){
+			return new Json(new Result(false, "오류가 발생했습니다. 다시 시도해주세요. "));
+		}
+		return new Json(new Result(true,null));
 	}
 	
 	@Get("/battle/battle_start.rk")
