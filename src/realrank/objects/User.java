@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import easyjdbc.annotation.Exclude;
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
@@ -142,5 +144,14 @@ public class User {
 
 	public void update(User usermod) {
 		
+	}
+
+	public String toJson() {
+		Gson gson = new Gson();
+		return gson.toJson(this);
+	}
+	public String getScoreJson(QueryExecuter qe) {
+		Gson gson = new Gson();
+		return gson.toJson(qe.get(Score.class, id));
 	}
 }

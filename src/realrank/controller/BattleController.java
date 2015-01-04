@@ -53,8 +53,10 @@ public class BattleController {
 			return null;
 		}
 		Jsp jsp = new Jsp("battle_send.jsp");
-		Gson gson = new Gson();
-		jsp.put("user", gson.toJson(user));
+		jsp.put("user", user.toJson());
+		QueryExecuter qe = new QueryExecuter();
+		jsp.put("score", user.getScoreJson(qe));
+		qe.close();
 		return jsp;
 	}
 	
@@ -68,6 +70,10 @@ public class BattleController {
 		}
 		
 		Jsp jsp = new Jsp("battle_list.jsp");
+		jsp.put("user", user.toJson());
+		QueryExecuter qe = new QueryExecuter();
+		jsp.put("score", user.getScoreJson(qe));
+		qe.close();
 		return jsp;
 	}
 	
@@ -155,11 +161,11 @@ public class BattleController {
 		}
 		QueryExecuter qe = new QueryExecuter();
 		Battle battle = qe.get(Battle.class, http.getParameter("bid"));
-		qe.close();
-		
 		Jsp jsp = new Jsp("battle.jsp");
 		Gson gson = new Gson();
-		jsp.put("user", gson.toJson(user));
+		jsp.put("user", user.toJson());
+		jsp.put("score", user.getScoreJson(qe));
+		qe.close();
 		jsp.put("battle", gson.toJson(battle));
 		return jsp;
 	}
@@ -174,7 +180,9 @@ public class BattleController {
 		
 		Jsp jsp = new Jsp("battle.jsp");
 		Gson gson = new Gson();
-		jsp.put("user", gson.toJson(user));
+		jsp.put("user", user.toJson());
+		jsp.put("score", user.getScoreJson(qe));
+		qe.close();
 		jsp.put("battle", gson.toJson(battle));
 		return jsp;
 	}

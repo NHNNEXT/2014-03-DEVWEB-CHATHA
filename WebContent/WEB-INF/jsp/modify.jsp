@@ -51,9 +51,9 @@
 				</div>
 				<div class="input-group input-group-lg margin-auto">
 					<span class="radio"> <label><input type="radio"
-							value="M" ng-model="user.gender" name="gender" ng-checked="'M'=='${user.gender}'">남</label> <label>
+							value="M" ng-model="user.gender" name="gender" ng-checked="'M'=='{{user.gender}}'">남</label> <label>
 							<input type="radio" value="F" ng-model="user.gender"
-							name="gender" ng-checked="'F'=='${user.gender}'">여
+							name="gender" ng-checked="'F'=='{{user.gender}}'">여
 					</label>
 					</span>
 				</div>
@@ -84,22 +84,12 @@
 	</div>
 
 	<script>
-		var user = {
-			id : "${user.id}",
-			password : "",
-			passwordConfirom:"",
-			email : "${user.email}",
-			gender : "${user.gender}",
-			nickname : "${user.nickname}"
-		};
-		var oldUser = {
-				id : "${user.id}",
-				password : "",
-				passwordConfirom:"",
-				email : "${user.email}",
-				gender : "${user.gender}",
-				nickname : "${user.nickname}"
-			}
+		var oldUser = {};
+		oldUser.id = id;
+		oldUser.email = email;
+		oldUser.gender = gender;
+		oldUser.nickname = nickname;
+		
 	</script>
 	<%@ include file="/WEB-INF/include/_imports.jspf"%>
 	<script src="/js/modify.js"></script>

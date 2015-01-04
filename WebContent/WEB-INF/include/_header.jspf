@@ -18,11 +18,12 @@
 			<ul class="nav navbar-nav" ng-controller='TopMenuController'>
 				<c:choose>
 					<c:when test="${not empty sessionScope.user}">
-				<li><a href="/battle/battle_list.rk" target="_self">Challenge
-						List</a></li>
-				<li><a href="/battle/battle_send.rk" target="_self">Send
-						Challenge</a></li>
-						<li><a href="/users/modify.rk">마이페이지</a></li></ul>
+						<li><a href="/battle/battle_list.rk" target="_self">Challenge
+								List</a></li>
+						<li><a href="/battle/battle_send.rk" target="_self">Send
+								Challenge</a></li>
+						<li><a href="/users/modify.rk">마이페이지</a></li>
+			</ul>
 			<form class="navbar-form navbar-right">
 				<a class="btn btn-primary" href="/users/logout.rk" target="_self">로그아웃</a>
 			</form>
@@ -52,6 +53,27 @@
 		<!--/.navbar-collapse -->
 	</div>
 </header>
+<div class='jumbotron' style="padding-bottom:0">
+
+	<div class='container'>
+		<div class="row" ng-controller="userController">
+
+			<div class="col-md-8">
+				<h2>
+					<span class='glyphicon glyphicon-user'></span> {{user.nickname}} <small>
+						{{user.id}} </small>
+				</h2>
+			</div>
+
+			<div class="col-md-4">
+				<h4 style="line-height: 60px;">
+					<span class="glyphicon glyphicon-tint"></span> {{score.reputation}}
+					<span class='glyphicon glyphicon-log-in'></span> <a href="#">http://localhost:8080/winner/{{user.id}}</a>
+				</h4>
+			</div>
+		</div>
+	</div>
+</div>
 
 <br>
 <br>
