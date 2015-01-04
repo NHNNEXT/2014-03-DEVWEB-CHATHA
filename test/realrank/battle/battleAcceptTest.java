@@ -35,9 +35,9 @@ public class battleAcceptTest {
 		GetRecordQuery que = new GetRecordQuery(1, "select now()");
 		QueryExecuter qe = new QueryExecuter();
 		System.out.println(qe.execute(que));
-	//	con.acceptChallenge(http);
+
 	}
-	
+	@Test
 	public void denyTest(){
 		Battle battle = new Battle();
 		battle.setId(10);

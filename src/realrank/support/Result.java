@@ -16,4 +16,10 @@ public class Result {
 		return gson.toJson(this);
 	}
 
+	@Override
+	public String toString() {
+		return "Result [success=" + success + ", errorMessage=" + errorMessage
+				+ "]";
+	}
+
 }

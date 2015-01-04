@@ -28,7 +28,7 @@
 								<div class="input-group" ng-class="{'has-error has-feedback' : battleSendFrom.champId.$error.required}">
 									<input type="text" class="form-control" ng-model="champId" ng-change="search(champId)" name ="champId" placeholder="champ@example.com" required> 
 									<span class="input-group-btn">
-										<button class="btn btn-default" type="button">Go!</button>
+										<input class="btn btn-default" type="submit" ng-click="sendChallenge(champId)">Go!</input>
 									</span>
 								</div>
 							</form>
@@ -37,7 +37,9 @@
 									{{user.nickname}} <small> {{user.email}}</small>
 								</li>
 							</ul>
+							<h4>{{state.errorMessage}}</h4>
 						</div>
+						
 					</div>
 					<!--div.send-battle-->
 				</div>

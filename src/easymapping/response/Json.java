@@ -28,6 +28,11 @@ public class Json implements Response {
 	}
 
 	@Override
+	public String toString() {
+		return "Json [jsonObj=" + jsonObj + ", dateformat=" + dateformat + "]";
+	}
+
+	@Override
 	public void render(Http http) throws IOException {
 		Gson gson;
 		if(dateformat!=null)
