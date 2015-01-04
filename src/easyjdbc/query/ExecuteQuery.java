@@ -15,6 +15,15 @@ public class ExecuteQuery extends Query {
 			this.parameters = new ArrayList<Object>();
 		}
 	}
+	
+	public ExecuteQuery(String sql, Object... parameters) {
+		this.sql = sql;
+		this.parameters = new ArrayList<Object>();
+		for (int i = 0; i < parameters.length; i++) {
+			this.parameters.add(parameters[i]);
+		}
+	}
+
 
 	public Boolean execute(Connection conn) throws SQLException {
 		PreparedStatement pstmt = conn.prepareStatement(sql);
