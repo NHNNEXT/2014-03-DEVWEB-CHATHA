@@ -42,6 +42,7 @@ public class QueryExecuter {
 		}
 		return null;
 	}
+	
 	public List<Object> execute(GetRecordQuery sql) {
 		try {
 			return sql.execute(conn);
@@ -51,6 +52,7 @@ public class QueryExecuter {
 		}
 		return null;
 	}
+	
 	public List<List<Object>> execute(GetRecordsQuery sql) {
 		try {
 			return sql.execute(conn);

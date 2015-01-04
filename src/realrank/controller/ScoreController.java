@@ -7,6 +7,7 @@ import realrank.support.Notification;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
+import easymapping.annotation.Post;
 import easymapping.mapping.Http;
 
 @Controller
@@ -19,14 +20,34 @@ public class ScoreController {
 		setBattleResult(http, loser, winnerId);
 	}
 	
-	//TODO 방식과 URL을 편한대로 지정해주세요! 
+	@Post("/battle_end.rk")
 	public void setNormalBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getParameter("cid");
 		setBattleResult(http, loser, winnerId);
-
 	}
 	
+	public void setDraw(Http http, User challenger, User champion) {
+		QueryExecuter qe = new QueryExecuter();
+		
+		Score challengerScore = qe.get(Score.class, challenger.getId());
+		Score championScore = qe.get(Score.class, champion.getId());
+
+		calculateDraw(challenger, champion, challengerScore, championScore);
+		
+		qe.update(challengerScore);
+		qe.update(championScore);
+
+		qe.close();
+	}
+
+	void calculateDraw(User challenger, User champion, Score challengerScore, Score championScore) {
+		int challengerGain = RatingCalculator.getDrawRating(challenger, challengerScore, championScore);
+		int championGain = RatingCalculator.getDrawRating(champion, championScore, challengerScore);
+		
+		challengerScore.setScore(challengerGain);
+		championScore.setScore(championGain);
+	}
 	
 	private void setBattleResult(Http http, User loser, String winnerId){
 		if ( loser == null) {
@@ -42,7 +63,7 @@ public class ScoreController {
 		Score winnerScore = qe.get(Score.class, winnerId);
 		Score loserScore = qe.get(Score.class, loser.getId());
 		
-		setCalculatedScore(winner, winnerScore, loserScore);
+		calculateScore(winner, loser, winnerScore, loserScore);
 		
 		qe.update(winnerScore);
 		qe.update(loserScore);
@@ -55,13 +76,13 @@ public class ScoreController {
 	}
 
 	
-	private void setCalculatedScore(User winner, Score winnerScore, Score loserScore){
+	void calculateScore(User winner, User loser, Score winnerScore, Score loserScore){
 		
 		int gain = RatingCalculator.getWinnerRating(winner, winnerScore, loserScore);
-		int lose = RatingCalculator.getLoserRating(winner, winnerScore, loserScore);
+		int lose = RatingCalculator.getLoserRating(loser, loserScore, winnerScore);
 		
-		winnerScore.add(gain);
-		loserScore.add(-lose);
+		winnerScore.setScore(gain);
+		loserScore.setScore(lose);
 	}
 	
 	

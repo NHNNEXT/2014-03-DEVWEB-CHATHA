@@ -9,12 +9,12 @@
 
 <title>Welcome - RealRank</title>
 </head>
-<body ng-app="login">
+<body ng-app="module">
 <%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6 col-md-4 col-md-offset-4">
-				<form name="loginForm" ng-controller="LoginController as loginCtrl"
+				<form name="loginForm" ng-controller="loginCtrl"
 					ng-submit="check(loginForm) && submit()" novalidate>
 					<h1 class="text-center login-title">RealRank Login</h1>
 					<div class="account-wall">

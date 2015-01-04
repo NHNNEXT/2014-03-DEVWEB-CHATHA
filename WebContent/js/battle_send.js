@@ -2,7 +2,6 @@
 
 
 (function() {
-	var app = angular.module('BattleSend', []);
 	var searchTimer;
 	
 	app.controller('UserController', ['$http','$scope' , function($http, $scope) {

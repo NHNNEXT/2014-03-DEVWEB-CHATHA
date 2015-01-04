@@ -10,7 +10,7 @@
 	href="/css/userinfo.css">
 <title>Real RANK!</title>
 </head>
-<body ng-app="userinfo">
+<body ng-app="module">
 <%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">
@@ -18,7 +18,7 @@
 				<h1>RealRank</h1>
 			</div>
 		</div>
-		<div class="row" ng-controller="user">
+		<div class="row" ng-controller="userController">
 			<div id='myProfile' class="col-md-8">
 				<center>
 					<img src="http://www.efmaefm.org/0CONTACTUS/default.jpg"

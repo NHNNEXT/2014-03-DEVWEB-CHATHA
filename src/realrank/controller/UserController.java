@@ -66,8 +66,14 @@ public class UserController {
 		http.removeSessionAttribute("user");
 		http.sendRedirect("/");
 	}
+	
+	@Get("/users/register.rk")
+	public Response register(Http http) {
+		return new Jsp("register.jsp");
+	}
+	
 
-	@SuppressWarnings({ "unchecked", "unused" })
+	@SuppressWarnings({ "unused" })
 	@Post("/users/login.rk")
 	public Response login(Http http) {
 		User user = http.getJsonObject(User.class, "user");
@@ -91,7 +97,7 @@ public class UserController {
 		return new Json(new Result(true, null));
 	}
 
-	@Post("/users/signup.rk")
+	@Post("/users/register.rk")
 	public Response signup(Http http) {
 		User user = http.getJsonObject(User.class, "user");
 		user.setBirthday(Utility.parseDate("MM/dd/yyyy",
@@ -111,4 +117,42 @@ public class UserController {
 		}
 		return new Json(new Result(true, null));
 	}
+	
+	@Post("/users/checkid.rk")
+	public Response checkId(Http http) {
+		QueryExecuter qe = new QueryExecuter();
+		User user = qe.get(User.class, http.getParameter("id"));
+		qe.close();
+		if (user!=null) {
+			return new Json(new Result(false, null));
+		}
+		return new Json(new Result(true, null));
+	}
+	
+	@Get("/users/modify.my")
+	public Response modify(Http http) {
+		Jsp jsp = new Jsp("modify.jsp");
+		jsp.put("user", http.getSessionAttribute(User.class, "user"));
+		return jsp;
+	}
+
+	@Post("/users/modify.my")
+	public Response modifyId(Http http) {
+		User user = http.getSessionAttribute(User.class, "user");
+		User usermod = http.getJsonObject(User.class, "user");
+		String oldPassword = http.getParameter("oldPassword");
+		usermod.setPassword(oldPassword);
+		if (!user.isPasswordCorrect(usermod))
+			return new Json(new Result(false, "기존 패스워드가 일치하지 않습니다."));
+		user.update(usermod);
+		QueryExecuter qe = new QueryExecuter();
+		int effected = qe.update(user);
+		qe.close();
+		if (effected == 0) {
+			return new Json(new Result(false, null));
+		}
+		return new Json(new Result(true, null));
+	}
+	
+	
 }
