@@ -74,10 +74,10 @@ public class UserController {
 		QueryExecuter qe = new QueryExecuter();
 		GetRecordQuery getR = new GetRecordQuery(
 				7,
-				"SELECT id, email, AES_DECRYPT(UNHEX(password), ?), nickname, gender, birthday, games FROM encrypt_user WHERE id=?",
+				"SELECT id, email, AES_DECRYPT(UNHEX(password), ?), nickname, gender, birthday, games FROM user WHERE id=?",
 				user.getPassword(), user.getId());
 		User fromDB = new User((ArrayList<Object>) qe.execute(getR));
-//		User fromDB = qe.get(User.class, user.getId());
+		// User fromDB = qe.get(User.class, user.getId());
 
 		if (fromDB == null)
 			return new Json(new Result(false, "없는 아이디입니다."));
@@ -95,7 +95,12 @@ public class UserController {
 				http.getParameter("birthday")));
 		user.setGames(0);
 		QueryExecuter qe = new QueryExecuter();
-		ExecuteQuery eq = new ExecuteQuery("INSERT INTO user VALUES (?, ?, HEX(AES_ENCRYPT(?, ?)), ?, ?, ?, ?)", user.toList()); 
+		ExecuteQuery eq = new ExecuteQuery(
+				"INSERT INTO user VALUES (?, ?, HEX(AES_ENCRYPT(?, ?)), ?, ?, ?, ?)",
+				user.getId(), user.getEmail(), user.getPassword(), user
+						.getPassword(), user.getNickname(), user.getGender(),
+				user.getBirthday(), user.getGames());
+		boolean result = qe.execute(eq);
 		qe.close();
 		if (result) {
 			http.setSessionAttribute("user", user);
