@@ -16,7 +16,6 @@ public class BattleInfo {
 	public BattleInfo(int id, String challenger, String champion,
 			Date req_time, Date acc_time, Integer state, String winner,
 			int opponentScore, int opponentReputation) {
-		super();
 		this.id = id;
 		this.challenger = challenger;
 		this.champion = champion;
