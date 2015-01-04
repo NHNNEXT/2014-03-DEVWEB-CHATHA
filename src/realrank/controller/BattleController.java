@@ -24,7 +24,6 @@ import easymapping.response.Response;
 
 @Controller
 public class BattleController {
-	
 
 	@Post("/battle/battle_send.rk")
 	public Response battleRequest(Http http){
@@ -59,6 +58,7 @@ public class BattleController {
 		jsp.put("user", gson.toJson(user));
 		return jsp;
 	}
+	
 	
 	@Get("/battle/battle_list.rk")
 	public Response getBattleListView(Http http){
@@ -141,6 +141,34 @@ public class BattleController {
 		BattleManager.cancelChallenge(battleId);
 		
 		http.sendRedirect("/");
+	}
+	
+	@Get("/battle/battle_start.rk")
+	public Response getBattle(Http http){
+		User user = http.getSessionAttribute(User.class, "user");
+		QueryExecuter qe = new QueryExecuter();
+		Battle battle = qe.get(Battle.class, http.getParameter("bid"));
+		qe.close();
+		
+		Jsp jsp = new Jsp("battle.jsp");
+		Gson gson = new Gson();
+		jsp.put("user", gson.toJson(user));
+		jsp.put("battle", gson.toJson(battle));
+		return jsp;
+	}
+	
+	@Post("/battle/battle_start.rk")
+	public Response startChallenge(Http http){
+		User user = http.getSessionAttribute(User.class, "user");
+		QueryExecuter qe = new QueryExecuter();
+		Battle battle = qe.get(Battle.class, http.getParameter("battleId"));
+		qe.close();
+		
+		Jsp jsp = new Jsp("battle.jsp");
+		Gson gson = new Gson();
+		jsp.put("user", gson.toJson(user));
+		jsp.put("battle", gson.toJson(battle));
+		return jsp;
 	}
 
 }

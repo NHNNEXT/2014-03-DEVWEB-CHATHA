@@ -1,7 +1,6 @@
 'use strict';
 
 (function() {
-	var app = angular.module('BattleList', []);
 	app.controller('UserController', ['$http','$scope' , function($http, $scope) {
 		$scope.user = user;
 	}]);
@@ -59,7 +58,7 @@
 				},
 				data: { battleId : sentBattle.id }
 			})
-		}
+		};
 		
 		$scope.acceptChallenge=function(receivedBattle){
 			$http({
@@ -74,7 +73,7 @@
 				},
 				data: { battleId : receivedBattle.id, challengerId : receivedBattle.challenger}
 			})
-		}
+		};
 		
 		$scope.denyChallenge=function(receivedBattle){
 			$http({
@@ -89,7 +88,28 @@
 				},
 				data: { battleId : receivedBattle.id, challengerId : receivedBattle.challenger}
 			})
+		};
+		
+		$scope.startChallenge=function(battle){
+			window.location.href = '/battle/battle_start.rk?bid=' + battle.id;
+			
+//			$http({
+//				method: 'GET',
+//				url: '/battle/battle_start.rk',
+//				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+//				transformRequest: function(obj) {
+//					var str = [];
+//					for(var p in obj)
+//						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+//					return str.join("&");
+//				},
+//				data: { battleId : battle.id, challengerId : battle.challenger}
+//			})
+//			.success(function(){
+//					location.href = (redirectPath ? redirectPath : "/battle/battle_start.rk");
+//			});
 		}
+		
 	}]);
 	
 	

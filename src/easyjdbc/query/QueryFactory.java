@@ -181,7 +181,7 @@ public class QueryFactory {
 		return fieldsString;
 	}
 
-
+	
 
 	static List<Field> excludeNotThisDB(Class<?> cLass) {
 		List<Field> result = new ArrayList<Field>();

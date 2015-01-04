@@ -19,12 +19,11 @@ public class ScoreController {
 		setBattleResult(http, loser, winnerId);
 	}
 	
-	//TODO 방식과 URL을 편한대로 지정해주세요! 
+	@Get("/battle_end.rk")
 	public void setNormalBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getParameter("cid");
 		setBattleResult(http, loser, winnerId);
-
 	}
 	
 	public void setDraw(Http http, User challenger, User champion) {
