@@ -6,12 +6,19 @@
 		$scope.battle = battle;
 		$scope.user = user;
 		
+		
+		$scope.opponent=function(){
+			var opponent = battle.challenger;
+			if(opponent==user.id)
+				opponent=battle.champion;
+			return opponent
+		}
+		
 		$scope.endBattle=function(battle){
-			var winner=battle.challenger;
-			if(winner==user.id){
-				winner=battle.champion;
-			}
-			console.log(winner)
+			var opponent = battle.challenger;
+			if(opponent==user.id)
+				opponent=battle.champion;
+			opponent
 			$http({
 				method: 'POST',
 				url: '/battle_end.rk',
@@ -22,7 +29,7 @@
 						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 					return str.join("&");
 				},
-				data: { cid : winner}
+				data: { cid : opponent}
 			})
 		}
 
