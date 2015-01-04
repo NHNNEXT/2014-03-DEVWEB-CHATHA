@@ -11,6 +11,7 @@
 <title>Real RANK!</title>
 </head>
 <body ng-app="userinfo">
+<%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">
 			<div class="jumbotron">

@@ -8,6 +8,7 @@
 <title>Welcome - RealRank</title>
 </head>
 <body ng-app="signup">
+<%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6 col-md-4 col-md-offset-4" ng-controller="SignUp">

@@ -10,6 +10,7 @@
 <title>BattleList - RealRank</title>
 </head>
 <body ng-app="BattleSend">
+<%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">
 		

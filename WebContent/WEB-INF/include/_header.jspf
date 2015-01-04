@@ -1,0 +1,54 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<header class="navbar navbar-default navbar-fixed-top bs-docs-nav"
+	role="banner">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-collapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">RealRank</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="/mytoday.my">배틀리스트</a></li>
+				<li><a href="/myweek.my">메뉴2</a></li>
+				<li><a href="/myweek.my">메뉴2</a></li>
+				<li><a href="/myweek.my">메뉴2</a></li>
+				<c:choose>
+					<c:when test="${not empty sessionScope.user}">
+						<li><a href="/users/modify.my">마이페이지</a></li>
+			</ul>
+			<form class="navbar-form navbar-right">
+				<a class="btn btn-primary" href="/users/logout.my">로그아웃</a>
+			</form>
+			</c:when>
+			<c:otherwise>
+
+				</ul>
+				<form ng-controller='LoginController' ng-submit="submit()"
+					class="navbar-form navbar-right">
+					<div class="form-group">
+						<input type="text" placeholder="ID" ng-model='user.id'
+							class="form-control">
+					</div>
+					<div class="form-group">
+						<input type="password" placeholder="Password"
+							ng-model='user.password' class="form-control">
+					</div>
+							<button type='submit' class="btn btn-primary">로그인</button>
+				<a class="btn btn-info" href="/users/register.my">회원 가입</a>
+				</form>
+		</c:otherwise>
+		</c:choose>
+
+	</div>
+	<!--/.navbar-collapse -->
+	</div>
+</header>
+
+<br><br><br>
