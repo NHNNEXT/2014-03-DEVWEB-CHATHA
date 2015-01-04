@@ -96,6 +96,9 @@ public class UserController {
 		User fromDB = new User((ArrayList<Object>) result);
 		qe.close();
 		http.setSessionAttribute("user", fromDB);
+		
+		new BattleController().drawBattleTimeout(fromDB.getId());
+
 		return new Json(new Result(true, null));
 	}
 

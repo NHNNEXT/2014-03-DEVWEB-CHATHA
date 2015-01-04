@@ -79,18 +79,18 @@ public class BattleManager {
 		return list;
 	}
 	
-	public static void updateBattleTimeout(String championId) {
+	public static void updateAcceptTimeout(String userId) {
 		String sql = "UPDATE battle SET state=" + STATE_OUTDATED + 
-				" WHERE champion=" + "'" + championId + "'" +
+				" WHERE (challenger=" + "'" + userId + "' OR champion=" + "'" + userId + "')" +
 				" AND state=" + STATE_NEW +
-				" AND TIMEDIFF(NOW(), req_time) > " + "'24:00:00'";
+				" AND ADDDATE(req_time, 1) < NOW()";
 		System.out.println("[DEBUG] " + sql);
 
 		QueryExecuter qe = new QueryExecuter();
 		qe.execute(new ExecuteQuery(sql));
 		qe.close();
 	}
-
+	
 	public static boolean acceptChallenge(long battleId) {
 		QueryExecuter qe = new QueryExecuter();
 		Battle battle = qe.getWhere(Battle.class, "id=? and state=?", battleId, STATE_NEW);
@@ -98,8 +98,16 @@ public class BattleManager {
 		if (determineTimeValidity(battle.getReq_time())) {
 			return setState(battleId, STATE_ACCEPTED);
 		}
-		updateBattleTimeout(battle.getChampion());
+		updateAcceptTimeout(battle.getChampion());
 		return false;
+	}
+
+	public static boolean finishChallenge(long battleId) {
+		return setState(battleId, STATE_FINISHED);
+	}
+	
+	public static boolean drawChallenge(long battleId) {
+		return setState(battleId, STATE_DRAWED);
 	}
 
 	public static boolean denyChallenge(long battleId) {
@@ -109,7 +117,7 @@ public class BattleManager {
 	public static boolean cancelChallenge(long battleId) {
 		return setState(battleId, STATE_CANCELED);
 	}
-
+	
 	static boolean setState(long battleId, int state) {
 		Battle battle = new Battle();
 		battle.setId((int) battleId);
@@ -147,11 +155,4 @@ public class BattleManager {
 	public static String makeLink(String uid) {
 		return "<a href=#> " + uid + " </a>";
 	}
-
-	public static Map<String, Long> getReputation(Set<String> userList) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 }

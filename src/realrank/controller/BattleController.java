@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import realrank.battle.BattleManager;
 import realrank.objects.Battle;
 import realrank.objects.BattleInfo;
-import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Notification;
 import realrank.support.Result;
@@ -81,6 +80,8 @@ public class BattleController {
 			http.sendError(400, "Bad Request : Not logged on");
 			return null;
 		}
+		
+		BattleManager.updateAcceptTimeout(user.getId());
 
 		List<BattleInfo> sentList = BattleManager.getSentChallenges(user.getId(), BattleManager.STATE_NEW);
 		List<BattleInfo> receivedList = BattleManager.getReceivedChallenges(user.getId(), BattleManager.STATE_NEW);
@@ -235,11 +236,37 @@ public class BattleController {
 		http.sendRedirect("/users/userinfo.rk");
 	}
 
+	public void drawBattleTimeout(String userId) {
+		QueryExecuter qe = new QueryExecuter();
+		List<Battle> battles = qe.getList(Battle.class, "(challenger=? OR champion=?) AND state=? AND TIMEDIFF(NOW(), acc_time) > '24:00:00'", userId, userId, BattleManager.STATE_ACCEPTED);
+
+		battles.forEach(battle -> {
+			drawBattle(qe, battle);
+		});
+
+		qe.close();
+	}
+	
+	private void drawBattle(QueryExecuter qe, Battle battle) {
+		User chal = qe.get(User.class, battle.getChallenger());
+		User champ = qe.get(User.class, battle.getChampion());
+
+		new ScoreController().setDraw(qe, chal, champ);
+		
+		UserController userControllser = new UserController();
+		userControllser.increaseGameCount(qe, chal);
+		userControllser.increaseGameCount(qe, champ);
+		
+		BattleManager.drawChallenge(battle.getId());
+	}
+
 	private void finishBattle(QueryExecuter qe, Battle battle, User loser, User winner) {
 		new ScoreController().setBattleResult(qe, loser, winner);
 		
 		UserController userControllser = new UserController();
 		userControllser.increaseGameCount(qe, loser);
 		userControllser.increaseGameCount(qe, winner);
+		
+		BattleManager.finishChallenge(battle.getId());
 	}
 }

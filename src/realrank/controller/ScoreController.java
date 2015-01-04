@@ -14,6 +14,8 @@ public class ScoreController {
 		Score championScore = qe.get(Score.class, champion.getId());
 
 		calculateDraw(challenger, champion, challengerScore, championScore);
+		challengerScore.addReputation(-10);
+		championScore.addReputation(-10);
 		
 		qe.update(challengerScore);
 		qe.update(championScore);
@@ -24,6 +26,8 @@ public class ScoreController {
 		Score loserScore = qe.get(Score.class, loser.getId());
 		
 		calculateScore(winner, loser, winnerScore, loserScore);
+		winnerScore.addReputation(1);
+		loserScore.addReputation(1);
 
 		qe.update(winnerScore);
 		qe.update(loserScore);
