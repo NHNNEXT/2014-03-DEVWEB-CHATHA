@@ -53,9 +53,11 @@
 				data: { champId : cid}
 			})
 			.success( function(result) {
+				
 				if (result.success) {
 					var redirectPath = $location.search().redirect;
-					location.href = (redirectPath ? redirectPath : "/battle/battle_send.rk");
+					alert(cid+"님에게 결투를 신청했습니다.")
+					location.href = (redirectPath ? redirectPath : "/battle/battle_list.rk");
 				} else {
 					$scope.state = result;
 				}

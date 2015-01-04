@@ -33,13 +33,13 @@ public class BattleController {
 		String sendTo = http.getParameter("champId");
 		if (sendTo == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
+		
 		QueryExecuter qe = new QueryExecuter();
 		User fromDB = qe.get(User.class, sendTo);
 
 		if (fromDB == null)
 			return new Json(new Result(false, "없는 아이디입니다."));
 		qe.close();
-		http.setSessionAttribute("user", fromDB);
 
 		BattleManager.challengeTo(uid, sendTo);
 		Notification.sendChallegeAlert(uid, sendTo);

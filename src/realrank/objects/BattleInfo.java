@@ -8,13 +8,13 @@ public class BattleInfo {
 	private String champion;
 	private Date req_time;
 	private Date acc_time;
-	private Integer state;
+	private int state;
 	private String winner;
 	private int opponentScore;
 	private int opponentReputation;
 
 	public BattleInfo(int id, String challenger, String champion,
-			Date req_time, Date acc_time, Integer state, String winner,
+			Date req_time, Date acc_time, int state, String winner,
 			int opponentScore, int opponentReputation) {
 		this.id = id;
 		this.challenger = challenger;
@@ -55,4 +55,9 @@ public class BattleInfo {
 		return opponentReputation;
 	}
 
+	@Override
+	public String toString() {
+		return "ID : "+this.getId()+" challenger : "+this.getChallenger()+" champion : "+this.getChampion()+" state : "+this.getState()+" req : "+this.req_time;
+	}
+	
 }

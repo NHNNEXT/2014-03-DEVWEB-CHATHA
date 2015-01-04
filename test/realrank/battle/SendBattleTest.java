@@ -23,8 +23,22 @@ public class SendBattleTest {
 		User user2 = new User();
 		user2.setId("chan");
 		
-		Mockito.when(http.getJsonObject(User.class,"champId")).thenReturn(user2);
 		Mockito.when(http.getSessionAttribute(User.class,  "user")).thenReturn(user);
+		Mockito.when(http.getParameter("champId")).thenReturn("chal");
+		
+		System.out.println(con.battleRequest(http));
+	}
+	
+	@Test
+	public void listTest(){
+		User user = new User();
+		user.setId("chal");
+		
+		User user2 = new User();
+		user2.setId("champ");
+		
+		Mockito.when(http.getSessionAttribute(User.class,  "user")).thenReturn(user);
+		Mockito.when(http.getParameter("champId")).thenReturn("chal");
 		
 		System.out.println(con.battleRequest(http));
 	}

@@ -37,7 +37,7 @@ public class BattleManager {
 
 	public static List<BattleInfo> getSentChallenges(String userId, int state) {
 		QueryExecuter qe = new QueryExecuter();
-		String sql = "SELECT b.*, s.score, s.reputation FROM battle b INNER JOIN score s WHERE b.champion = s.id and " + "challenger = "
+		String sql = "SELECT b.*, s.score, s.reputation FROM battle b LEFT OUTER JOIN score s ON b.champion = s.id WHERE challenger = "
 				+ forCondition(userId) + " and state = " + state;
 		GetRecordsQuery query = new GetRecordsQuery(9, sql);
 		@SuppressWarnings("unchecked")
@@ -47,7 +47,7 @@ public class BattleManager {
 		List<BattleInfo> list = new ArrayList<BattleInfo>();
 		records.forEach(record -> {
 			list.add(new BattleInfo((Integer) record.get(0), (String) record.get(1), (String) record.get(2), (Date) record.get(3), (Date) record
-					.get(4), (Integer) record.get(5), (String) record.get(6), (Integer) record.get(7), 0));
+					.get(4), (Integer) record.get(5), (String) record.get(6), (record.get(7) == null)?0:((Integer) record.get(7)), (record.get(8) == null)?0:((Integer) record.get(8))));
 		});
 
 		return list;
