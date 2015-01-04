@@ -1,6 +1,8 @@
 package realrank.objects;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import easyjdbc.annotation.Exclude;
 import easyjdbc.annotation.Key;
@@ -17,9 +19,20 @@ public class User {
 	private String nickname;
 	private String gender;
 	private Date birthday;
-	@Exclude
 	private int games;
 
+	public User() {};
+	
+	public User(ArrayList<Object> data) {
+		this.id = (String) data.get(0);
+		this.email = (String) data.get(1);
+		this.password = new String((byte[]) data.get(2));
+		this.nickname = (String) data.get(3);
+		this.gender = (String) data.get(4);
+		this.birthday = (Date) data.get(5);
+		this.games = (int) data.get(6);
+	}
+	
 	public int getGames() {
 		return games;
 	}
@@ -112,5 +125,15 @@ public class User {
 		return password.equals(user.getPassword());
 	}
 
-
+	public List<Object> toList() {
+		ArrayList<Object> ret = new ArrayList<Object>();
+		ret.add(id);
+		ret.add(email);
+		ret.add(password);
+		ret.add(nickname);
+		ret.add(gender);
+		ret.add(birthday);
+		ret.add(games);
+		return ret; 
+	}
 }
