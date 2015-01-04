@@ -77,6 +77,13 @@ public class BattleController {
 		return jsp;
 	}
 	
+
+
+	
+	
+	
+	
+	
 	@Get("/battle/battle_list.json")
 	public Response getBattleListData(Http http){
 		User user = http.getSessionAttribute(User.class, "user");
@@ -85,13 +92,13 @@ public class BattleController {
 			return null;
 		}
 		
-		BattleManager.updateAcceptTimeout(user.getId());
-
-		List<BattleInfo> sentList = BattleManager.getSentChallenges(user.getId(), BattleManager.STATE_NEW);
-		List<BattleInfo> receivedList = BattleManager.getReceivedChallenges(user.getId(), BattleManager.STATE_NEW);
-		List<BattleInfo> acceptedList = BattleManager.getSentChallenges(user.getId(), BattleManager.STATE_ACCEPTED);
-		acceptedList.addAll(BattleManager.getReceivedChallenges(user.getId(), BattleManager.STATE_ACCEPTED));
-		
+		QueryExecuter qe = new QueryExecuter();
+		BattleManager.updateAcceptTimeout(qe, user.getId());
+		List<BattleInfo> sentList = BattleManager.getSentChallenges(qe, user.getId(), BattleManager.STATE_NEW);
+		List<BattleInfo> receivedList = BattleManager.getReceivedChallenges(qe, user.getId(), BattleManager.STATE_NEW);
+		List<BattleInfo> acceptedList = BattleManager.getSentChallenges(qe, user.getId(), BattleManager.STATE_ACCEPTED);
+		acceptedList.addAll(BattleManager.getReceivedChallenges(qe, user.getId(), BattleManager.STATE_ACCEPTED));
+		qe.close();
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("sent", sentList);
 		result.put("received", receivedList);
@@ -118,10 +125,11 @@ public class BattleController {
 		String bid = http.getParameter("battleId");
 		long battleId = Long.valueOf(bid);
 		String chalId = http.getParameter("challengerId");
-			
-		if(!BattleManager.acceptChallenge(battleId)){
+			QueryExecuter qe = new QueryExecuter();
+		if(!BattleManager.acceptChallenge(qe, battleId)){
 			return new Json(new Result(false, "오류가 발생했습니다. 다시 시도해주세요. "));
 		}
+		qe.close();
 		Notification.sendChallegeAcceptedAlert(recpId, chalId);	
 		
 		return new Json(new Result(true, null));

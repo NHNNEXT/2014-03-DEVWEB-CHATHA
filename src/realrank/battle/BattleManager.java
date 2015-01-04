@@ -43,14 +43,11 @@ public class BattleManager {
 		return battle;
 	}
 
-	public static List<BattleInfo> getSentChallenges(String userId, int state) {
-		QueryExecuter qe = new QueryExecuter();
+	public static List<BattleInfo> getSentChallenges(QueryExecuter qe, String userId, int state) {
 		String sql = "SELECT b.*, s.score, s.reputation FROM battle b LEFT OUTER JOIN score s ON b.champion = s.id WHERE challenger = "
 				+ forCondition(userId) + " and state = " + state;
 		GetRecordsQuery query = new GetRecordsQuery(9, sql);
-		@SuppressWarnings("unchecked")
-		List<List<Object>> records = (List<List<Object>>) qe.execute(query);
-		qe.close();
+		List<List<Object>> records =  qe.execute(query);
 
 		List<BattleInfo> list = new ArrayList<BattleInfo>();
 		records.forEach(record -> {
@@ -61,15 +58,13 @@ public class BattleManager {
 		return list;
 	}
 
-	public static List<BattleInfo> getReceivedChallenges(String userId, int state) {
+	public static List<BattleInfo> getReceivedChallenges(QueryExecuter qe, String userId, int state) {
 		String sql = "SELECT b.*, s.score, s.reputation FROM battle b INNER JOIN score s WHERE b.challenger = s.id and " + "champion = "
 				+ forCondition(userId) + " and state = " + state;
 
-		QueryExecuter qe = new QueryExecuter();
 		GetRecordsQuery query = new GetRecordsQuery(9, sql);
 		@SuppressWarnings("unchecked")
 		List<List<Object>> records = (List<List<Object>>) qe.execute(query);
-		qe.close();
 		List<BattleInfo> list = new ArrayList<BattleInfo>();
 		records.forEach(record -> {
 			list.add(new BattleInfo((Integer) record.get(0), (String) record.get(1), (String) record.get(2), (Date) record.get(3), (Date) record
@@ -79,26 +74,23 @@ public class BattleManager {
 		return list;
 	}
 	
-	public static void updateAcceptTimeout(String userId) {
+	public static void updateAcceptTimeout(QueryExecuter qe, String userId) {
 		String sql = "UPDATE battle SET state=" + STATE_OUTDATED + 
 				" WHERE (challenger=" + "'" + userId + "' OR champion=" + "'" + userId + "')" +
 				" AND state=" + STATE_NEW +
 				" AND ADDDATE(req_time, 1) < NOW()";
 		System.out.println("[DEBUG] " + sql);
 
-		QueryExecuter qe = new QueryExecuter();
 		qe.execute(new ExecuteQuery(sql));
-		qe.close();
 	}
 	
-	public static boolean acceptChallenge(long battleId) {
-		QueryExecuter qe = new QueryExecuter();
+	public static boolean acceptChallenge(QueryExecuter qe, long battleId) {
 		Battle battle = qe.getWhere(Battle.class, "id=? and state=?", battleId, STATE_NEW);
 		qe.close();
 		if (determineTimeValidity(battle.getReq_time())) {
 			return setState(battleId, STATE_ACCEPTED);
 		}
-		updateAcceptTimeout(battle.getChampion());
+		updateAcceptTimeout(qe, battle.getChampion());
 		return false;
 	}
 
