@@ -24,19 +24,29 @@
 							<h4 class="panel-title">도전 보내기</h4>
 						</div>
 						<div class="panel-body" ng-controller="battleSendFormController">
-							<form name="battleSendFrom" class="battleSendFrom">
-								<div class="input-group" ng-class="{'has-error has-feedback' : battleSendFrom.champId.$error.required}">
-									<input type="text" class="form-control" ng-model="champId" ng-change="search(champId)" name ="champId" placeholder="champ@example.com" required> 
-									<span class="input-group-btn">
-										<input class="btn btn-default" type="submit" ng-click="sendChallenge(champId)">Go!</input>
-									</span>
+							<form name="battleSendFrom" class="battleSendFrom" >
+								<div id="search-result" class="dropdown">
+									<div class="input-group" ng-class="{'has-error has-feedback' : battleSendFrom.champId.$error.required}">
+										<input type="text" class="form-control" ng-model="champId" ng-change="search(champId)" ng-keyup="searchKeyPress($event)" name ="champId" placeholder="champ@example.com" required>
+										<span class="input-group-btn">
+											<input class="btn btn-default" type="submit" ng-click="sendChallenge(champId)">Go!</input>
+										</span>
+									</div>
+									<a class="dropdown-Toggle" data-toggle="dropdown"></a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+										<li role="presentation" ng-repeat-start="user in searchedUserList" ng-if="$first">
+											<a role="menuitem" href="#" tabindex="-1" class="btn-primary active" ng-click="SetQueryDo($event,$index)">
+										  		{{user.id}} <small> {{user.email}}</small>
+									  		</a>
+									  	</li>
+									  	<li role="presentation" ng-repeat-end ng-if="!$first">
+									  		<a role="menuitem" href="#" tabindex="-1" ng-click="setQuery($event,$index)">
+										  		{{user.id}} <small> {{user.email}}</small>
+									  		</a>
+									  	</div>
+									</ul>
 								</div>
 							</form>
-							<ul class="list-group">
-								<li class="list-group-item" ng-repeat="user in searchedUserList">
-									{{user.nickname}} <small> {{user.email}}</small>
-								</li>
-							</ul>
 							<h4>{{state.errorMessage}}</h4>
 						</div>
 						

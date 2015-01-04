@@ -69,8 +69,6 @@ public class BattleController {
 		}
 		
 		Jsp jsp = new Jsp("battle_list.jsp");
-		Gson gson = new Gson();
-		jsp.put("user", gson.toJson(user));
 		return jsp;
 	}
 	

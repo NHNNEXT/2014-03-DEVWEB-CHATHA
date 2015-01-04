@@ -6,16 +6,14 @@
 	
 	app.controller('UserController', ['$http','$scope' , function($http, $scope) {
 		$scope.user = user;
-	}]);
-	
-	app.controller('battleSendFormController', ['$http','$scope','$location', function($http, $scope,$location) {
-		$scope.champId={};
+	}])
+	.controller('battleSendFormController', ['$http','$scope','$location', function($http, $scope,$location) {
 		$scope.state = {};
-		
+		$scope.selected;
+
 		$scope.search = function(query) {
 			clearTimeout(searchTimer);
 			searchTimer = setTimeout(function(){
-				console.log(query);
 				$http({
 					method: 'GET',
 					url: '/users/user_search.json',
@@ -30,6 +28,12 @@
 				})
 				.success( function(result) {
 					$scope.searchedUserList = result.userList;
+					if(!$('#search-result').is('.open')){ //open
+						$('#search-result .dropdown-Toggle').dropdown('toggle');
+						$scope.selected = 0;
+					}else if(query === undefined && $('#search-result').is('.open')){ //close
+						$('#search-result .dropdown-Toggle').dropdown('toggle');
+					} 
 				})
 				.error( function(result) {
 					$scope.state = result;
@@ -37,6 +41,32 @@
 			},500)
 			
 		};
+		
+		$scope.searchKeyPress=function(e){
+			if($scope.searchedUserList !== undefined){
+				var activeClass = 'btn-primary active';
+				switch(e.keyCode){
+				case 38:
+					$scope.selected = Math.max(0,$scope.selected-1);
+					break;
+				case 40:
+					$scope.selected = Math.min($scope.searchedUserList.length-1,$scope.selected+1);
+					break;
+				default:
+					return;
+				};
+				$scope.setQuery($scope.selected);
+				$('#search-result .dropdown-menu li a')
+					.removeClass(activeClass)
+					.eq($scope.selected)
+					.addClass(activeClass);
+			}
+		};
+		
+		$scope.setQuery=function(index){
+			var champion = $scope.searchedUserList[index];
+			$scope.champId = champion.id;   
+		}
 		
 		$scope.sendChallenge=function(cid){
 			$http({
@@ -49,7 +79,7 @@
 						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 					return str.join("&");
 				},
-				data: { champId : cid}
+				data: { champId : $scope.champId}
 			})
 			.success( function(result) {
 				
