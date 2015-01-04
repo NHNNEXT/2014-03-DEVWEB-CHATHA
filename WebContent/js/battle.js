@@ -29,7 +29,7 @@
 						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 					return str.join("&");
 				},
-				data: { cid : opponent}
+				data: {winner_id : opponent}
 			})
 			.success( function(result) {	
 				if (result.success) {
