@@ -4,6 +4,7 @@ import realrank.battle.RatingCalculator;
 import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Notification;
+import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
@@ -65,6 +66,9 @@ public class ScoreController {
 		
 		calculateScore(winner, loser, winnerScore, loserScore);
 		
+		raiseGames(qe, winner);
+		raiseGames(qe, loser);
+		
 		qe.update(winnerScore);
 		qe.update(loserScore);
 		
@@ -73,6 +77,14 @@ public class ScoreController {
 		Notification.sendBattleResult(winnerId, loser.getId());
 		
 		http.sendRedirect("/users/userinfo.rk");
+	}
+	
+	private void raiseGames(QueryExecuter qe, User user){
+		int newGames = user.getGames()+1;
+		String sqls = "UPDATE user set games="+ newGames + " WHERE id='"+user.getId()+"'";
+		System.out.println(sqls);
+		ExecuteQuery sql = new ExecuteQuery("UPDATE user set games="+ newGames + " WHERE id='"+user.getId()+"'");
+		qe.execute(sql);
 	}
 
 	
