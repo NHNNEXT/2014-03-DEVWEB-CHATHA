@@ -80,8 +80,8 @@
 								<li class="list-group-item" ng-repeat="acceptedBattle in battleList.accepted">
 									{{acceptedBattle.champion}} vs {{acceptedBattle.challenger}}
 									<span class="date">{{dateFormatter(acceptedBattle.req_time)}}</span><span class="time">{{timeFormatter(acceptedBattle.req_time)}}</span>
-									<button type="button" class="btn btn-default btn-xs pull-right">
-										<span class="glyphicon glyphicon-ok"></span>GO
+									<button type="button" class="btn btn-default btn-xs pull-right" ng-click="startChallenge(acceptedBattle)">
+										<span class="glyphicon glyphicon-ok" ></span>GO!
 									</button>
 								</li>
 							</ul>

@@ -59,7 +59,7 @@
 				},
 				data: { battleId : sentBattle.id }
 			})
-		}
+		};
 		
 		$scope.acceptChallenge=function(receivedBattle){
 			$http({
@@ -74,7 +74,7 @@
 				},
 				data: { battleId : receivedBattle.id, challengerId : receivedBattle.challenger}
 			})
-		}
+		};
 		
 		$scope.denyChallenge=function(receivedBattle){
 			$http({
@@ -89,7 +89,23 @@
 				},
 				data: { battleId : receivedBattle.id, challengerId : receivedBattle.challenger}
 			})
+		};
+		
+		$scope.startChaalenge=function(battle){
+			$http({
+				method: 'GET',
+				url: '/battle/battle_start.rk',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				transformRequest: function(obj) {
+					var str = [];
+					for(var p in obj)
+						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					return str.join("&");
+				},
+				data: { battleId : battle.id, challengerId : battle.challenger}
+			})
 		}
+		
 	}]);
 	
 	
