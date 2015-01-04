@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import realrank.objects.Battle;
+import realrank.objects.BattleInfo;
 import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.GetRecordQuery;
 import easyjdbc.query.GetRecordsQuery;
 import easyjdbc.query.QueryExecuter;
-import realrank.objects.Battle;
-import realrank.objects.BattleInfo;
 
 public class BattleManager {
 	public final static int STATE_NEW = 0;
@@ -25,17 +25,22 @@ public class BattleManager {
 	private static String forCondition(String String) {
 		return "'" + String + "'";
 	}
-
-	public static boolean challengeTo(String userId, String champId) {
+	
+	public static Battle createBattle(String chalId, String champId, int state) {
 		Battle battle = new Battle();
-		battle.setChallenger(userId);
+		battle.setChallenger(chalId);
 		battle.setChampion(champId);
 		battle.setReq_time(new Date());
-		battle.setState(BattleManager.STATE_NEW);
+		battle.setState(state);
+
 		QueryExecuter qe = new QueryExecuter();
-		int result = qe.insert(battle);
+		if (qe.insert(battle) == 0) {
+			System.out.println("BattleManager.createBattle() : insert failed");
+			return null;
+		}
 		qe.close();
-		return result != 0;
+
+		return battle;
 	}
 
 	public static List<BattleInfo> getSentChallenges(String userId, int state) {
@@ -82,8 +87,7 @@ public class BattleManager {
 		System.out.println("[DEBUG] " + sql);
 
 		QueryExecuter qe = new QueryExecuter();
-		ExecuteQuery query = new ExecuteQuery(sql);
-		qe.execute(query);
+		qe.execute(new ExecuteQuery(sql));
 		qe.close();
 	}
 

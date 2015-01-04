@@ -40,7 +40,7 @@ public class BattleController {
 			return new Json(new Result(false, "없는 아이디입니다."));
 		qe.close();
 
-		BattleManager.challengeTo(uid, sendTo);
+		BattleManager.createBattle(uid, sendTo, BattleManager.STATE_NEW);
 		Notification.sendChallegeAlert(uid, sendTo);
 		
 		return new Json(new Result(true, null));
@@ -100,7 +100,7 @@ public class BattleController {
 		String uid = http.getSessionAttribute(User.class, "user").getId();
 		String cid = http.getParameter("cid");
 		
-		BattleManager.challengeTo(uid, cid);
+		BattleManager.createBattle(uid, cid, BattleManager.STATE_NEW);
 		Notification.sendSimpleBattleMsg(uid, cid);
 		
 		//SendMailSSL.sendTo(new MessageMod(BattleManager.makeLink(uid), User.mailAddress(cid), "Battle Requested", "링크를 누르시면 패배를 인정하게 되며,<br>당신의 점수가 깎이게 됩니다.<br>"));
@@ -179,7 +179,8 @@ public class BattleController {
 	@Post("/battle_end.rk")
 	public Response endChallenge(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
-		String winnerId = http.getParameter("cid");
+		long battleId = Long.valueOf(http.getParameter("battle_id"));
+		String winnerId = http.getParameter("winner_id");
 		
 		if ( loser == null) {
 			http.sendRedirect("/users/login.rk");
@@ -191,22 +192,17 @@ public class BattleController {
 		}
 		
 		QueryExecuter qe = new QueryExecuter();
-		
-		ScoreController sCon = new ScoreController();
-		sCon.setBattleResult(qe, loser, winnerId);
-		
-		UserController uCon = new UserController();
+	
+		Battle battle = qe.get(Battle.class, battleId);
 		User winner = qe.get(User.class, winnerId);
-		uCon.raiseGames(qe, loser);
-		uCon.raiseGames(qe, winner);
-		
+		finishBattle(qe, battle, loser, winner);
+
 		qe.close();
 
 		return new Json(new Result(true, "패배하셨습니다. 클릭하시면 마이페이지로 이동합니다."));
 		
 	}
-	
-	
+
 	@Get("/winner/{}.rk")
 	public void setSimpleBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
@@ -222,13 +218,9 @@ public class BattleController {
 		
 		QueryExecuter qe = new QueryExecuter();
 		
-		ScoreController sCon = new ScoreController();
-		sCon.setBattleResult(qe, loser, winnerId);
-		
-		UserController uCon = new UserController();
+		Battle battle = BattleManager.createBattle(loser.getId(), winnerId, BattleManager.STATE_NEW);
 		User winner = qe.get(User.class, winnerId);
-		uCon.raiseGames(qe, loser);
-		uCon.raiseGames(qe, winner);
+		finishBattle(qe, battle, loser, winner);
 		
 		qe.close();
 		
@@ -237,4 +229,11 @@ public class BattleController {
 		http.sendRedirect("/users/userinfo.rk");
 	}
 
+	private void finishBattle(QueryExecuter qe, Battle battle, User loser, User winner) {
+		new ScoreController().setBattleResult(qe, loser, winner);
+		
+		UserController userControllser = new UserController();
+		userControllser.increaseGameCount(qe, loser);
+		userControllser.increaseGameCount(qe, winner);
+	}
 }
