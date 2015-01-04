@@ -15,6 +15,7 @@ app.controller('registerController', [ '$http', '$scope',
 					nickname:""
 			}
 			
+			
 			$scope.submit = function(){
 				if(!$scope.check.done())
 					return;
@@ -94,3 +95,17 @@ app.controller('registerController', [ '$http', '$scope',
 				}
 			}
 		} ]);
+
+
+
+$(function() {
+	$('#birthday').datepicker({
+		format: 'yyyy-mm-dd',
+		 startDate: '-300d',
+		 autoclose: true
+	}).on('changeDate',function(){
+		controllers.registerController.user.birthday = $('#birthday').val(); 
+	});
+});
+
+

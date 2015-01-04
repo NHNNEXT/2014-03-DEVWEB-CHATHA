@@ -8,6 +8,7 @@ import easyjdbc.annotation.Exclude;
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
 import easyjdbc.query.QueryExecuter;
+import easymapping.annotation.DateFormat;
 
 @Table("user")
 public class User {
@@ -18,6 +19,7 @@ public class User {
 	private String password;
 	private String nickname;
 	private String gender;
+	@DateFormat("yyyy-MM-dd")
 	private Date birthday;
 	private int games;
 

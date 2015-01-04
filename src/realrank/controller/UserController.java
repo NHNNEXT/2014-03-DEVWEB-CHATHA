@@ -156,5 +156,10 @@ public class UserController {
 		return new Json(new Result(true, null));
 	}
 	
+	void raiseGames(QueryExecuter qe,User user){
+		ExecuteQuery sql = new ExecuteQuery("UPDATE user set games=games+1" + " WHERE id='"+user.getId()+"'");
+		System.out.println("UPDATE user set games=games+1" + " WHERE id='"+user.getId()+"'");
+		qe.execute(sql);
+	}
 	
 }

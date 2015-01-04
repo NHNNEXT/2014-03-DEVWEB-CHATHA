@@ -146,6 +146,10 @@ public class BattleController {
 	@Get("/battle/battle_start.rk")
 	public Response getBattle(Http http){
 		User user = http.getSessionAttribute(User.class, "user");
+		if (user == null) {
+			http.sendRedirect("/users/login.rk?redirect=/battle/battle_list.rk");
+			return null;
+		}
 		QueryExecuter qe = new QueryExecuter();
 		Battle battle = qe.get(Battle.class, http.getParameter("bid"));
 		qe.close();
@@ -160,6 +164,7 @@ public class BattleController {
 	@Post("/battle/battle_start.rk")
 	public Response startChallenge(Http http){
 		User user = http.getSessionAttribute(User.class, "user");
+		
 		QueryExecuter qe = new QueryExecuter();
 		Battle battle = qe.get(Battle.class, http.getParameter("battleId"));
 		qe.close();
@@ -169,6 +174,67 @@ public class BattleController {
 		jsp.put("user", gson.toJson(user));
 		jsp.put("battle", gson.toJson(battle));
 		return jsp;
+	}
+	
+	@Post("/battle_end.rk")
+	public Response endChallenge(Http http){
+		User loser = http.getSessionAttribute(User.class, "user");
+		String winnerId = http.getParameter("cid");
+		
+		if ( loser == null) {
+			http.sendRedirect("/users/login.rk");
+			return null;
+		}
+		if(loser.getId().equals(winnerId)){
+			http.sendRedirect("/users/userinfo.rk");
+			return null;
+		}
+		
+		QueryExecuter qe = new QueryExecuter();
+		
+		ScoreController sCon = new ScoreController();
+		sCon.setBattleResult(qe, loser, winnerId);
+		
+		UserController uCon = new UserController();
+		User winner = qe.get(User.class, winnerId);
+		uCon.raiseGames(qe, loser);
+		uCon.raiseGames(qe, winner);
+		
+		qe.close();
+
+		return new Json(new Result(true, "패배하셨습니다. 클릭하시면 마이페이지로 이동합니다."));
+		
+	}
+	
+	
+	@Get("/winner/{}.rk")
+	public void setSimpleBattleResult(Http http){
+		User loser = http.getSessionAttribute(User.class, "user");
+		String winnerId = http.getUriVariable(0);
+		if ( loser == null) {
+			http.sendRedirect("/users/login.rk");
+			return;
+		}
+		if(loser.getId().equals(winnerId)){
+			http.sendRedirect("/users/userinfo.rk");
+			return;
+		}
+		
+		QueryExecuter qe = new QueryExecuter();
+		
+		ScoreController sCon = new ScoreController();
+		sCon.setBattleResult(qe, loser, winnerId);
+		
+		UserController uCon = new UserController();
+		User winner = qe.get(User.class, winnerId);
+		uCon.raiseGames(qe, loser);
+		uCon.raiseGames(qe, winner);
+		
+		qe.close();
+		
+		Notification.sendBattleResult(winnerId, loser.getId());
+		
+		http.sendRedirect("/users/userinfo.rk");
 	}
 
 }

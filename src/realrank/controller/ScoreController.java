@@ -3,30 +3,14 @@ package realrank.controller;
 import realrank.battle.RatingCalculator;
 import realrank.objects.Score;
 import realrank.objects.User;
-import realrank.support.Notification;
-import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
-import easymapping.annotation.Get;
-import easymapping.annotation.Post;
 import easymapping.mapping.Http;
 
 @Controller
 public class ScoreController {
 
-	@Get("/winner/{}.rk")
-	public void setSimpleBattleResult(Http http){
-		User loser = http.getSessionAttribute(User.class, "user");
-		String winnerId = http.getUriVariable(0);
-		setBattleResult(http, loser, winnerId);
-	}
-	
-	@Post("/battle_end.rk")
-	public void setNormalBattleResult(Http http){
-		User loser = http.getSessionAttribute(User.class, "user");
-		String winnerId = http.getParameter("cid");
-		setBattleResult(http, loser, winnerId);
-	}
+
 	
 	public void setDraw(Http http, User challenger, User champion) {
 		QueryExecuter qe = new QueryExecuter();
@@ -50,41 +34,16 @@ public class ScoreController {
 		championScore.setScore(championGain);
 	}
 	
-	private void setBattleResult(Http http, User loser, String winnerId){
-		if ( loser == null) {
-			http.sendRedirect("/users/login.rk");
-			return;
-		}
-		if(loser.getId().equals(winnerId)){
-			http.sendRedirect("/users/userinfo.rk");
-			return;
-		}
-		QueryExecuter qe = new QueryExecuter();
+	void setBattleResult(QueryExecuter qe, User loser, String winnerId){
 		User winner = qe.get(User.class, winnerId);
 		Score winnerScore = qe.get(Score.class, winnerId);
 		Score loserScore = qe.get(Score.class, loser.getId());
 		
 		calculateScore(winner, loser, winnerScore, loserScore);
-		
-		raiseGames(qe, winner);
-		raiseGames(qe, loser);
-		
+
 		qe.update(winnerScore);
 		qe.update(loserScore);
-		
-		qe.close();
-		
-		Notification.sendBattleResult(winnerId, loser.getId());
-		
-		http.sendRedirect("/users/userinfo.rk");
-	}
-	
-	private void raiseGames(QueryExecuter qe, User user){
-		int newGames = user.getGames()+1;
-		String sqls = "UPDATE user set games="+ newGames + " WHERE id='"+user.getId()+"'";
-		System.out.println(sqls);
-		ExecuteQuery sql = new ExecuteQuery("UPDATE user set games="+ newGames + " WHERE id='"+user.getId()+"'");
-		qe.execute(sql);
+
 	}
 
 	
