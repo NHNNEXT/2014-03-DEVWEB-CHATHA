@@ -14,7 +14,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6 col-md-4 col-md-offset-4">
-				<form name="loginForm" ng-controller="LoginController as loginCtrl"
+				<form name="loginForm" ng-controller="loginCtrl"
 					ng-submit="check(loginForm) && submit()" novalidate>
 					<h1 class="text-center login-title">RealRank Login</h1>
 					<div class="account-wall">
