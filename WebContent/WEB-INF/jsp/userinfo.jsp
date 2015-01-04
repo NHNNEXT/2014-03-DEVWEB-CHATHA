@@ -24,7 +24,7 @@
 					<img src="http://www.efmaefm.org/0CONTACTUS/default.jpg"
 						width="140" height="140" border="0" class="img-circle"></a>
 					<h3 class="media-heading">
-						{{user.nickname}} <small> {{user.id}}</small>
+						{{user.nickname}} <small> {{user.id}} (reputation : {{score.reputation}})</small>
 					</h3>
 					My WinnerLink : <a href="#">http://localhost:8080/winner/{{user.id}}</a>
 					<div>

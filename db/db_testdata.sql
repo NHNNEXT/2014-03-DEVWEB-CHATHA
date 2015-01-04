@@ -20,8 +20,8 @@ INSERT INTO `user` VALUES
 
 DELETE FROM `score`;
 INSERT INTO `score` VALUES
-	('champ', 100, NULL),
-	('chal', 10, NULL);
+	('champ', 100, 99),
+	('chal', 10, 88);
 
 -- state field: 0(acceptable and not validated) 1(accepted) 2(outdated) 3(canceled) 4(denied)
 DELETE FROM `battle`;
