@@ -4,6 +4,7 @@ import java.util.Date;
 
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
+import easymapping.annotation.DateFormat;
 
 @Table("battle")
 public class Battle {

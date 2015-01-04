@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
+
 import realrank.battle.BattleManager;
+import realrank.objects.Battle;
 import realrank.objects.BattleInfo;
 import realrank.objects.User;
 import realrank.support.Notification;
@@ -79,37 +81,47 @@ public class BattleController {
 	public void emailChallenge(Http http) {
 		String uid = http.getSessionAttribute(User.class, "user").getId();
 		String cid = http.getParameter("cid");
-		if(BattleManager.challengeTo(uid, cid)){
-			Notification.sendSimpleBattleMsg(uid, cid);
-		}
+		
+		BattleManager.challengeTo(uid, cid);
+		Notification.sendSimpleBattleMsg(uid, cid);
+		
 		//SendMailSSL.sendTo(new MessageMod(BattleManager.makeLink(uid), User.mailAddress(cid), "Battle Requested", "링크를 누르시면 패배를 인정하게 되며,<br>당신의 점수가 깎이게 됩니다.<br>"));
 		http.sendRedirect("/");
 	}
 	
-	//TODO 어떤 방식으로 접근할지는... 잘 모르겠.... 
+	@Post("/battle/battle_accept.rk")
 	public void acceptChallenge(Http http){
-		String bId = http.getParameter("battleId");
-		long battleId = Long.valueOf(bId);
 		String recpId = http.getSessionAttribute(User.class,  "user").getId();
-		String chalId = http.getParameter("cid");
+		String bid = http.getParameter("battleId");
+		long battleId = Long.valueOf(bid);
+		String chalId = http.getParameter("challengerId");
+			
+		BattleManager.acceptChallenge(battleId);
+		Notification.sendChallegeAcceptedAlert(recpId, chalId);
 		
-		if(BattleManager.acceptChallenge(battleId)){
-			Notification.sendChallegeAcceptedAlert(chalId, recpId);
-		};
-		
-		//TODO sendRedirect를 '도전 수락이 완료되었습니다!' 뭐 이런 페이지를 따로 만들어서 할지 아니면 alert를 뜨게 할지....
 		http.sendRedirect("/");
 	}
 	
+	@Post("/battle/battle_deny.rk")
 	public void denyChallenge(Http http){
-		String bId = http.getParameter("battleId");
-		long battleId = Long.valueOf(bId);
 		String recpId = http.getSessionAttribute(User.class,  "user").getId();
-		String chalId = http.getParameter("cid");
+		String bid = http.getParameter("battleId");
+		long battleId = Long.valueOf(bid);
+		String chalId = http.getParameter("challengerId");
+
+		BattleManager.denyChallenge(battleId);
+		Notification.sendChallegeDeniedAlert(recpId, chalId);
 		
-		if(BattleManager.denyChallenge(battleId)){
-			Notification.sendChallegeDeniedAlert(chalId, recpId);
-		};
+		http.sendRedirect("/");
+	}
+	
+	@Post("/battle/battle_cancel.rk")
+	public void cancelChallenge(Http http){
+		String bid = http.getParameter("battleId");
+		long battleId = Long.valueOf(bid);
+
+		BattleManager.cancelChallenge(battleId);
+		
 		http.sendRedirect("/");
 	}
 
