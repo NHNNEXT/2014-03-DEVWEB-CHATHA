@@ -131,14 +131,14 @@ public class UserController {
 		return new Json(new Result(true, null));
 	}
 	
-	@Get("/users/modify.my")
+	@Get("/users/modify.rk")
 	public Response modify(Http http) {
 		Jsp jsp = new Jsp("modify.jsp");
 		jsp.put("user", http.getSessionAttribute(User.class, "user"));
 		return jsp;
 	}
 
-	@Post("/users/modify.my")
+	@Post("/users/modify.rk")
 	public Response modifyId(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
 		User usermod = http.getJsonObject(User.class, "user");

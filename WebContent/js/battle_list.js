@@ -69,7 +69,6 @@
 				alert(result.errorMessage);
 			});
 			
-			
 		};
 		
 		$scope.acceptChallenge=function(receivedBattle){
