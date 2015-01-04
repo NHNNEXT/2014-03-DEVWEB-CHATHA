@@ -9,7 +9,7 @@
 	<%@ include file="/WEB-INF/include/_css.jspf"%>
 <link href="/css/battlelist.css">
 </head>
-<body ng-app="BattleList">
+<body ng-app="module">
 <%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">

@@ -1,11 +1,6 @@
 'usr strict';
 
 (function() {
-	var app = angular.module('login', []);
-
-	app.config(function($locationProvider) {
-		$locationProvider.html5Mode(true);
-	});
 
 	app.controller('LoginController', ['$http', '$scope', '$location' , function($http, $scope, $location) {
 		$scope.user = {};

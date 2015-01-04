@@ -136,4 +136,8 @@ public class User {
 		ret.add(games);
 		return ret; 
 	}
+
+	public void update(User usermod) {
+		
+	}
 }
