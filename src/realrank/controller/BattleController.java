@@ -198,6 +198,8 @@ public class BattleController {
 		finishBattle(qe, battle, loser, winner);
 
 		qe.close();
+		
+		Notification.sendBattleResult(winnerId, loser.getId());
 
 		return new Json(new Result(true, "패배하셨습니다. 클릭하시면 마이페이지로 이동합니다."));
 		
