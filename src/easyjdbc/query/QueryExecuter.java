@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import easyjdbc.annotation.Table;
+import easyjdbc.query.support.Methods;
 import easyjdbc.setting.Setting;
 
 public class QueryExecuter {
@@ -46,7 +47,7 @@ public class QueryExecuter {
 		return null;
 	}
 
-	public Object execute(Query sql) {
+	public <T> Object execute(Query sql) {
 		try {
 			return sql.execute(conn);
 		} catch (SQLException e) {
@@ -147,7 +148,7 @@ public class QueryExecuter {
 			try {
 				eachInstance = cLass.getConstructor().newInstance();
 				for (int i = 0; i < record.size(); i++) {
-					String methodName = setterString(fields.get(i).getName());
+					String methodName = Methods.setterString(fields.get(i).getName());
 					cLass.getMethod(methodName, fields.get(i).getType()).invoke(eachInstance, record.get(i));
 				}
 				result.add((T) eachInstance);
@@ -169,7 +170,7 @@ public class QueryExecuter {
 			try {
 				eachInstance = cLass.getConstructor().newInstance();
 				for (int i = 0; i < record.size(); i++) {
-					String methodName = setterString(fields.get(i).getName());
+					String methodName = Methods.setterString(fields.get(i).getName());
 					cLass.getMethod(methodName, fields.get(i).getType()).invoke(eachInstance, record.get(i));
 				}
 				result.add((T) eachInstance);
@@ -191,7 +192,7 @@ public class QueryExecuter {
 		try {
 			eachInstance = cLass.getConstructor().newInstance();
 			for (int i = 0; i < fields.size(); i++) {
-				String methodName = setterString(fields.get(i).getName());
+				String methodName = Methods.setterString(fields.get(i).getName());
 				cLass.getMethod(methodName, fields.get(i).getType()).invoke(eachInstance, records.get(i));
 			}
 		} catch (Exception e) {
@@ -216,7 +217,7 @@ public class QueryExecuter {
 		try {
 			eachInstance = cLass.getConstructor().newInstance();
 			for (int i = 0; i < fields.size(); i++) {
-				String methodName = setterString(fields.get(i).getName());
+				String methodName = Methods.setterString(fields.get(i).getName());
 				cLass.getMethod(methodName, fields.get(i).getType()).invoke(eachInstance, records.get(i));
 			}
 		} catch (Exception e) {
@@ -224,8 +225,5 @@ public class QueryExecuter {
 		return (T) eachInstance;
 	}
 
-	private static String setterString(String fieldName) {
-		return "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-	}
 
 }
