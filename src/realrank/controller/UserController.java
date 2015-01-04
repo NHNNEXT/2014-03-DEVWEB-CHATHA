@@ -1,5 +1,6 @@
 package realrank.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import realrank.user.UserManager;
 
 import com.google.gson.Gson;
 
+import easyjdbc.query.ExecuteQuery;
+import easyjdbc.query.GetRecordQuery;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
@@ -23,16 +26,17 @@ import easymapping.response.Response;
 
 @Controller
 public class UserController {
-	
+
 	@Get("/users/user_search.json")
 	public Response userSearch(Http http) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		System.out.println(http.getParameter("champId"));
-		List searchResultList = UserManager.getUserByIdOrEmail(http.getParameter("champId"));
+		List searchResultList = UserManager.getUserByIdOrEmail(http
+				.getParameter("champId"));
 		result.put("userList", searchResultList);
 		return new Json(result);
 	}
-	
+
 	@Get("/users/userinfo.rk")
 	public Response userinfo(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
@@ -56,13 +60,20 @@ public class UserController {
 		http.sendRedirect("/");
 	}
 
+	@SuppressWarnings({ "unchecked", "unused" })
 	@Post("/users/login.rk")
 	public Response login(Http http) {
 		User user = http.getJsonObject(User.class, "user");
+
 		if (user == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
 		QueryExecuter qe = new QueryExecuter();
-		User fromDB = qe.get(User.class, user.getId());
+		GetRecordQuery getR = new GetRecordQuery(
+				7,
+				"SELECT id, email, AES_DECRYPT(UNHEX(password), ?), nickname, gender, birthday, games FROM encrypt_user WHERE id=?",
+				user.getPassword(), user.getId());
+		User fromDB = new User((ArrayList<Object>) qe.execute(getR));
+//		User fromDB = qe.get(User.class, user.getId());
 
 		if (fromDB == null)
 			return new Json(new Result(false, "없는 아이디입니다."));
@@ -78,11 +89,13 @@ public class UserController {
 	@Post("/users/signup.rk")
 	public Response signup(Http http) {
 		User user = http.getJsonObject(User.class, "user");
-		user.setBirthday(Utility.parseDate("MM/dd/yyyy", http.getParameter("birthday")));
+		user.setBirthday(Utility.parseDate("MM/dd/yyyy",
+				http.getParameter("birthday")));
+		user.setGames(0);
 		QueryExecuter qe = new QueryExecuter();
-		int result = qe.insert(user);
+		ExecuteQuery eq = new ExecuteQuery("INSERT INTO user VALUES (?, ?, HEX(AES_ENCRYPT(?, ?)), ?, ?, ?, ?)", user.toList()); 
 		qe.close();
-		if (result == 0) {
+		if (result) {
 			http.setSessionAttribute("user", user);
 			return new Json(new Result(false, "회원 가입 실패"));
 		}
