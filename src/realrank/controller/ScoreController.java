@@ -62,7 +62,7 @@ public class ScoreController {
 		Score winnerScore = qe.get(Score.class, winnerId);
 		Score loserScore = qe.get(Score.class, loser.getId());
 		
-		setCalculatedScore(winner, winnerScore, loserScore);
+		calculateScore(winner, loser, winnerScore, loserScore);
 		
 		qe.update(winnerScore);
 		qe.update(loserScore);
@@ -75,10 +75,10 @@ public class ScoreController {
 	}
 
 	
-	private void setCalculatedScore(User winner, Score winnerScore, Score loserScore){
+	void calculateScore(User winner, User loser, Score winnerScore, Score loserScore){
 		
 		int gain = RatingCalculator.getWinnerRating(winner, winnerScore, loserScore);
-		int lose = RatingCalculator.getLoserRating(winner, winnerScore, loserScore);
+		int lose = RatingCalculator.getLoserRating(loser, loserScore, winnerScore);
 		
 		winnerScore.setScore(gain);
 		loserScore.setScore(lose);

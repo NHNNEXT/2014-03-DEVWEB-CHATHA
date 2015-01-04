@@ -2,6 +2,7 @@ package realrank.controller;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import realrank.objects.Score;
@@ -9,44 +10,40 @@ import realrank.objects.User;
 
 public class ScoreControllerTest {
 
-	@Test
-	public void testCalculateDrawOnSameScore() {
-		final int GAMES = 10;
-		final int SCORE = 1000;
+	private final static int GAMES = 10;
+	private final static int LOW_SCORE = 800;
+	private final static int MID_SCORE = 1000;
+	private final static int HIGH_SCORE = 1200;
 
-		User challenger = new User();
-		User champion = new User();
-		Score challengerScore = new Score();
-		Score championScore = new Score();
-		
+	private User challenger = new User();
+	private User champion = new User();
+	private Score challengerScore = new Score();
+	private Score championScore = new Score();
+	private ScoreController scoreController = new ScoreController();
+	
+	@Before
+	public void setUp() throws Exception {
 		challenger.setGames(GAMES);
 		champion.setGames(GAMES);
-		challengerScore.setScore(new Integer(SCORE));
-		championScore.setScore(new Integer(SCORE));
+	}
+
+	@Test
+	public void testCalculateDrawOnSameScore() {
+		challengerScore.setScore(new Integer(MID_SCORE));
+		championScore.setScore(new Integer(MID_SCORE));
 		
-		new ScoreController().calculateDraw(challenger, champion, challengerScore, championScore);
+		scoreController.calculateDraw(challenger, champion, challengerScore, championScore);
 		
-		assertEquals(SCORE, (int)challengerScore.getScore());
-		assertEquals(SCORE, (int)championScore.getScore());
+		assertEquals(MID_SCORE, (int)challengerScore.getScore());
+		assertEquals(MID_SCORE, (int)championScore.getScore());
 	}
 	
 	@Test
 	public void testCalculateDrawOnLowerScoreChallenger() {
-		final int GAMES = 10;
-		final int LOW_SCORE = 800;
-		final int HIGH_SCORE = 1200;
-
-		User challenger = new User();
-		User champion = new User();
-		Score challengerScore = new Score();
-		Score championScore = new Score();
-		
-		challenger.setGames(GAMES);
-		champion.setGames(GAMES);
 		challengerScore.setScore(new Integer(LOW_SCORE));
 		championScore.setScore(new Integer(HIGH_SCORE));
 		
-		new ScoreController().calculateDraw(challenger, champion, challengerScore, championScore);
+		scoreController.calculateDraw(challenger, champion, challengerScore, championScore);
 		
 		assertTrue(LOW_SCORE < (int)challengerScore.getScore());
 		assertTrue((int)challengerScore.getScore() < (int)championScore.getScore());
@@ -55,24 +52,48 @@ public class ScoreControllerTest {
 	
 	@Test
 	public void testCalculateDrawOnHigherScoreChallenger() {
-		final int GAMES = 10;
-		final int LOW_SCORE = 800;
-		final int HIGH_SCORE = 1200;
-
-		User challenger = new User();
-		User champion = new User();
-		Score challengerScore = new Score();
-		Score championScore = new Score();
-		
-		challenger.setGames(GAMES);
-		champion.setGames(GAMES);
 		challengerScore.setScore(new Integer(HIGH_SCORE));
 		championScore.setScore(new Integer(LOW_SCORE));
 		
-		new ScoreController().calculateDraw(challenger, champion, challengerScore, championScore);
+		scoreController.calculateDraw(challenger, champion, challengerScore, championScore);
 		
 		assertTrue(HIGH_SCORE > (int)challengerScore.getScore());
 		assertTrue((int)challengerScore.getScore() > (int)championScore.getScore());
 		assertTrue((int)championScore.getScore() > LOW_SCORE);
+	}
+
+	@Test
+	public void testCalculateScoreOnSameScoreChallengerWin() {
+		challengerScore.setScore(new Integer(MID_SCORE));
+		championScore.setScore(new Integer(MID_SCORE));
+		
+		scoreController.calculateScore(challenger, champion, challengerScore, championScore);
+		
+		assertTrue(MID_SCORE < (int)challengerScore.getScore());
+		assertTrue(MID_SCORE > (int)championScore.getScore());
+	}
+	
+	@Test
+	public void testCalculateScoreOnLowerScoreChallengerWin() {
+		challengerScore.setScore(new Integer(LOW_SCORE));
+		championScore.setScore(new Integer(HIGH_SCORE));
+		
+		scoreController.calculateScore(challenger, champion, challengerScore, championScore);
+		
+		assertTrue(LOW_SCORE < (int)challengerScore.getScore());
+		assertTrue((int)challengerScore.getScore() < (int)championScore.getScore());
+		assertTrue((int)championScore.getScore() < HIGH_SCORE);
+	}
+	
+	@Test
+	public void testCalculateScoreOnHigherScoreChallengerWin() {
+		challengerScore.setScore(new Integer(HIGH_SCORE));
+		championScore.setScore(new Integer(LOW_SCORE));
+		
+		scoreController.calculateScore(challenger, champion, challengerScore, championScore);
+		
+		assertTrue(HIGH_SCORE < (int)challengerScore.getScore());
+		assertTrue((int)challengerScore.getScore() > (int)championScore.getScore());
+		assertTrue((int)championScore.getScore() < LOW_SCORE);
 	}
 }
