@@ -15,16 +15,15 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="/mytoday.my">배틀리스트</a></li>
-				<li><a href="/myweek.my">메뉴2</a></li>
-				<li><a href="/myweek.my">메뉴2</a></li>
-				<li><a href="/myweek.my">메뉴2</a></li>
+				<li><a href="/battle/battle_list.rk">Challenge List</a></li>
+				<li><a href="/battle/battle_send.rk">Send Challenge</a></li>
+
 				<c:choose>
 					<c:when test="${not empty sessionScope.user}">
 						<li><a href="/users/modify.my">마이페이지</a></li>
 			</ul>
 			<form class="navbar-form navbar-right">
-				<a class="btn btn-primary" href="/users/logout.my">로그아웃</a>
+				<a class="btn btn-primary" href="/users/logout.rk">로그아웃</a>
 			</form>
 			</c:when>
 			<c:otherwise>
