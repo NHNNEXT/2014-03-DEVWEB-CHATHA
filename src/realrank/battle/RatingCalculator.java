@@ -26,7 +26,8 @@ public class RatingCalculator {
 	private static int getRating(User user, Score own, Score counter, float score) {
 		int k = getKFactor(user, own);
 		double e = getExpectedWinRate(own, counter);
-		return (int)(own.getScore() + k*(score - e));
+		int rating = (int)(own.getScore() + k*(score - e));
+		return (rating < 0)?0:rating;
 	}
 	
 	private static int getKFactor(User winner, Score win) {
