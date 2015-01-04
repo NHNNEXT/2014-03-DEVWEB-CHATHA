@@ -6,33 +6,41 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import realrank.objects.Battle;
+import realrank.objects.BattleInfo;
+import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.GetRecordQuery;
 import easyjdbc.query.GetRecordsQuery;
 import easyjdbc.query.QueryExecuter;
-import realrank.objects.Battle;
-import realrank.objects.BattleInfo;
 
 public class BattleManager {
 	public final static int STATE_NEW = 0;
 	public final static int STATE_ACCEPTED = 1;
-	public final static int STATE_OUTDATED = 2;
-	public final static int STATE_CANCELED = 3;
-	public final static int STATE_DENIED = 4;
+	public final static int STATE_FINISHED = 2;
+	public final static int STATE_DRAWED = 3;
+	public final static int STATE_CANCELED = 4;
+	public final static int STATE_DENIED = 5;
+	public final static int STATE_OUTDATED = 6;
 
 	private static String forCondition(String String) {
 		return "'" + String + "'";
 	}
-
-	public static boolean challengeTo(String userId, String champId) {
+	
+	public static Battle createBattle(String chalId, String champId, int state) {
 		Battle battle = new Battle();
-		battle.setChallenger(userId);
+		battle.setChallenger(chalId);
 		battle.setChampion(champId);
 		battle.setReq_time(new Date());
-		battle.setState(BattleManager.STATE_NEW);
+		battle.setState(state);
+
 		QueryExecuter qe = new QueryExecuter();
-		int result = qe.insert(battle);
+		if (qe.insert(battle) == 0) {
+			System.out.println("BattleManager.createBattle() : insert failed");
+			return null;
+		}
 		qe.close();
-		return result != 0;
+
+		return battle;
 	}
 
 	public static List<BattleInfo> getSentChallenges(String userId, int state) {
@@ -70,16 +78,36 @@ public class BattleManager {
 
 		return list;
 	}
+	
+	public static void updateAcceptTimeout(String userId) {
+		String sql = "UPDATE battle SET state=" + STATE_OUTDATED + 
+				" WHERE (challenger=" + "'" + userId + "' OR champion=" + "'" + userId + "')" +
+				" AND state=" + STATE_NEW +
+				" AND ADDDATE(req_time, 1) < NOW()";
+		System.out.println("[DEBUG] " + sql);
 
+		QueryExecuter qe = new QueryExecuter();
+		qe.execute(new ExecuteQuery(sql));
+		qe.close();
+	}
+	
 	public static boolean acceptChallenge(long battleId) {
 		QueryExecuter qe = new QueryExecuter();
-		Date reqTime = qe.getWhere(Battle.class, "id=? and state <> -1", battleId).getReq_time();
+		Battle battle = qe.getWhere(Battle.class, "id=? and state=?", battleId, STATE_NEW);
 		qe.close();
-		if (determineTimeValidity(reqTime)) {
+		if (determineTimeValidity(battle.getReq_time())) {
 			return setState(battleId, STATE_ACCEPTED);
 		}
-		setState(battleId, STATE_OUTDATED);
+		updateAcceptTimeout(battle.getChampion());
 		return false;
+	}
+
+	public static boolean finishChallenge(long battleId) {
+		return setState(battleId, STATE_FINISHED);
+	}
+	
+	public static boolean drawChallenge(long battleId) {
+		return setState(battleId, STATE_DRAWED);
 	}
 
 	public static boolean denyChallenge(long battleId) {
@@ -89,7 +117,7 @@ public class BattleManager {
 	public static boolean cancelChallenge(long battleId) {
 		return setState(battleId, STATE_CANCELED);
 	}
-
+	
 	static boolean setState(long battleId, int state) {
 		Battle battle = new Battle();
 		battle.setId((int) battleId);
@@ -109,11 +137,8 @@ public class BattleManager {
 	}
 
 	static boolean determineTimeValidity(Date reqTime) {
-//		Date currentTime = getServerTime();
-//		if (currentTime.getTime() - reqTime.getTime() < 1800000000) {
-			return true;
-//		}
-//		return false;
+		Date currentTime = getServerTime();
+		return (currentTime.getTime() - reqTime.getTime()) < (1000L * 60 * 60 * 24);
 	}
 
 	static List<List<Object>> showAcceptedChallenges(String userId) {
@@ -130,11 +155,4 @@ public class BattleManager {
 	public static String makeLink(String uid) {
 		return "<a href=#> " + uid + " </a>";
 	}
-
-	public static Map<String, Long> getReputation(Set<String> userList) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 }

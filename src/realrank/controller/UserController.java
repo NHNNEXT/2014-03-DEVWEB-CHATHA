@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ListModel;
+
 import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
@@ -31,8 +33,10 @@ public class UserController {
 	public Response userSearch(Http http) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		System.out.println(http.getParameter("champId"));
-		List searchResultList = UserManager.getUserByIdOrEmail(http
-				.getParameter("champId"));
+		List<User> searchResultList = UserManager.getUserByKeyword(http.getParameter("champId"));
+		searchResultList.forEach(user -> {
+			user.setPassword("");
+		});
 		result.put("userList", searchResultList);
 		return new Json(result);
 	}
@@ -77,6 +81,7 @@ public class UserController {
 	@Post("/users/login.rk")
 	public Response login(Http http) {
 		User user = http.getJsonObject(User.class, "user");
+		List<Object> result;
 
 		if (user == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
@@ -85,15 +90,17 @@ public class UserController {
 				7,
 				"SELECT id, email, AES_DECRYPT(UNHEX(password), ?), nickname, gender, birthday, games FROM user WHERE id=?",
 				user.getPassword(), user.getId());
-		User fromDB = new User((ArrayList<Object>) qe.execute(getR));
-		// User fromDB = qe.get(User.class, user.getId());
-
-		if (fromDB == null)
+		result = qe.execute(getR);
+		if (result.size() <=0)
 			return new Json(new Result(false, "없는 아이디입니다."));
-		if (!fromDB.isPasswordCorrect(user))
+		if (result.get(2) == null)
 			return new Json(new Result(false, "패스워드가 다릅니다."));
+		User fromDB = new User((ArrayList<Object>) result);
 		qe.close();
 		http.setSessionAttribute("user", fromDB);
+		
+		new BattleController().drawBattleTimeout(fromDB.getId());
+
 		return new Json(new Result(true, null));
 	}
 
@@ -129,14 +136,14 @@ public class UserController {
 		return new Json(new Result(true, null));
 	}
 	
-	@Get("/users/modify.my")
+	@Get("/users/modify.rk")
 	public Response modify(Http http) {
 		Jsp jsp = new Jsp("modify.jsp");
 		jsp.put("user", http.getSessionAttribute(User.class, "user"));
 		return jsp;
 	}
 
-	@Post("/users/modify.my")
+	@Post("/users/modify.rk")
 	public Response modifyId(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
 		User usermod = http.getJsonObject(User.class, "user");
@@ -154,5 +161,10 @@ public class UserController {
 		return new Json(new Result(true, null));
 	}
 	
+	void increaseGameCount(QueryExecuter qe, User user){
+		String sql = "UPDATE user set games=games+1" + " WHERE id='"+user.getId()+"'";
+		System.out.println("[DEBUG] " + sql);
+		qe.execute(new ExecuteQuery(sql));
+	}
 	
 }

@@ -1,1 +1,14 @@
 @CHARSET "UTF-8";
+
+.flash {
+	position: absolute;
+	top: auto;
+	left: 0;
+	width: 100%;
+	display: none;
+	z-index: 9999;
+}
+
+.flash-inner {
+	
+}

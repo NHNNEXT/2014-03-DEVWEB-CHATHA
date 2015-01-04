@@ -58,6 +58,17 @@
 				},
 				data: { battleId : sentBattle.id }
 			})
+			.success( function(result) {
+				if (result.success) {
+					window.location.href = '/battle/battle_list.rk';
+				} else {
+					alert(result.errorMessage);
+				}
+			})
+			.error( function(result) {
+				alert(result.errorMessage);
+			});
+			
 		};
 		
 		$scope.acceptChallenge=function(receivedBattle){
@@ -73,6 +84,16 @@
 				},
 				data: { battleId : receivedBattle.id, challengerId : receivedBattle.challenger}
 			})
+			.success( function(result) {
+				if (result.success) {
+					window.location.href = '/battle/battle_list.rk';
+				} else {
+					alert(result.errorMessage);
+				}
+			})
+			.error( function(result) {
+				alert(result.errorMessage);
+			});
 		};
 		
 		$scope.denyChallenge=function(receivedBattle){
@@ -88,26 +109,21 @@
 				},
 				data: { battleId : receivedBattle.id, challengerId : receivedBattle.challenger}
 			})
+			.success( function(result) {
+				if (result.success) {
+					window.location.href = '/battle/battle_list.rk';
+				} else {
+					alert(result.errorMessage);
+				}
+			})
+			.error( function(result) {
+				alert(result.errorMessage);
+			});
 		};
 		
 		$scope.startChallenge=function(battle){
 			window.location.href = '/battle/battle_start.rk?bid=' + battle.id;
-			
-//			$http({
-//				method: 'GET',
-//				url: '/battle/battle_start.rk',
-//				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-//				transformRequest: function(obj) {
-//					var str = [];
-//					for(var p in obj)
-//						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-//					return str.join("&");
-//				},
-//				data: { battleId : battle.id, challengerId : battle.challenger}
-//			})
-//			.success(function(){
-//					location.href = (redirectPath ? redirectPath : "/battle/battle_start.rk");
-//			});
+
 		}
 		
 	}]);

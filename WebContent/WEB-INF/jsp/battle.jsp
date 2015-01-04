@@ -17,10 +17,14 @@
 			<div class="col-sm-6 col-md-4 col-md-offset-4">
 				
 				<h1>BATTLE MODE</h1>
-				<h4>Opponent : {{battle.challenger}}</h4>
+				
+				<h4>Opponent : {{opponent()}}</h4>
 
 				<input type="submit" class="btn btn-lg btn-primary btn-block" value="LOSE" ng-click="endBattle(battle)"/>
 					
+				<div ng-click="gotoMypage()">
+					<h4>{{state.errorMessage}}</h4>
+				</div>
 			</div>
 		</div>
 	</div>

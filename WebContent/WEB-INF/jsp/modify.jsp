@@ -89,7 +89,6 @@
 			password : "",
 			passwordConfirom:"",
 			email : "${user.email}",
-			name : "${user.name}",
 			gender : "${user.gender}",
 			nickname : "${user.nickname}"
 		};
@@ -98,7 +97,6 @@
 				password : "",
 				passwordConfirom:"",
 				email : "${user.email}",
-				name : "${user.name}",
 				gender : "${user.gender}",
 				nickname : "${user.nickname}"
 			}

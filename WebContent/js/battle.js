@@ -5,13 +5,20 @@
 	app.controller('battleController', ['$http','$scope' , function($http, $scope) {
 		$scope.battle = battle;
 		$scope.user = user;
+		$scope.state ={};
+		
+		$scope.opponent=function(){
+			var opponent = battle.challenger;
+			if(opponent==user.id)
+				opponent=battle.champion;
+			return opponent
+		};
 		
 		$scope.endBattle=function(battle){
-			var winner=battle.challenger;
-			if(winner==user.id){
-				winner=battle.champion;
-			}
-			console.log(winner)
+			var opponent = battle.challenger;
+			if(opponent==user.id)
+				opponent=battle.champion;
+			opponent
 			$http({
 				method: 'POST',
 				url: '/battle_end.rk',
@@ -22,8 +29,20 @@
 						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 					return str.join("&");
 				},
-				data: { cid : winner}
+				data: {winner_id : opponent, battle_id : battle.id}
 			})
+			.success( function(result) {	
+				if (result.success) {
+					$scope.state = result;
+				}
+			})
+			.error( function(result) {
+				$scope.state = result;
+			});
+		};
+		
+		$scope.gotoMypage=function(){
+			window.location.href = '/users/userinfo.rk';
 		}
 
 		

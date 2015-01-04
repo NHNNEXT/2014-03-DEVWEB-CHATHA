@@ -34,7 +34,13 @@ public class Score {
 		return reputation;
 	}
 
-	public void setReputation(Integer reputation) {
+	public void Reputation(Integer reputation) {
 		this.reputation = reputation;
+	}
+	
+	public void addReputation(int value) {
+		reputation += value;
+		if (reputation < 0) reputation = 0;
+		if (reputation > 100) reputation = 100;
 	}
 }
