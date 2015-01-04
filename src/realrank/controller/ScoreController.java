@@ -1,7 +1,7 @@
 package realrank.controller;
 
 import realrank.battle.RatingCalculator;
-import realrank.objects.Rank;
+import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Notification;
 import easyjdbc.query.QueryExecuter;
@@ -39,8 +39,8 @@ public class ScoreController {
 		}
 		QueryExecuter qe = new QueryExecuter();
 		User winner = qe.get(User.class, winnerId);
-		Rank winnerScore = qe.get(Rank.class, winnerId);
-		Rank loserScore = qe.get(Rank.class, loser.getId());
+		Score winnerScore = qe.get(Score.class, winnerId);
+		Score loserScore = qe.get(Score.class, loser.getId());
 		
 		setCalculatedScore(winner, winnerScore, loserScore);
 		
@@ -55,7 +55,7 @@ public class ScoreController {
 	}
 
 	
-	private void setCalculatedScore(User winner, Rank winnerScore, Rank loserScore){
+	private void setCalculatedScore(User winner, Score winnerScore, Score loserScore){
 		
 		int gain = RatingCalculator.getWinnerRating(winner, winnerScore, loserScore);
 		int lose = RatingCalculator.getLoserRating(winner, winnerScore, loserScore);

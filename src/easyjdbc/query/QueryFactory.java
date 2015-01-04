@@ -7,6 +7,8 @@ import java.util.List;
 import easyjdbc.annotation.Exclude;
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
+import easyjdbc.query.support.Methods;
+import easyjdbc.query.support.PrimaryFields;
 
 public class QueryFactory {
 
@@ -23,7 +25,7 @@ public class QueryFactory {
 		Object param;
 		for (int i = 0; i < fields.size(); i++) {
 			try {
-				param = getFieldObject(fields.get(i).getName(), record);
+				param = Methods.getFieldObject(fields.get(i).getName(), record);
 				if (param != null) {
 					fieldsString += fields.get(i).getName() + ",";
 					valueString += "?,";
@@ -49,7 +51,7 @@ public class QueryFactory {
 		Object param;
 		for (int i = 0; i < fields.size(); i++) {
 			try {
-				param = getFieldObject(fields.get(i).getName(), record);
+				param = Methods.getFieldObject(fields.get(i).getName(), record);
 				if (param != null) {
 					fieldsString += fields.get(i).getName() + ",";
 					valueString += "?,";
@@ -75,7 +77,7 @@ public class QueryFactory {
 		Object param;
 		for (int i = 0; i < fields.size(); i++) {
 			try {
-				param = getFieldObject(fields.get(i).getName(), record);
+				param = Methods.getFieldObject(fields.get(i).getName(), record);
 				if (param != null) {
 					fieldsString += fields.get(i).getName() + ",";
 					valueString += "?,";
@@ -166,7 +168,7 @@ public class QueryFactory {
 			if (fields.get(i).isAnnotationPresent(Key.class))
 				continue;
 			try {
-				param = getFieldObject(fields.get(i).getName(), record);
+				param = Methods.getFieldObject(fields.get(i).getName(), record);
 				if (param != null) {
 					fieldsString += fields.get(i).getName() + "=?, ";
 					paramSaveThisList.add(param);
@@ -179,13 +181,7 @@ public class QueryFactory {
 		return fieldsString;
 	}
 
-	static Object getFieldObject(String fieldName, Object record) {
-		try {
-			return record.getClass().getMethod(getterString(fieldName), (Class<?>[]) null).invoke(record);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+
 
 	static List<Field> excludeNotThisDB(Class<?> cLass) {
 		List<Field> result = new ArrayList<Field>();
@@ -197,8 +193,5 @@ public class QueryFactory {
 		return result;
 	}
 
-	private static String getterString(String fieldName) {
-		return "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-	}
 
 }

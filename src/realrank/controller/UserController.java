@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import realrank.objects.Rank;
+import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
 import realrank.support.Utility;
@@ -36,7 +36,7 @@ public class UserController {
 	@Get("/users/userinfo.rk")
 	public Response userinfo(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
-		Rank score = http.getSessionAttribute(Rank.class, "score");
+		Score score = http.getSessionAttribute(Score.class, "score");
 		Jsp jsp = new Jsp("userinfo.jsp");
 		Gson gson = new Gson();
 		jsp.put("user", gson.toJson(user));
@@ -68,8 +68,7 @@ public class UserController {
 			return new Json(new Result(false, "없는 아이디입니다."));
 		if (!fromDB.isPasswordCorrect(user))
 			return new Json(new Result(false, "패스워드가 다릅니다."));
-		Rank scoreFromDB = qe.get(Rank.class, user.getId());
-		scoreFromDB.initRank(qe);
+		Score scoreFromDB = qe.get(Score.class, user.getId());
 		qe.close();
 		http.setSessionAttribute("user", fromDB);
 		http.setSessionAttribute("score", scoreFromDB);

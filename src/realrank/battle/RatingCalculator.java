@@ -1,6 +1,6 @@
 package realrank.battle;
 
-import realrank.objects.Rank;
+import realrank.objects.Score;
 import realrank.objects.User;
 
 public class RatingCalculator {
@@ -11,25 +11,25 @@ public class RatingCalculator {
 	final static float DRAW = 0.5f;
 	final static float LOSE = 0f;
 	
-	public static int getWinnerRating(User winner, Rank win, Rank lose) {
+	public static int getWinnerRating(User winner, Score win, Score lose) {
 		return getRating(winner, win, lose, WIN);
 	}
 	
-	public static int getLoserRating(User loser, Rank lose, Rank win) {
+	public static int getLoserRating(User loser, Score lose, Score win) {
 		return getRating(loser, lose, win, LOSE);
 	}
 	
-	public static int getDrawRating(User user, Rank own, Rank counter) {
+	public static int getDrawRating(User user, Score own, Score counter) {
 		return getRating(user, own, counter, DRAW);
 	}
 	
-	private static int getRating(User user, Rank own, Rank counter, float score) {
+	private static int getRating(User user, Score own, Score counter, float score) {
 		int k = getKFactor(user, own);
 		double e = getExpectedWinRate(own, counter);
 		return (int)(own.getScore() + k*(score - e));
 	}
 	
-	private static int getKFactor(User winner, Rank win) {
+	private static int getKFactor(User winner, Score win) {
 		if (winner.getGames() <= 30)
 			return NEWBIE_K;
 		if (win.getScore() <= 2400)
@@ -37,7 +37,7 @@ public class RatingCalculator {
 		return MASTER_K;
 	}
 	
-	private static double getExpectedWinRate(Rank win, Rank lose) {
+	private static double getExpectedWinRate(Score win, Score lose) {
 		return ((double)1)/(1 + Math.pow(10, ((lose.getScore() - win.getScore())/400)));
 	}
 }
