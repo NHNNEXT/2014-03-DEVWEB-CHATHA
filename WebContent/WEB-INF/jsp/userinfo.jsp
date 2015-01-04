@@ -19,9 +19,6 @@
 			</div>
 		</div>
 		<div class="row" ng-controller="user">
-			<a href="/users/logout.rk">logout</a>
-			<div type="button" class="btn"><a href="/battle/battle_list.rk">Challenge List</a></div>
-			<div type="button" class="btn"><a href="/battle/battle_send.rk">Send Challenge</a></div>			
 			<div id='myProfile' class="col-md-8">
 				<center>
 					<img src="http://www.efmaefm.org/0CONTACTUS/default.jpg"
