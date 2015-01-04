@@ -10,6 +10,7 @@
 </c:if>
 <%@ include file="/WEB-INF/include/_css.jspf"%>
 <link href="/css/register.css" rel="stylesheet" media="screen">
+<link href="/plugin/bootstrap/datepicker/datepicker.css" rel="stylesheet" media="screen">
 </head>
 <body ng-app='module'>
 
@@ -57,8 +58,14 @@
 				</div>
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon">NickName</span><input type="text"
-						class="form-control" placeholder="UserName" maxlength="30"
+						class="form-control" placeholder="NickName" maxlength="30"
 						ng-model="user.nickname"> 
+				</div>
+								
+				<div class="input-group input-group-lg">
+					<span class="input-group-addon">BirthDay</span><input type="text"
+						class="form-control" id='birthday' placeholder="BirthDay" maxlength="30"
+						ng-model="user.birthday"> 
 				</div>
 
 				<div>User ==> ID : {{user.id}} | e-mail : {{user.email}} |
@@ -84,5 +91,6 @@
 
 	<%@ include file="/WEB-INF/include/_imports.jspf"%>
 	<script src="/js/register.js"></script>
+	<script src="/plugin/bootstrap/bootstrap-datepicker.js"></script>
 </body>
 </html>
