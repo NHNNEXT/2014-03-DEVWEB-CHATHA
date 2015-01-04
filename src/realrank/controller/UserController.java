@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ListModel;
+
 import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
@@ -77,6 +79,7 @@ public class UserController {
 	@Post("/users/login.rk")
 	public Response login(Http http) {
 		User user = http.getJsonObject(User.class, "user");
+		List<Object> result;
 
 		if (user == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
@@ -85,13 +88,12 @@ public class UserController {
 				7,
 				"SELECT id, email, AES_DECRYPT(UNHEX(password), ?), nickname, gender, birthday, games FROM user WHERE id=?",
 				user.getPassword(), user.getId());
-		User fromDB = new User((ArrayList<Object>) qe.execute(getR));
-		// User fromDB = qe.get(User.class, user.getId());
-
-		if (fromDB == null)
+		result = qe.execute(getR);
+		if (result.size() <=0)
 			return new Json(new Result(false, "없는 아이디입니다."));
-		if (!fromDB.isPasswordCorrect(user))
+		if (result.get(2) == null)
 			return new Json(new Result(false, "패스워드가 다릅니다."));
+		User fromDB = new User((ArrayList<Object>) result);
 		qe.close();
 		http.setSessionAttribute("user", fromDB);
 		return new Json(new Result(true, null));

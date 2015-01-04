@@ -17,13 +17,13 @@
 			<ul class="nav navbar-nav">
 				<li><a href="/battle/battle_list.rk" target="_self">Challenge List</a></li>
 				<li><a href="/battle/battle_send.rk" target="_self">Send Challenge</a></li>
-
+<div sp-flash>
 				<c:choose>
 					<c:when test="${not empty sessionScope.user}">
 						<li><a href="/users/modify.rk">마이페이지</a></li>
 			</ul>
 			<form class="navbar-form navbar-right">
-				<a class="btn btn-primary" href="/users/logout.rk">로그아웃</a>
+				<a class="btn btn-primary" href="/users/logout.rk" target="_self">로그아웃</a>
 			</form>
 			</c:when>
 			<c:otherwise>

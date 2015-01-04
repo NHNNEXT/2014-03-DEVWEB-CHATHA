@@ -26,6 +26,7 @@ public class User {
 	public User(ArrayList<Object> data) {
 		this.id = (String) data.get(0);
 		this.email = (String) data.get(1);
+		System.out.println(data.get(2));
 		this.password = new String((byte[]) data.get(2));
 		this.nickname = (String) data.get(3);
 		this.gender = (String) data.get(4);

@@ -10,36 +10,69 @@ app.config(function($locationProvider) {
 	$locationProvider.html5Mode(true);
 });
 
+app.directive('spFlash', function() {
+	return {
+		restrict : 'A',
+		replace : true,
+		template : '<div class="flash row-fluid">'
+				+ '<div class="flash-inner span4 offset4 alert alert-success" data-ng-repeat="msg in successMsg">{{msg}}</div>'
+				+ '</div>',
+		link : function($rootScope, scope, element, attrs) {
+			$rootScope.$watch('successMsg', function(val) {
+				if (val.length) {
+					update();
+				}
+			}, true);
+
+			function update() {
+				$('.flash').fadeIn(500).delay(3000).fadeOut(
+						500, function() {
+							$rootScope.successMsg.splice(0);
+						});
+			}
+		}
+	};
+});
 
 function postRequest(url, data) {
 	return {
-		method: 'POST',
-		url: url,
-		headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-		transformRequest: function (obj){
+		method : 'POST',
+		url : url,
+		headers : {
+			'Content-Type' : 'application/x-www-form-urlencoded'
+		},
+		transformRequest : function(obj) {
 			var str = [];
-			for(var p in obj)
-				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+			for ( var p in obj)
+				str.push(encodeURIComponent(p) + "="
+						+ encodeURIComponent(obj[p]));
 			return str.join("&");
 		},
-		data: data
+		data : data
 	}
 }
 
-app.controller('LoginController', ['$http','$scope' , function($http, $scope) {
-	
-	controllers.LoginController = $scope;
-	
-	$scope.user = {};
-	$scope.submit = function() {
-		$http(postRequest('/users/login.rk', { user : JSON.stringify($scope.user) }))
-		.success( function(result) {
-			if (result.success) {
-				location.reload();
-			} else {
-				warring(result.error);
+function warning(msg) {
+	controllers.rootscope.successMsg.push(msg);
+}
+
+app.controller('LoginController', [ '$http', '$scope', '$rootScope',
+		function($http, $scope, $rootScope) {
+
+			controllers.LoginController = $scope;
+			controllers.rootscope = $rootScope;
+			$rootScope.successMsg = [];
+			$scope.user = {};
+			$scope.submit = function() {
+				$http(postRequest('/users/login.rk', {
+					user : JSON.stringify($scope.user)
+				})).success(function(result) {
+					if (result.success) {
+						location.reload();
+					} else {
+						warning(result.errorMessage);
+					}
+				});
 			}
-		});
-	}
-	
-}]);
+
+		} ]);
