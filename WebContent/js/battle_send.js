@@ -86,8 +86,6 @@
 					return;
 				}
 				
-				$scope.setQuery($scope.selected);
-				
 				$('#search-result .dropdown-menu li a')
 					.removeClass(activeClass)
 					.eq($scope.selected)
@@ -98,11 +96,13 @@
 		};
 		
 		$scope.setQuery=function(index){
-			var champion = $scope.searchedUserList[index];
-			$scope.champId = $scope.keyword = champion.id;
+			if($scope.searchedUserList !== undefined && $scope.searchedUserList[index] !== undefined)
+				$scope.keyword = $scope.searchedUserList[index].id;
+			$scope.champId = $scope.keyword;
 		}
 		
 		$scope.sendChallenge=function(){
+			$scope.setQuery($scope.selected);
 			if(!$('#search-result').is('.open') && $scope.keyword !== undefined){
 				$('html').addClass('loading');
 				$http({

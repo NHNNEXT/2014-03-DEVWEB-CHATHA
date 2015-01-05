@@ -36,9 +36,19 @@ public class BattleController {
 		QueryExecuter qe = new QueryExecuter();
 		User fromDB = qe.get(User.class, sendTo);
 
-		if (fromDB == null)
+		if (fromDB == null){
+			qe.close();
 			return new Json(new Result(false, "없는 아이디입니다."));
-		qe.close();
+		}
+		
+		
+		System.out.println(fromDB.getId());
+		System.out.println(uid);
+		if (fromDB.getId().equals(uid)){
+			qe.close();
+			return new Json(new Result(false, "자신에게 대결을 신청할 수는 없습니다."));
+		}
+		
 
 		BattleManager.createBattle(uid, sendTo, BattleManager.STATE_NEW);
 		Notification.sendChallegeAlert(uid, sendTo);

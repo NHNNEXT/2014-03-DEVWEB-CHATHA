@@ -23,6 +23,8 @@
 				amPm = (dateObject.getHours() > 11) ? '오후' : '오전',
 				minutes = dateObject.getMinutes();
 			
+			if(hours == 0) hours = 12;
+			
 			return amPm +" "+hours+"시"+minutes+"분";
 		};
 		
