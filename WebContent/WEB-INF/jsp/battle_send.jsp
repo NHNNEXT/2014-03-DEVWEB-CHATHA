@@ -4,7 +4,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ include file="/WEB-INF/include/_css.jspf"%>
 <link href="/battle/send/battlesend.css">
 <title>BattleList - RealRank</title>
 </head>
@@ -17,7 +16,6 @@
 				<%@ include file="/WEB-INF/include/_userheader.jspf"%>
 				<div class="panel-group" id="accordion">
 				
-					<!-- 내가 신청 -->
 					<div class="panel panel-default battles-send">
 						<div class="panel-heading">
 							<h4 class="panel-title">도전 보내기</h4>

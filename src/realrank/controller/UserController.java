@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
 import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
-import realrank.support.Utility;
 import realrank.user.UserManager;
 import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.GetRecordQuery;
+import easyjdbc.query.GetRecordsQuery;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
@@ -27,7 +29,7 @@ public class UserController {
 	@Get("/users/user_search.json")
 	public Response userSearch(Http http) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<User> searchResultList = UserManager.getUserByKeyword(http.getParameter("keyword"));
+		List<User> searchResultList = UserManager.getUsersByKeyword(http.getParameter("keyword"));
 		searchResultList.forEach(user -> {
 			user.setPassword("");
 		});
@@ -70,6 +72,8 @@ public class UserController {
 			return new Json(new Result(false, "패스워드가 다릅니다."));
 		User fromDB = new User((ArrayList<Object>) result);
 		qe.close();
+		
+		fromDB.setPassword("");
 		http.setSessionAttribute("user", fromDB);
 
 		new BattleController().drawBattleTimeout(fromDB.getId());
@@ -148,6 +152,46 @@ public class UserController {
 			return new Json(new Result(false, null));
 		}
 		return new Json(new Result(true, null));
+	}
+	
+	@Post("/users/rank.rk")
+	public Response getRanks(Http http) {
+		System.out.println(http.getParameter("rankType"));
+		int rankType = Integer.parseInt(http.getParameter("rankType"));
+		String rankTable;
+		Gson gson = new Gson();
+		List<Score> ranks = new ArrayList<Score>();
+		List<List<Object>> rankList;
+		switch (rankType) {
+		case 2:
+			rankTable = "weekly_score";
+			break;
+		case 3:
+			rankTable = "monthly_score";
+			break;
+		default:
+			rankTable = "daily_score";
+			break;
+		}
+		
+		String sql = "SELECT * FROM " + rankTable;
+		
+		QueryExecuter qe = new QueryExecuter();
+		GetRecordsQuery qrq = new GetRecordsQuery(4, sql);
+		rankList = qe.execute(qrq);
+		rankList.forEach((list) -> {
+//			System.out.println(list);
+			Score score = new Score();
+			ArrayList<Object> retScore = (ArrayList<Object>) list;
+			score.setRank((int) retScore.get(0));
+			score.setId((String) retScore.get(1));
+			score.setScore((int) retScore.get(2));
+			score.setReputation((int) retScore.get(3));
+			ranks.add(score);
+		});
+		System.out.println(gson.toJson(ranks));
+//		System.out.println(gson.toJson(qe.execute(qrq)));
+		return new Json(ranks);
 	}
 
 	void increaseGameCount(QueryExecuter qe, User user) {

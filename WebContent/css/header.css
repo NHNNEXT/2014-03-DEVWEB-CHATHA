@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+.modal .panel.panel-default {
+	margin-top: 10px;
+}
+
+.modal .panel {
+	border: none;
+}

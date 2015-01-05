@@ -3,7 +3,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ include file="/WEB-INF/include/_css.jspf"%>
 
 <link href="/css/login.css">
 
@@ -13,7 +12,7 @@
 <%@ include file="/WEB-INF/include/_header.jspf"%>
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-6 col-md-4 col-md-offset-4">
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
 				<form name="loginForm" ng-controller="loginCtrl"
 					ng-submit="check(loginForm) && submit()" novalidate>
 					<h1 class="text-center login-title">RealRank Login</h1>

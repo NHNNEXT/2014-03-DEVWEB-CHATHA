@@ -36,7 +36,7 @@ INSERT INTO `score` VALUES
 -- state field: 0(acceptable and not validated) 1(accepted) 2(outdated) 3(canceled) 4(denied)
 DELETE FROM `battle`;
 INSERT INTO `battle` VALUES
-	(NULL, 'chal', 'champ', '2014-12-09 09:00:00', NULL, 1, NULL),
+	(NULL, 'chal', 'champ', '2014-12-09 09:00:00', '2014-12-09 09:03:00', 1, NULL),
 	(NULL, 'champ', 'chal', '2014-12-09 09:00:00', NULL, 1, NULL),
 	(NULL, 'chal', 'champ', '2014-12-09 10:00:00', NULL, 2, NULL),
 	(NULL, 'champ', 'chal', '2014-12-09 10:00:00', NULL, 2, NULL),

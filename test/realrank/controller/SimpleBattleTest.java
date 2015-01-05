@@ -3,10 +3,7 @@ package realrank.controller;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import realrank.objects.Battle;
 import realrank.objects.User;
-import easyjdbc.query.GetRecordQuery;
-import easyjdbc.query.QueryExecuter;
 import easymapping.mapping.Http;
 
 public class SimpleBattleTest {

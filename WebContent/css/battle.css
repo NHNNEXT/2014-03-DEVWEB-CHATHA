@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+.vs {
+    position: absolute;
+    text-align: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    z-index: 1;
+    left: 50%;
+    margin-left: -40px;
+    margin-top: 68px;
+    font-size: 5em;
+    line-height: 1em;
+    color: rgb(255, 255, 255);
+    background: red;
+    box-shadow: 0 0 50px black;
+}
+
+@media all and (max-width:768px){
+    .vs {
+        top:auto;
+        margin-top:-50px
+    }
+}
