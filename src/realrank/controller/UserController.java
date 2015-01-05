@@ -8,7 +8,6 @@ import java.util.Map;
 import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
-import realrank.support.Utility;
 import realrank.user.UserManager;
 import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.GetRecordQuery;
