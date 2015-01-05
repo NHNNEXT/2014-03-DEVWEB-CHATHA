@@ -211,7 +211,6 @@ public class QueryExecuter {
 	public <T> T getWhere(Class<T> cLass, String WhereClause, Object... keys) {
 		GetRecordQuery query = QueryFactory.getRecordQuery(cLass);
 		Object eachInstance = null;
-		List<Object> records = execute(query);
 		List<Field> fields = QueryFactory.excludeNotThisDB(cLass);
 		if (WhereClause != null) {
 			query.addSql(" where " + WhereClause);
@@ -219,6 +218,8 @@ public class QueryExecuter {
 		for (int i = 0; i < keys.length; i++) {
 			query.addParameters(keys[i]);
 		}
+
+		List<Object> records = execute(query);
 		if (records.size() == 0)
 			return null;
 		try {
