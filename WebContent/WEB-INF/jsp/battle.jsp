@@ -21,7 +21,7 @@
 				<div class="row">
 				  <div class="col-sm-6 col-md-6 champion">
 				    <div class="thumbnail">
-				      <img src="http://placehold.it/300x300" alt="profile" class="img-thumbnail">
+				      <img src="/images/mystery_man.jpg" alt="profile" class="img-thumbnail">
 				      <div class="caption">
 				        <h3>{{champion.nickname}}<br><small>{{champion.email}}</small></h3>
 				        <table class="table">
@@ -46,7 +46,7 @@
 				  <div class="vs">vs</div>
 				  <div class="col-sm-6 col-md-6 challenger">
 				    <div class="thumbnail">
-				      <img src="http://placehold.it/300x300" alt="profile" class="img-thumbnail">
+				      <img src="/images/mystery_man.jpg" alt="profile" class="img-thumbnail">
 				      <div class="caption">
 				        <h3>{{challenger.nickname}}<br><small>{{challenger.email}}</small></h3>
 				        <table class="table">

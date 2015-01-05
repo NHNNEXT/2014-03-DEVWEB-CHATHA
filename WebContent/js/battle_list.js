@@ -20,7 +20,7 @@
 		$scope.timeFormatter = function(dateString){
 			var dateObject = new Date(dateString),
 				hours = dateObject.getHours() % 12,
-				amPm = (dateObject.getHours() > 11) ? 'AM' : 'PM',
+				amPm = (dateObject.getHours() > 11) ? 'PM' : 'AM',
 				minutes = dateObject.getMinutes();
 			
 			if(hours == 0) hours = 12;
