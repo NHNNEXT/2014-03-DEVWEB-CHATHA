@@ -3,8 +3,6 @@ package realrank.battle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import realrank.objects.Battle;
 import realrank.objects.BattleInfo;
@@ -63,8 +61,7 @@ public class BattleManager {
 				+ forCondition(userId) + " and state = " + state;
 
 		GetRecordsQuery query = new GetRecordsQuery(9, sql);
-		@SuppressWarnings("unchecked")
-		List<List<Object>> records = (List<List<Object>>) qe.execute(query);
+		List<List<Object>> records = qe.execute(query);
 		List<BattleInfo> list = new ArrayList<BattleInfo>();
 		records.forEach(record -> {
 			list.add(new BattleInfo((Integer) record.get(0), (String) record.get(1), (String) record.get(2), (Date) record.get(3), (Date) record
@@ -122,8 +119,7 @@ public class BattleManager {
 	static Date getServerTime() {
 		QueryExecuter qe = new QueryExecuter();
 		GetRecordQuery query = new GetRecordQuery(1, "select now()");
-		@SuppressWarnings("unchecked")
-		List<Object> l = (List<Object>) qe.execute(query);
+		List<Object> l =  qe.execute(query);
 		qe.close();
 		return (Date) l.get(0);
 	}

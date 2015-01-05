@@ -5,7 +5,6 @@ import realrank.objects.Score;
 import realrank.objects.User;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
-import easymapping.mapping.Http;
 
 @Controller
 public class ScoreController {

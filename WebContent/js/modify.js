@@ -18,15 +18,10 @@ app.controller('registerController', [
 				
 				var submit = {};
 				
-				if($scope.modify.name())
 					submit.name = $scope.user.name;
-				if($scope.modify.nickname())
 					submit.nickname = $scope.user.nickname;
-				if($scope.modify.email())
 					submit.email = $scope.user.email;
-				if($scope.modify.gender())
 					submit.gender = $scope.user.gender;
-				if($scope.modify.password())
 					submit.password = $scope.user.password;
 				if(submit =={})
 					return;
