@@ -69,9 +69,11 @@
 
 					<div class="col-md-4">
 						<h4 style="line-height: 60px;">
+							<span class="glyphicon glyphicon-flag"></span> 
+							{{score.score}}
 							<span class="glyphicon glyphicon-tint"></span>
-							{{score.reputation}} <span class='glyphicon glyphicon-log-in'></span>
-							<a href="#">http://localhost:8080/winner/{{user.id}}</a>
+							{{score.reputation}}
+							<span class='glyphicon glyphicon-log-in'></span> <a href="#">http://localhost:8080/winner/{{user.id}}</a>
 						</h4>
 					</div>
 				</div>

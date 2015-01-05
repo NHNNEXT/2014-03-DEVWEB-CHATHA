@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
 import realrank.support.Utility;
 import realrank.user.UserManager;
-
 import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.GetRecordQuery;
 import easyjdbc.query.QueryExecuter;
@@ -80,7 +80,6 @@ public class UserController {
 	@Post("/users/register.rk")
 	public Response signup(Http http) {
 		User user = http.getJsonObject(User.class, "user");
-		user.setBirthday(Utility.parseDate("MM/dd/yyyy", http.getParameter("birthday")));
 		user.setGames(0);
 		QueryExecuter qe = new QueryExecuter();
 		ExecuteQuery eq = new ExecuteQuery("INSERT INTO user VALUES (?, ?, HEX(AES_ENCRYPT(?, ?)), ?, ?, ?, ?)", user.getId(), user.getEmail(),
@@ -88,10 +87,17 @@ public class UserController {
 		boolean result = qe.execute(eq);
 		qe.close();
 		if (result) {
+			Score score = new Score();
+			score.setId(user.getId());
+			score.setScore(1500);
+			score.setReputation(100);
+			qe = new QueryExecuter();
+			qe.insert(score);
+			qe.close();
 			http.setSessionAttribute("user", user);
-			return new Json(new Result(false, "회원 가입 실패"));
+			return new Json(new Result(true, null));
 		}
-		return new Json(new Result(true, null));
+		return new Json(new Result(false, "회원 가입 실패"));
 	}
 
 	@Post("/users/checkid.rk")
