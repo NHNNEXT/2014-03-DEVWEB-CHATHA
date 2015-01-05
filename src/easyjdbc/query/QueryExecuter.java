@@ -138,7 +138,7 @@ public class QueryExecuter {
 
 	public Object insertAndGetPrimaryKey(Object record) {
 		ExecuteQuery insert = QueryFactory.getInsertQuery(record);
-		GetRecordQuery getPrimaryKey = new GetRecordQuery(1, "SELECT LAST_INSERT_ID();");
+		GetRecordQuery getPrimaryKey = new GetRecordQuery(1, "SELECT CAST(LAST_INSERT_ID() AS INTEGER);");
 		if (!(boolean) execute(insert))
 			return null;
 		return execute(getPrimaryKey).get(0);

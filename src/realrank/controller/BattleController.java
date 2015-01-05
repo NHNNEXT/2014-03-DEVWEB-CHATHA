@@ -260,13 +260,9 @@ public class BattleController {
 		
 		Notification.sendBattleResult(winnerId, loser.getId());
 
-
-
 		jsp.put("alert", "패배하셨습니다. 클릭하시면 Challenge List로 이동합니다.");
 		jsp.put("redirect", "/battle/battle_list.rk");
-		return jsp;
-
-		
+		return jsp;	
 	}
 
 	public void drawBattleTimeout(String userId) {
@@ -299,7 +295,7 @@ public class BattleController {
 		UserController userControllser = new UserController();
 		userControllser.increaseGameCount(qe, loser);
 		userControllser.increaseGameCount(qe, winner);
-		
-		BattleManager.finishChallenge(battle.getId());
+		qe.close();
+		BattleManager.finishChallenge(winner.getId(), battle.getId());
 	}
 }
