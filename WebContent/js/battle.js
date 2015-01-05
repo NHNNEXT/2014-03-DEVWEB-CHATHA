@@ -85,7 +85,7 @@
 		};
 		
 		$scope.gotoMypage=function(){
-			window.location.href = '/users/userinfo.rk';
+			window.location.href = '/battle/battle_list.rk';
 		}
 
 		
