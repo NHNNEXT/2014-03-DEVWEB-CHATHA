@@ -6,7 +6,6 @@
 <head>
 <title>BattleList - RealRank</title>
 
-<%@ include file="/WEB-INF/include/_css.jspf"%>
 <link href="/css/battlelist.css">
 </head>
 <body ng-app="module">

@@ -5,7 +5,6 @@
 <html>
 <head>
 <title>Register - Mytoday</title>
-<%@ include file="/WEB-INF/include/_css.jspf"%>
 <link href="/css/register.css" rel="stylesheet" media="screen">
 </head>
 <body ng-app='module'>
