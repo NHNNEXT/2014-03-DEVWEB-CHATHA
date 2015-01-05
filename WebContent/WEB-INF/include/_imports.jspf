@@ -6,9 +6,13 @@
 <script src="/plugin/bootstrap/bootstrap-tooltip.js"></script>
 <script src="/plugin/angular/angular.js"></script>
 <script src="/js/header.js"></script>
-<script>
-	var user = ${user};
-	var score = ${score};
-</script>
+<c:choose>
+	<c:when test="${not empty sessionScope.user}">
+		<script>
+			var user = ${user};
+			var score = ${score};
+		</script>
+	</c:when>
+</c:choose>
 <script src="/js/userinfo.js"></script>
 <script src="/js/userinfo.js"></script>

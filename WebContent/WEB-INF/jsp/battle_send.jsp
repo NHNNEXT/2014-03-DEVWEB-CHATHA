@@ -5,7 +5,6 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/include/_css.jspf"%>
-<%@ include file="/WEB-INF/include/_imports.jspf"%>
 <link href="/battle/send/battlesend.css">
 <title>BattleList - RealRank</title>
 </head>
@@ -59,9 +58,7 @@
 		</div>
 		<!--div.row-->
 	</div>
-	<script>
-		var user = ${user};
-	</script>
+	<%@ include file="/WEB-INF/include/_imports.jspf"%>
 	<script src="/js/battle_send.js"></script>
 </body>
 </html>
