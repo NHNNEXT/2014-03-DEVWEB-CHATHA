@@ -70,6 +70,8 @@ public class UserController {
 			return new Json(new Result(false, "패스워드가 다릅니다."));
 		User fromDB = new User((ArrayList<Object>) result);
 		qe.close();
+		
+		fromDB.setPassword("");
 		http.setSessionAttribute("user", fromDB);
 
 		new BattleController().drawBattleTimeout(fromDB.getId());
