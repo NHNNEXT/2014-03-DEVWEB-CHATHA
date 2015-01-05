@@ -30,12 +30,13 @@ public class BattleManager {
 		battle.setChampion(champId);
 		battle.setReq_time(new Date());
 		battle.setState(state);
-
 		QueryExecuter qe = new QueryExecuter();
-		if (qe.insert(battle) == 0) {
-			System.out.println("BattleManager.createBattle() : insert failed");
-			return null;
-		}
+		
+		
+		long battleId = (Long)qe.insertAndGetPrimaryKey(battle);
+
+
+		battle=qe.get(Battle.class, battleId);
 		qe.close();
 
 		return battle;
@@ -91,7 +92,9 @@ public class BattleManager {
 		return false;
 	}
 
-	public static boolean finishChallenge(long battleId) {
+	public static boolean finishChallenge(String winnerId, long battleId) {
+		if(!setWinner(battleId, winnerId))
+			return false;
 		return setState(battleId, STATE_FINISHED);
 	}
 	
@@ -113,8 +116,21 @@ public class BattleManager {
 		battle.setState(state);
 		QueryExecuter qe = new QueryExecuter();
 		int result = qe.update(battle);
+		qe.close();
 		return result != 0;
 	}
+	
+	static boolean setWinner(long battleId, String winnerId) {
+		Battle battle = new Battle();
+		battle.setId((int) battleId);
+		battle.setWinner(winnerId);
+		QueryExecuter qe = new QueryExecuter();
+		int result = qe.update(battle);
+		qe.close();
+		return result != 0;
+	}
+	
+	
 
 	static Date getServerTime() {
 		QueryExecuter qe = new QueryExecuter();

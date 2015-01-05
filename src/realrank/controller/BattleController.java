@@ -249,12 +249,12 @@ public class BattleController {
 		
 	}
 
-	@Get("/winner/{}.rk")
+	@Get("/{}.winner")
 	public Response setSimpleBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getUriVariable(0);
 		if ( loser == null) {
-			http.sendRedirect("/users/login.rk?redirect=/winner/"+winnerId+".rk");
+			http.sendRedirect("/users/login.rk?redirect=/"+winnerId+".winner");
 			return null;
 		}
 		Jsp jsp = new Jsp("battle_result_alert.jsp");
@@ -274,13 +274,9 @@ public class BattleController {
 		
 		Notification.sendBattleResult(winnerId, loser.getId());
 
-
-
 		jsp.put("alert", "패배하셨습니다. 클릭하시면 Challenge List로 이동합니다.");
 		jsp.put("redirect", "/battle/battle_list.rk");
-		return jsp;
-
-		
+		return jsp;	
 	}
 
 	public void drawBattleTimeout(String userId) {
@@ -313,7 +309,7 @@ public class BattleController {
 		UserController userControllser = new UserController();
 		userControllser.increaseGameCount(qe, loser);
 		userControllser.increaseGameCount(qe, winner);
-		
-		BattleManager.finishChallenge(battle.getId());
+		qe.close();
+		BattleManager.finishChallenge(winner.getId(), battle.getId());
 	}
 }

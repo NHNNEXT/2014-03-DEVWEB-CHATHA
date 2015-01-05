@@ -5,8 +5,8 @@
 <html>
 <head>
 <title>BattleList - RealRank</title>
-	<%@ include file="/WEB-INF/include/_imports.jspf"%>
-	<%@ include file="/WEB-INF/include/_css.jspf"%>
+
+<%@ include file="/WEB-INF/include/_css.jspf"%>
 <link href="/css/battlelist.css">
 </head>
 <body ng-app="module">
@@ -100,9 +100,7 @@
 			</div>			
 		</div>
 	</div>
-	<script>
-		var user = ${user};
-	</script>
-	<script src="/js/battle_list.js"></script>	
+	<%@ include file="/WEB-INF/include/_imports.jspf"%>
+	<script src="/js/battle_list.js"></script>
 </body>
 </html>

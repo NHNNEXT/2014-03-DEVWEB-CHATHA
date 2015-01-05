@@ -25,7 +25,7 @@ app.controller('registerController', [ '$http', '$scope',
 					if (result.success) {
 						location.href="/";
 					} else {
-						warring("회원가입 실패")
+						warning("회원가입 실패")
 					}
 				});
 			}
@@ -69,7 +69,8 @@ app.controller('registerController', [ '$http', '$scope',
 					return true;
 				},
 				email : function() {
-					var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+					var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,4}$/;
+//					var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 					if ($scope.user.email.search(pattern) != 0)
 						return false;
 					return true;
