@@ -36,10 +36,7 @@ public class BattleManager {
 		
 		long battleId = (Long)qe.insertAndGetPrimaryKey(battle);
 
-//		if (qe.insert(battle) == 0) {
-//			System.out.println("BattleManager.createBattle() : insert failed");
-//			return null;
-//		}
+
 		battle=qe.get(Battle.class, battleId);
 		qe.close();
 
