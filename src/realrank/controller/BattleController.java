@@ -235,7 +235,7 @@ public class BattleController {
 		
 	}
 
-	@Get("/winner/{}.rk")
+	@Get("/{}.winner")
 	public Response setSimpleBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getUriVariable(0);
