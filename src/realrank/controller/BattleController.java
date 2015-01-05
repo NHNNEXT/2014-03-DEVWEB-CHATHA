@@ -29,15 +29,26 @@ public class BattleController {
 		String uid = http.getSessionAttribute(User.class, "user").getId();
 		
 		String sendTo = http.getParameter("champId");
+		System.out.println(sendTo);
 		if (sendTo == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
 		
 		QueryExecuter qe = new QueryExecuter();
 		User fromDB = qe.get(User.class, sendTo);
 
-		if (fromDB == null)
+		if (fromDB == null){
+			qe.close();
 			return new Json(new Result(false, "없는 아이디입니다."));
-		qe.close();
+		}
+		
+		
+		System.out.println(fromDB.getId());
+		System.out.println(uid);
+		if (fromDB.getId().equals(uid)){
+			qe.close();
+			return new Json(new Result(false, "자신에게 대결을 신청할 수는 없습니다."));
+		}
+		
 
 		BattleManager.createBattle(uid, sendTo, BattleManager.STATE_NEW);
 		Notification.sendChallegeAlert(uid, sendTo);
@@ -206,7 +217,7 @@ public class BattleController {
 			return null;
 		}
 		if(loser.getId().equals(winnerId)){
-			http.sendRedirect("/users/userinfo.rk");
+			http.sendRedirect("/battle/battle_list.rk");
 			return null;
 		}
 		
@@ -225,16 +236,18 @@ public class BattleController {
 	}
 
 	@Get("/winner/{}.rk")
-	public void setSimpleBattleResult(Http http){
+	public Response setSimpleBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getUriVariable(0);
 		if ( loser == null) {
-			http.sendRedirect("/users/login.rk");
-			return;
+			http.sendRedirect("/users/login.rk?redirect=/winner/"+winnerId+".rk");
+			return null;
 		}
+		Jsp jsp = new Jsp("battle_result_alert.jsp");
 		if(loser.getId().equals(winnerId)){
-			http.sendRedirect("/users/userinfo.rk");
-			return;
+			jsp.put("alert", "자기 자신과는 대결할 수 없습니다. Challenge List로 이동합니다.");
+			jsp.put("redirect", "/battle/battle_list.rk");
+			return jsp;
 		}
 		
 		QueryExecuter qe = new QueryExecuter();
@@ -246,8 +259,14 @@ public class BattleController {
 		qe.close();
 		
 		Notification.sendBattleResult(winnerId, loser.getId());
+
+
+
+		jsp.put("alert", "패배하셨습니다. 클릭하시면 Challenge List로 이동합니다.");
+		jsp.put("redirect", "/battle/battle_list.rk");
+		return jsp;
+
 		
-		http.sendRedirect("/users/userinfo.rk");
 	}
 
 	public void drawBattleTimeout(String userId) {

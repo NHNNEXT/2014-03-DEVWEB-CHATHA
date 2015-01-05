@@ -23,6 +23,8 @@
 				amPm = (dateObject.getHours() > 11) ? '오후' : '오전',
 				minutes = dateObject.getMinutes();
 			
+			if(hours == 0) hours = 12;
+			
 			return amPm +" "+hours+"시"+minutes+"분";
 		};
 		
@@ -96,6 +98,7 @@
 		};
 		
 		$scope.acceptChallenge=function(receivedBattle){
+			$('html').addClass('loading');
 			$http({
 				method: 'POST',
 				url: '/battle/battle_accept.rk',
@@ -110,17 +113,21 @@
 			})
 			.success( function(result) {
 				if (result.success) {
+					$('html').removeClass('loading');
 					window.location.href = '/battle/battle_list.rk';
 				} else {
+					$('html').removeClass('loading');
 					alert(result.errorMessage);
 				}
 			})
 			.error( function(result) {
+				$('html').removeClass('loading');
 				alert(result.errorMessage);
 			});
 		};
 		
 		$scope.denyChallenge=function(receivedBattle){
+			$('html').addClass('loading');
 			$http({
 				method: 'POST',
 				url: '/battle/battle_deny.rk',
@@ -135,12 +142,15 @@
 			})
 			.success( function(result) {
 				if (result.success) {
+					$('html').removeClass('loading');
 					window.location.href = '/battle/battle_list.rk';
 				} else {
+					$('html').removeClass('loading');
 					alert(result.errorMessage);
 				}
 			})
 			.error( function(result) {
+				$('html').removeClass('loading');
 				alert(result.errorMessage);
 			});
 		};

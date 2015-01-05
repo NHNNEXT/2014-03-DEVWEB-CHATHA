@@ -29,7 +29,7 @@
 										<input type="text" class="form-control" ng-model="keyword" ng-change="search(keyword)" ng-keyup="searchKeyPress($event)" name ="keyword" placeholder="champ@example.com" required>
 										<input type="hidden" ng-model="champId" name ="champId">
 										<span class="input-group-btn">
-											<input class="btn btn-default" type="submit" ng-click="sendChallenge(champId)">Go!</input>
+											<input class="btn btn-default" type="submit" ng-click="sendChallenge()">Go!</input>
 										</span>
 									</div>
 									<a class="dropdown-Toggle" data-toggle="dropdown"></a>
@@ -43,11 +43,11 @@
 									  		<a role="menuitem" href="#" tabindex="-1" ng-click="setQuery($event,$index)">
 										  		<strong>{{user.id}}</strong> <small>{{user.nickname}} <u>{{user.email}}</u></small>
 									  		</a>
-									  	</div>
+									  	</li>
 									</ul>
 								</div>
+								<br><span class="bg-warning" role="alert">{{state.errorMessage}}</span>
 							</form>
-							<h4>{{state.errorMessage}}</h4>
 						</div>
 						
 					</div>
