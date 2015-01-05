@@ -108,7 +108,10 @@ public class UserController {
 	@Get("/users/modify.rk")
 	public Response modify(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
-
+		if (user == null) {
+			http.sendRedirect("/users/login.rk?redirect=/users/modify.rk");
+			return null;
+		}
 		Jsp jsp = new Jsp("modify.jsp");
 		jsp.put("user", user.toJson());
 		QueryExecuter qe = new QueryExecuter();
@@ -120,6 +123,7 @@ public class UserController {
 	@Post("/users/modify.rk")
 	public Response modifyId(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
+
 		User usermod = http.getJsonObject(User.class, "user");
 		//String oldPassword = http.getParameter("oldPassword");
 		//usermod.setPassword(oldPassword);
@@ -134,7 +138,7 @@ public class UserController {
 		boolean result = qe.execute(eq);
 
 		qe.close();
-		if (result) {
+		if (!result) {
 			return new Json(new Result(false, null));
 		}
 		return new Json(new Result(true, null));
