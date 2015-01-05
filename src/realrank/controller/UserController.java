@@ -138,7 +138,7 @@ public class UserController {
 		boolean result = qe.execute(eq);
 
 		qe.close();
-		if (result) {
+		if (!result) {
 			return new Json(new Result(false, null));
 		}
 		return new Json(new Result(true, null));

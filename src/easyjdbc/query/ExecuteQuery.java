@@ -38,7 +38,7 @@ public class ExecuteQuery extends Query {
 				pstmt.close();
 			} catch (SQLException sqle) {
 			}
-		return result == 1;
+		return result != 0;
 	}
 
 }
