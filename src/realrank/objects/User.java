@@ -25,8 +25,9 @@ public class User {
 	private Date birthday;
 	private int games;
 
-	public User() {};
-	
+	public User() {
+	};
+
 	public User(ArrayList<Object> data) {
 		this.id = (String) data.get(0);
 		this.email = (String) data.get(1);
@@ -37,7 +38,7 @@ public class User {
 		this.birthday = (Date) data.get(5);
 		this.games = (int) data.get(6);
 	}
-	
+
 	public int getGames() {
 		return games;
 	}
@@ -53,11 +54,10 @@ public class User {
 	@Exclude
 	private int score;
 
-
 	public String getId() {
 		return id;
 	}
-	
+
 	public static String mailAddress(String cid) {
 		String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 		if (cid.matches(emailRegex)) {
@@ -139,17 +139,32 @@ public class User {
 		ret.add(gender);
 		ret.add(birthday);
 		ret.add(games);
-		return ret; 
+		return ret;
 	}
 
 	public void update(User usermod) {
-		
+		String email = usermod.getEmail();
+		String password = usermod.getPassword();
+		String nickname = usermod.getNickname();
+		String gender = usermod.getGender();
+		Date birthday = usermod.getBirthday();
+		if (password != null)
+			this.password = password;
+		if (email != null)
+			this.email = email;
+		if (birthday != null)
+			this.birthday = birthday;
+		if (nickname != null)
+			this.nickname = nickname;
+		if (gender != null)
+			this.gender = gender;
 	}
 
 	public String toJson() {
 		Gson gson = new Gson();
 		return gson.toJson(this);
 	}
+
 	public String getScoreJson(QueryExecuter qe) {
 		Gson gson = new Gson();
 		return gson.toJson(qe.get(Score.class, id));

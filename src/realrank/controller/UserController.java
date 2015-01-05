@@ -5,15 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ListModel;
-
-import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
 import realrank.support.Utility;
 import realrank.user.UserManager;
-
-import com.google.gson.Gson;
 
 import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.GetRecordQuery;
@@ -40,7 +35,6 @@ public class UserController {
 		return new Json(result);
 	}
 
-
 	@Get("/users/login.rk")
 	public Response loginGet(Http http) {
 		Jsp jsp = new Jsp("login.jsp");
@@ -52,12 +46,11 @@ public class UserController {
 		http.removeSessionAttribute("user");
 		http.sendRedirect("/");
 	}
-	
+
 	@Get("/users/register.rk")
 	public Response register(Http http) {
 		return new Jsp("register.jsp");
 	}
-	
 
 	@Post("/users/login.rk")
 	public Response login(Http http) {
@@ -67,19 +60,18 @@ public class UserController {
 		if (user == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
 		QueryExecuter qe = new QueryExecuter();
-		GetRecordQuery getR = new GetRecordQuery(
-				7,
-				"SELECT id, email, AES_DECRYPT(UNHEX(password), ?), nickname, gender, birthday, games FROM user WHERE id=?",
-				user.getPassword(), user.getId());
+		GetRecordQuery getR = new GetRecordQuery(7,
+				"SELECT id, email, AES_DECRYPT(UNHEX(password), ?), nickname, gender, birthday, games FROM user WHERE id=?", user.getPassword(),
+				user.getId());
 		result = qe.execute(getR);
-		if (result.size() <=0)
+		if (result.size() <= 0)
 			return new Json(new Result(false, "없는 아이디입니다."));
 		if (result.get(2) == null)
 			return new Json(new Result(false, "패스워드가 다릅니다."));
 		User fromDB = new User((ArrayList<Object>) result);
 		qe.close();
 		http.setSessionAttribute("user", fromDB);
-		
+
 		new BattleController().drawBattleTimeout(fromDB.getId());
 
 		return new Json(new Result(true, null));
@@ -88,15 +80,11 @@ public class UserController {
 	@Post("/users/register.rk")
 	public Response signup(Http http) {
 		User user = http.getJsonObject(User.class, "user");
-		user.setBirthday(Utility.parseDate("MM/dd/yyyy",
-				http.getParameter("birthday")));
+		user.setBirthday(Utility.parseDate("MM/dd/yyyy", http.getParameter("birthday")));
 		user.setGames(0);
 		QueryExecuter qe = new QueryExecuter();
-		ExecuteQuery eq = new ExecuteQuery(
-				"INSERT INTO user VALUES (?, ?, HEX(AES_ENCRYPT(?, ?)), ?, ?, ?, ?)",
-				user.getId(), user.getEmail(), user.getPassword(), user
-						.getPassword(), user.getNickname(), user.getGender(),
-				user.getBirthday(), user.getGames());
+		ExecuteQuery eq = new ExecuteQuery("INSERT INTO user VALUES (?, ?, HEX(AES_ENCRYPT(?, ?)), ?, ?, ?, ?)", user.getId(), user.getEmail(),
+				user.getPassword(), user.getPassword(), user.getNickname(), user.getGender(), user.getBirthday(), user.getGames());
 		boolean result = qe.execute(eq);
 		qe.close();
 		if (result) {
@@ -105,21 +93,25 @@ public class UserController {
 		}
 		return new Json(new Result(true, null));
 	}
-	
+
 	@Post("/users/checkid.rk")
 	public Response checkId(Http http) {
 		QueryExecuter qe = new QueryExecuter();
 		User user = qe.get(User.class, http.getParameter("id"));
 		qe.close();
-		if (user!=null) {
+		if (user != null) {
 			return new Json(new Result(false, null));
 		}
 		return new Json(new Result(true, null));
 	}
-	
+
 	@Get("/users/modify.rk")
 	public Response modify(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
+		if (user == null) {
+			http.sendRedirect("/users/login.rk?redirect=/users/modify.rk");
+			return null;
+		}
 		Jsp jsp = new Jsp("modify.jsp");
 		jsp.put("user", user.toJson());
 		QueryExecuter qe = new QueryExecuter();
@@ -131,25 +123,31 @@ public class UserController {
 	@Post("/users/modify.rk")
 	public Response modifyId(Http http) {
 		User user = http.getSessionAttribute(User.class, "user");
+
 		User usermod = http.getJsonObject(User.class, "user");
-		String oldPassword = http.getParameter("oldPassword");
-		usermod.setPassword(oldPassword);
-		if (!user.isPasswordCorrect(usermod))
-			return new Json(new Result(false, "기존 패스워드가 일치하지 않습니다."));
+		//String oldPassword = http.getParameter("oldPassword");
+		//usermod.setPassword(oldPassword);
+		//if (!user.isPasswordCorrect(usermod))
+		//	return new Json(new Result(false, "기존 패스워드가 일치하지 않습니다."));
 		user.update(usermod);
 		QueryExecuter qe = new QueryExecuter();
-		int effected = qe.update(user);
+
+		ExecuteQuery eq = new ExecuteQuery("update user set email=?, password=HEX(AES_ENCRYPT(?, ?)), nickname=?, gender=?, birthday=? where id=?",
+				user.getEmail(), user.getPassword(), user.getPassword(), user.getNickname(), user.getGender(),
+				user.getBirthday(), user.getId());
+		boolean result = qe.execute(eq);
+
 		qe.close();
-		if (effected == 0) {
+		if (!result) {
 			return new Json(new Result(false, null));
 		}
 		return new Json(new Result(true, null));
 	}
-	
-	void increaseGameCount(QueryExecuter qe, User user){
-		String sql = "UPDATE user set games=games+1" + " WHERE id='"+user.getId()+"'";
+
+	void increaseGameCount(QueryExecuter qe, User user) {
+		String sql = "UPDATE user set games=games+1" + " WHERE id='" + user.getId() + "'";
 		System.out.println("[DEBUG] " + sql);
 		qe.execute(new ExecuteQuery(sql));
 	}
-	
+
 }

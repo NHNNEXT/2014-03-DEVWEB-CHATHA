@@ -85,11 +85,7 @@
 
 	<script>
 		var oldUser = {};
-		oldUser.id = id;
-		oldUser.email = email;
-		oldUser.gender = gender;
-		oldUser.nickname = nickname;
-		
+	
 	</script>
 	<%@ include file="/WEB-INF/include/_imports.jspf"%>
 	<script src="/js/modify.js"></script>
