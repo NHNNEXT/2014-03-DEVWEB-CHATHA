@@ -27,6 +27,7 @@
 			})
 			.success( function(result) {
 				if (result.success) {
+					$('html').addClass('loading');
 					var redirectPath = $location.search().redirect;
 					location.href = (redirectPath ? redirectPath : "/users/userinfo.rk");
 				} else {
