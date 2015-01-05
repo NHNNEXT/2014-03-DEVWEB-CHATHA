@@ -206,7 +206,7 @@ public class BattleController {
 			return null;
 		}
 		if(loser.getId().equals(winnerId)){
-			http.sendRedirect("/users/userinfo.rk");
+			http.sendRedirect("/battle/battle_list.rk");
 			return null;
 		}
 		
@@ -225,16 +225,18 @@ public class BattleController {
 	}
 
 	@Get("/winner/{}.rk")
-	public void setSimpleBattleResult(Http http){
+	public Response setSimpleBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getUriVariable(0);
 		if ( loser == null) {
-			http.sendRedirect("/users/login.rk");
-			return;
+			http.sendRedirect("/users/login.rk?redirect=/winner/"+winnerId+".rk");
+			return null;
 		}
+		Jsp jsp = new Jsp("battle_result_alert.jsp");
 		if(loser.getId().equals(winnerId)){
-			http.sendRedirect("/users/userinfo.rk");
-			return;
+			jsp.put("alert", "자기 자신과는 대결할 수 없습니다. Challenge List로 이동합니다.");
+			jsp.put("redirect", "/battle/battle_list.rk");
+			return jsp;
 		}
 		
 		QueryExecuter qe = new QueryExecuter();
@@ -246,8 +248,14 @@ public class BattleController {
 		qe.close();
 		
 		Notification.sendBattleResult(winnerId, loser.getId());
+
+
+
+		jsp.put("alert", "패배하셨습니다. 클릭하시면 Challenge List로 이동합니다.");
+		jsp.put("redirect", "/battle/battle_list.rk");
+		return jsp;
+
 		
-		http.sendRedirect("/users/userinfo.rk");
 	}
 
 	public void drawBattleTimeout(String userId) {

@@ -71,7 +71,7 @@
 						<h4 style="line-height: 60px;">
 							<span class="glyphicon glyphicon-tint"></span>
 							{{score.reputation}} <span class='glyphicon glyphicon-log-in'></span>
-							<a href="#">http://localhost:8080/winner/{{user.id}}</a>
+							<a href="#">http://localhost:8080/winner/{{user.id}}.rk</a>
 						</h4>
 					</div>
 				</div>
