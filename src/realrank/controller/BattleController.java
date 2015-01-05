@@ -240,7 +240,7 @@ public class BattleController {
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getUriVariable(0);
 		if ( loser == null) {
-			http.sendRedirect("/users/login.rk?redirect=/winner/"+winnerId+".rk");
+			http.sendRedirect("/users/login.rk?redirect=/"+winnerId+".winner");
 			return null;
 		}
 		Jsp jsp = new Jsp("battle_result_alert.jsp");
