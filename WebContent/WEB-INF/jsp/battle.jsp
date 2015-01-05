@@ -81,13 +81,14 @@
 								<td>{{battle.acc_time}}</td>
 							</tr>
 							<tr>
-								<th>경과 시간</th>
-								<td>{{getElapsedTime()}}</td>
+								<th>남은 시간<br></th>
+								<td>{{getLeftTime()}}</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-
+				<small>제한 시간 동안 승부가 나지 않으면 무승부 처리 됩니다.</small>
+				
 				<input type="submit" class="btn btn-lg btn-primary btn-block" value="항복" ng-click="endBattle(battle)"/>
 				<br>
 				<div class="alert alert-danger" role="alert">먼저 버튼을 클릭한 사람은 패배를 인정하게 됩니다.</div>

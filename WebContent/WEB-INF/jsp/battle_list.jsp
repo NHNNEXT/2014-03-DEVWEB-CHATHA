@@ -32,7 +32,7 @@
 							  	<span class="label label-danger">{{sentBattle.opponentScore}}</span>
 							  	<span class="label label-warning">{{sentBattle.opponentReputation}}</span>
 							  	<span class="date">{{dateFormatter(sentBattle.req_time)}}</span><span class="time">{{timeFormatter(sentBattle.req_time)}}</span>
-							  	<button type="button" class="btn btn-default btn-xs pull-right" ng-click="cancelChallenge(sentBattle)">
+							  	<button type="button" class="btn btn-default btn-xs pull-right btn-warning" ng-click="cancelChallenge(sentBattle)">
 								  <span class="glyphicon glyphicon-remove"></span>cancel
 								</button>
 							  </li>
@@ -57,10 +57,10 @@
 									<span class="label label-warning">{{receivedBattle.opponentReputation}}</span>
 									<span class="date">{{dateFormatter(receivedBattle.req_time)}}</span><span class="time">{{timeFormatter(receivedBattle.req_time)}}</span>
 									<div class="btn-group pull-right" role="group">
-										<button type="button" class="btn btn-default btn-xs" ng-click="acceptChallenge(receivedBattle)">
+										<button type="button" class="btn btn-default btn-xs btn-success" ng-click="acceptChallenge(receivedBattle)">
 											<span class="glyphicon glyphicon-ok" ></span>accept
 										</button>
-										<button type="button" class="btn btn-default btn-xs" ng-click="denyChallenge(receivedBattle)">
+										<button type="button" class="btn btn-default btn-xs btn-warning" btn-warning ng-click="denyChallenge(receivedBattle)">
 											<span class="glyphicon glyphicon-remove" ></span>deny
 										</button>
 									</div>
@@ -88,7 +88,7 @@
 									<strong>{{acceptedBattle.challenger}}</strong>
 									
 									<span class="date">{{dateFormatter(acceptedBattle.req_time)}}</span><span class="time">{{timeFormatter(acceptedBattle.req_time)}}</span>
-									<button type="button" class="btn btn-default btn-xs pull-right" ng-click="startChallenge(acceptedBattle)">
+									<button type="button" class="btn btn-default btn-xs pull-right btn-primary" ng-click="startChallenge(acceptedBattle)">
 										<span class="glyphicon glyphicon-ok" ></span>GO!
 									</button>
 								</li>

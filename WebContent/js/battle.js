@@ -22,7 +22,7 @@
 		
 		//realtime clock
 	    $scope.clock = new Date().getTime();
-	    $scope.tickInterval = 1000;
+	    $scope.tickInterval = 77;
 
 	    function tick() {
 	        $scope.clock = new Date().getTime()
@@ -30,28 +30,33 @@
 	    }
 	    $timeout(tick, $scope.tickInterval);
 		
-	    $scope.getElapsedTime=function () {
-		    var msPerMinute = 60 * 1000;
+	    $scope.getLeftTime=function () {
+	    	var timeLeftString = "";
+	    	
+	    	var msPerSecond = 1000;
+	    	var msPerMinute = msPerSecond * 60;
 		    var msPerHour = msPerMinute * 60;
 		    var msPerDay = msPerHour * 24;
-		    var msPerMonth = msPerDay * 30;
-		    var msPerYear = msPerDay * 365;
 
-		    var elapsed = $scope.clock - $scope.battle.startTimestamp;
+		    var timeLeft = ($scope.battle.startTimestamp+msPerDay) - $scope.clock;
+		    
+		    var centiSeconds = Math.floor((timeLeft%msPerSecond)/10);
+		    var seconds = Math.floor((timeLeft%msPerMinute)/msPerSecond);
+		    var minutes = Math.floor((timeLeft%msPerHour)/msPerMinute);
+		    var hours = Math.floor(timeLeft/msPerHour);
 
-		    if (elapsed < msPerMinute) {
-		         return Math.round(elapsed/1000) + ' 초';   
-		    }else if (elapsed < msPerHour) {
-		         return Math.round(elapsed/msPerMinute) + ' 분';   
-		    }else if (elapsed < msPerDay ) {
-		         return Math.round(elapsed/msPerHour ) + ' 시';   
-		    }else if (elapsed < msPerMonth) {
-		        return Math.round(elapsed/msPerDay) + ' 일';   
-		    }else if (elapsed < msPerYear) {
-		        return Math.round(elapsed/msPerMonth) + ' 달';   
-		    }else {
-		        return Math.round(elapsed/msPerYear ) + ' 년';   
+		    function twoDigit(num){
+		    	if(num == 0) return "00";
+		    	if(10 > num && num > 0) return "0"+num;
+		    	return num;
 		    }
+
+		    timeLeftString += twoDigit(hours)+" : ";
+		    timeLeftString += twoDigit(hours)+" : ";
+		    timeLeftString += twoDigit(seconds)+"' ";
+		    timeLeftString += twoDigit(centiSeconds)+"\"";
+		    
+		    return timeLeftString;
 		}
 	    	    		
 		$scope.endBattle=function(battle){
