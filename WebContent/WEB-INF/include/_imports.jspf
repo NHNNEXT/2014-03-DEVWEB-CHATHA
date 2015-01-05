@@ -11,3 +11,4 @@
 	var score = ${score};
 </script>
 <script src="/js/userinfo.js"></script>
+<script src="/js/userinfo.js"></script>

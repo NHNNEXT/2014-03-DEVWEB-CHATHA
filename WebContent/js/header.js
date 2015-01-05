@@ -79,7 +79,7 @@ app.controller('LoginController', [ '$http', '$scope', '$rootScope',
 					user : JSON.stringify($scope.user)
 				})).success(function(result) {
 					if (result.success) {
-						location.reload();
+						location.href = "/battle/battle_list.rk";
 					} else {
 						warning(result.errorMessage);
 					}
