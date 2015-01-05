@@ -84,9 +84,11 @@ public class BattleManager {
 	
 	public static boolean acceptChallenge(QueryExecuter qe, long battleId) {
 		Battle battle = qe.getWhere(Battle.class, "id=? and state=?", battleId, STATE_NEW);
-		qe.close();
-		if (determineTimeValidity(battle.getReq_time())) {
-			return setState(battleId, STATE_ACCEPTED);
+		if (determineTimeValidity(getServerTime(qe), battle.getReq_time())) {
+			battle.setState(STATE_ACCEPTED);
+			battle.setAcc_time(getServerTime(qe));
+			qe.update(battle);
+			return true;
 		}
 		updateAcceptTimeout(qe, battle.getChampion());
 		return false;
@@ -129,19 +131,14 @@ public class BattleManager {
 		qe.close();
 		return result != 0;
 	}
-	
-	
 
-	static Date getServerTime() {
-		QueryExecuter qe = new QueryExecuter();
+	static Date getServerTime(QueryExecuter qe) {
 		GetRecordQuery query = new GetRecordQuery(1, "select now()");
 		List<Object> l =  qe.execute(query);
-		qe.close();
 		return (Date) l.get(0);
 	}
 
-	static boolean determineTimeValidity(Date reqTime) {
-		Date currentTime = getServerTime();
+	static boolean determineTimeValidity(Date currentTime, Date reqTime) {
 		return (currentTime.getTime() - reqTime.getTime()) < (1000L * 60 * 60 * 24);
 	}
 
