@@ -1,5 +1,6 @@
 package realrank.objects;
 
+import easyjdbc.annotation.Exclude;
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
 
@@ -9,7 +10,17 @@ public class Score {
 	String id;
 	Integer score;
 	Integer reputation;
+	@Exclude
+	Integer rank;
 	
+	public Integer getRank() {
+		return rank;
+	}
+
+	public void setRank(Integer rank) {
+		this.rank = rank;
+	}
+
 	public void add(int i) {
 		score +=i;
 	}

@@ -56,4 +56,11 @@ public class UserControllerTest extends Mockito{
 				 user.getGames());
 		boolean result = qe.execute(eq);
 	}
+	
+	@Test
+	public void testGetRanks() {
+		http = mock(Http.class);
+		Mockito.when(http.getParameter("rankType")).thenReturn("1");
+		userController.getRanks(http);
+	}
 }
