@@ -29,7 +29,9 @@
 						<div id="battles-send" class="panel-collapse collapse in">
 							<ul class="list-group">
 							  <li class="list-group-item" ng-repeat="sentBattle in battleList.sent">
-							  	대전 상대 : {{sentBattle.champion}} (Score : {{sentBattle.opponentScore}}, Reputation : {{sentBattle.opponentScore}})
+							  	To : <strong>{{sentBattle.champion}}</strong> 
+							  	<span class="label label-danger">{{sentBattle.opponentScore}}</span>
+							  	<span class="label label-warning">{{sentBattle.opponentReputation}}</span>
 							  	<span class="date">{{dateFormatter(sentBattle.req_time)}}</span><span class="time">{{timeFormatter(sentBattle.req_time)}}</span>
 							  	<button type="button" class="btn btn-default btn-xs pull-right" ng-click="cancelChallenge(sentBattle)">
 								  <span class="glyphicon glyphicon-remove"></span>cancel
@@ -51,7 +53,9 @@
 						<div id="battles-recieve" class="panel-collapse collapse in">
 							<ul class="list-group">
 								<li class="list-group-item" ng-repeat="receivedBattle in battleList.received">
-									대전 상대 : {{receivedBattle.challenger}} (Score : {{receivedBattle.opponentScore}}, Reputation : {{receivedBattle.opponentScore}})
+									From : <strong>{{receivedBattle.challenger}}</strong>
+									<span class="label label-danger">{{receivedBattle.opponentScore}}</span>
+									<span class="label label-warning">{{receivedBattle.opponentReputation}}</span>
 									<span class="date">{{dateFormatter(receivedBattle.req_time)}}</span><span class="time">{{timeFormatter(receivedBattle.req_time)}}</span>
 									
 									<button type="button" class="btn btn-default btn-xs pull-right" ng-click="acceptChallenge(receivedBattle)">
@@ -78,7 +82,11 @@
 						<div id="battles-in-progress" class="panel-collapse collapse in">
 							<ul class="list-group">
 								<li class="list-group-item" ng-repeat="acceptedBattle in battleList.accepted">
-									{{acceptedBattle.champion}} vs {{acceptedBattle.challenger}}
+								
+									<strong>{{acceptedBattle.champion}}</strong>
+									vs
+									<strong>{{acceptedBattle.challenger}}</strong>
+									
 									<span class="date">{{dateFormatter(acceptedBattle.req_time)}}</span><span class="time">{{timeFormatter(acceptedBattle.req_time)}}</span>
 									<button type="button" class="btn btn-default btn-xs pull-right" ng-click="startChallenge(acceptedBattle)">
 										<span class="glyphicon glyphicon-ok" ></span>GO!

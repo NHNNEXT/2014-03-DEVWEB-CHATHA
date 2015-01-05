@@ -27,7 +27,7 @@ public class UserController {
 	@Get("/users/user_search.json")
 	public Response userSearch(Http http) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<User> searchResultList = UserManager.getUserByKeyword(http.getParameter("keyword"));
+		List<User> searchResultList = UserManager.getUsersByKeyword(http.getParameter("keyword"));
 		searchResultList.forEach(user -> {
 			user.setPassword("");
 		});
