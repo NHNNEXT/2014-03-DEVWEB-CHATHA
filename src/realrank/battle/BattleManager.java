@@ -30,12 +30,13 @@ public class BattleManager {
 		battle.setChampion(champId);
 		battle.setReq_time(new Date());
 		battle.setState(state);
-
 		QueryExecuter qe = new QueryExecuter();
-		if (qe.insert(battle) == 0) {
-			System.out.println("BattleManager.createBattle() : insert failed");
-			return null;
-		}
+		
+		
+		long battleId = (Long)qe.insertAndGetPrimaryKey(battle);
+
+
+		battle=qe.get(Battle.class, battleId);
 		qe.close();
 
 		return battle;
@@ -83,15 +84,19 @@ public class BattleManager {
 	
 	public static boolean acceptChallenge(QueryExecuter qe, long battleId) {
 		Battle battle = qe.getWhere(Battle.class, "id=? and state=?", battleId, STATE_NEW);
-		qe.close();
-		if (determineTimeValidity(battle.getReq_time())) {
-			return setState(battleId, STATE_ACCEPTED);
+		if (determineTimeValidity(getServerTime(qe), battle.getReq_time())) {
+			battle.setState(STATE_ACCEPTED);
+			battle.setAcc_time(getServerTime(qe));
+			qe.update(battle);
+			return true;
 		}
 		updateAcceptTimeout(qe, battle.getChampion());
 		return false;
 	}
 
-	public static boolean finishChallenge(long battleId) {
+	public static boolean finishChallenge(String winnerId, long battleId) {
+		if(!setWinner(battleId, winnerId))
+			return false;
 		return setState(battleId, STATE_FINISHED);
 	}
 	
@@ -113,19 +118,27 @@ public class BattleManager {
 		battle.setState(state);
 		QueryExecuter qe = new QueryExecuter();
 		int result = qe.update(battle);
+		qe.close();
+		return result != 0;
+	}
+	
+	static boolean setWinner(long battleId, String winnerId) {
+		Battle battle = new Battle();
+		battle.setId((int) battleId);
+		battle.setWinner(winnerId);
+		QueryExecuter qe = new QueryExecuter();
+		int result = qe.update(battle);
+		qe.close();
 		return result != 0;
 	}
 
-	static Date getServerTime() {
-		QueryExecuter qe = new QueryExecuter();
+	static Date getServerTime(QueryExecuter qe) {
 		GetRecordQuery query = new GetRecordQuery(1, "select now()");
 		List<Object> l =  qe.execute(query);
-		qe.close();
 		return (Date) l.get(0);
 	}
 
-	static boolean determineTimeValidity(Date reqTime) {
-		Date currentTime = getServerTime();
+	static boolean determineTimeValidity(Date currentTime, Date reqTime) {
 		return (currentTime.getTime() - reqTime.getTime()) < (1000L * 60 * 60 * 24);
 	}
 

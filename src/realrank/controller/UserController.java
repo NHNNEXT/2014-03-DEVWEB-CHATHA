@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
-import realrank.support.Utility;
 import realrank.user.UserManager;
 import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.GetRecordQuery;
@@ -30,7 +29,7 @@ public class UserController {
 	@Get("/users/user_search.json")
 	public Response userSearch(Http http) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<User> searchResultList = UserManager.getUserByKeyword(http.getParameter("keyword"));
+		List<User> searchResultList = UserManager.getUsersByKeyword(http.getParameter("keyword"));
 		searchResultList.forEach(user -> {
 			user.setPassword("");
 		});
@@ -73,6 +72,8 @@ public class UserController {
 			return new Json(new Result(false, "패스워드가 다릅니다."));
 		User fromDB = new User((ArrayList<Object>) result);
 		qe.close();
+		
+		fromDB.setPassword("");
 		http.setSessionAttribute("user", fromDB);
 
 		new BattleController().drawBattleTimeout(fromDB.getId());

@@ -16,7 +16,6 @@
 				<%@ include file="/WEB-INF/include/_userheader.jspf"%>
 				<div class="panel-group" id="accordion">
 				
-					<!-- 내가 신청 -->
 					<div class="panel panel-default battles-send">
 						<div class="panel-heading">
 							<h4 class="panel-title">도전 보내기</h4>

@@ -72,10 +72,16 @@
 
 					<div class="col-md-4">
 						<h4 style="line-height: 60px;">
+<<<<<<< HEAD
 							<span class="glyphicon glyphicon-flag"></span> <a href
 								ng-click="turnOnModal()">{{score.score}}</a> <span
 								class="glyphicon glyphicon-tint"></span> {{score.reputation}} <span
 								class='glyphicon glyphicon-log-in'></span> <a href="#">http://localhost:8080/winner/{{user.id}}</a>
+=======
+							<span class="glyphicon glyphicon-tint"></span>
+							{{score.reputation}} <span class='glyphicon glyphicon-log-in'></span>
+							<a href="#">http://localhost:8080/{{user.id}}.winner</a>
+>>>>>>> branch 'dev' of https://github.com/NHNNEXT/2014-03-DEVWEB-CHATHA.git
 						</h4>
 					</div>
 					<modal title="Determine Rank">
@@ -122,7 +128,3 @@
 		</div>
 	</c:when>
 </c:choose>
-
-<br>
-<br>
-<br>

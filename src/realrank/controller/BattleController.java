@@ -12,6 +12,7 @@ import realrank.objects.BattleInfo;
 import realrank.objects.User;
 import realrank.support.Notification;
 import realrank.support.Result;
+import realrank.user.UserManager;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
@@ -182,10 +183,23 @@ public class BattleController {
 		Battle battle = qe.get(Battle.class, http.getParameter("bid"));
 		Jsp jsp = new Jsp("battle.jsp");
 		Gson gson = new Gson();
+		
+		User challenger = UserManager.getUserByID(battle.getChallenger());
+		User champion = UserManager.getUserByID(battle.getChampion());
+		
+		
+		
 		jsp.put("user", user.toJson());
 		jsp.put("score", user.getScoreJson(qe));
-		qe.close();
+		
+		jsp.put("challenger", challenger.toJson());
+		jsp.put("challengerScore", challenger.getScoreJson(qe));
+		
+		jsp.put("champion", champion.toJson());
+		jsp.put("championScore", champion.getScoreJson(qe));
+		
 		jsp.put("battle", gson.toJson(battle));
+		qe.close();
 		return jsp;
 	}
 	
@@ -231,16 +245,16 @@ public class BattleController {
 		
 		Notification.sendBattleResult(winnerId, loser.getId());
 
-		return new Json(new Result(true, "패배하셨습니다. 클릭하시면 마이페이지로 이동합니다."));
+		return new Json(new Result(true, ""));
 		
 	}
 
-	@Get("/winner/{}.rk")
+	@Get("/{}.winner")
 	public Response setSimpleBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getUriVariable(0);
 		if ( loser == null) {
-			http.sendRedirect("/users/login.rk?redirect=/winner/"+winnerId+".rk");
+			http.sendRedirect("/users/login.rk?redirect=/"+winnerId+".winner");
 			return null;
 		}
 		Jsp jsp = new Jsp("battle_result_alert.jsp");
@@ -260,13 +274,9 @@ public class BattleController {
 		
 		Notification.sendBattleResult(winnerId, loser.getId());
 
-
-
 		jsp.put("alert", "패배하셨습니다. 클릭하시면 Challenge List로 이동합니다.");
 		jsp.put("redirect", "/battle/battle_list.rk");
-		return jsp;
-
-		
+		return jsp;	
 	}
 
 	public void drawBattleTimeout(String userId) {
@@ -299,7 +309,7 @@ public class BattleController {
 		UserController userControllser = new UserController();
 		userControllser.increaseGameCount(qe, loser);
 		userControllser.increaseGameCount(qe, winner);
-		
-		BattleManager.finishChallenge(battle.getId());
+		qe.close();
+		BattleManager.finishChallenge(winner.getId(), battle.getId());
 	}
 }
