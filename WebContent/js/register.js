@@ -102,7 +102,6 @@ app.controller('registerController', [ '$http', '$scope',
 $(function() {
 	$('#birthday').datepicker({
 		format: 'yyyy-mm-dd',
-		 startDate: '-300d',
 		 autoclose: true
 	}).on('changeDate',function(){
 		controllers.registerController.user.birthday = $('#birthday').val(); 
