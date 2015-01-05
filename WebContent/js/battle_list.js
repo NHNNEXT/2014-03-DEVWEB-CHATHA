@@ -14,18 +14,18 @@
 				date = dateObject.getDate(),
 				day = days[dateObject.getDay()];
 			
-			return year+"년 "+month+"월 "+date+"일 "+day+"요일 ";
+			return year+". "+month+". "+date+" ("+day+") ";
 		};
 		
 		$scope.timeFormatter = function(dateString){
 			var dateObject = new Date(dateString),
 				hours = dateObject.getHours() % 12,
-				amPm = (dateObject.getHours() > 11) ? '오후' : '오전',
+				amPm = (dateObject.getHours() > 11) ? 'AM' : 'PM',
 				minutes = dateObject.getMinutes();
 			
 			if(hours == 0) hours = 12;
-			
-			return amPm +" "+hours+"시"+minutes+"분";
+			if(minutes<10) minutes = "0"+minutes;
+			return amPm +" "+hours+":"+minutes;
 		};
 		
 		

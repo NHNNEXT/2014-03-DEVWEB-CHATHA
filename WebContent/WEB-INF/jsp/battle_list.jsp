@@ -57,13 +57,14 @@
 									<span class="label label-danger">{{receivedBattle.opponentScore}}</span>
 									<span class="label label-warning">{{receivedBattle.opponentReputation}}</span>
 									<span class="date">{{dateFormatter(receivedBattle.req_time)}}</span><span class="time">{{timeFormatter(receivedBattle.req_time)}}</span>
-									
-									<button type="button" class="btn btn-default btn-xs pull-right" ng-click="acceptChallenge(receivedBattle)">
-										<span class="glyphicon glyphicon-ok" ></span>accept
-									</button>
-									<button type="button" class="btn btn-default btn-xs pull-right" ng-click="denyChallenge(receivedBattle)">
-										<span class="glyphicon glyphicon-remove" ></span>deny
-									</button>
+									<div class="btn-group pull-right" role="group">
+										<button type="button" class="btn btn-default btn-xs" ng-click="acceptChallenge(receivedBattle)">
+											<span class="glyphicon glyphicon-ok" ></span>accept
+										</button>
+										<button type="button" class="btn btn-default btn-xs" ng-click="denyChallenge(receivedBattle)">
+											<span class="glyphicon glyphicon-remove" ></span>deny
+										</button>
+									</div>
 								</li>
 							</ul>
 						</div>
