@@ -1,26 +1,15 @@
 package realrank.controller;
 
-import static org.junit.Assert.*;
-
-import java.util.Enumeration;
-
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.google.gson.Gson;
-
-import realrank.objects.Score;
 import realrank.objects.User;
-import realrank.support.Utility;
-import easyjdbc.query.ExecuteQuery;
 import easyjdbc.query.QueryExecuter;
+import easyjdbc.query.raw.ExecuteQuery;
 import easymapping.mapping.Http;
 
 public class UserControllerTest extends Mockito{
@@ -55,6 +44,7 @@ public class UserControllerTest extends Mockito{
 						.getPassword(), user.getNickname(), user.getGender(),
 				 user.getGames());
 		boolean result = qe.execute(eq);
+		System.out.println(result);
 	}
 	
 	@Test

@@ -1,4 +1,4 @@
-package easyjdbc.query;
+package easyjdbc.query.raw;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,31 +7,38 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import easyjdbc.query.Query;
+
 public class GetRecordQuery extends Query {
 
-	public List<Object> execute(Connection conn) throws SQLException {
+	public List<Object> execute(Connection conn) {
 		List<Object> record = new ArrayList<Object>();
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		if (parameters != null)
-			for (int j = 0; j < parameters.size(); j++) {
-				pstmt.setObject(j + 1, parameters.get(j));
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			if (parameters != null)
+				for (int j = 0; j < parameters.size(); j++) {
+					pstmt.setObject(j + 1, parameters.get(j));
+				}
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				for (int i = 0; i < resultSize; i++) {
+					record.add(rs.getObject(i + 1));
+				}
 			}
-		ResultSet rs = pstmt.executeQuery();
-		while (rs.next()) {
-			for (int i = 0; i < resultSize; i++) {
-				record.add(rs.getObject(i + 1));
-			}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException sqle) {
+				}
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException sqle) {
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		if (pstmt != null)
-			try {
-				pstmt.close();
-			} catch (SQLException sqle) {
-			}
-		if (rs != null)
-			try {
-				rs.close();
-			} catch (SQLException sqle) {
-			}
 		return record;
 	}
 
