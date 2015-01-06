@@ -43,6 +43,15 @@ html.loading:after {
     -webkit-animation: rotating 2s linear infinite;
 }
 
+
+.green {
+	color:green;
+}
+
+.red {
+	color:red;
+}
+
 body > .container {
     margin-top: 80px;
 }
