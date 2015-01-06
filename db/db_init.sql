@@ -61,3 +61,18 @@ CREATE TABLE `score` (
 	`reputation` INTEGER NOT NULL DEFAULT 100,
 	PRIMARY KEY(`id`)
 ) ENGINE = InnoDB;
+
+
+DROP TABLE IF EXISTS `realrank`.`daily_score`;
+
+CREATE TABLE `realrank`.`daily_score` (rank INT AUTO_INCREMENT, id VARCHAR(32) NOT NULL, score int(11) NOT NULL, reputation int(11) NOT NULL DEFAULT 100, PRIMARY KEY(rank));
+
+
+DROP TABLE IF EXISTS `realrank`.`weekly_score`;
+
+CREATE TABLE `realrank`.`weekly_score` (rank INT AUTO_INCREMENT, id VARCHAR(32) NOT NULL, score int(11) NOT NULL, reputation int(11) NOT NULL DEFAULT 100, PRIMARY KEY(rank));
+
+
+DROP TABLE IF EXISTS `realrank`.`monthly_score`;
+
+CREATE TABLE `realrank`.`monthly_score` (rank INT AUTO_INCREMENT, id VARCHAR(32) NOT NULL, score int(11) NOT NULL, reputation int(11) NOT NULL DEFAULT 100, PRIMARY KEY(rank));

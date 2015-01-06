@@ -7,10 +7,10 @@ import java.util.List;
 
 import realrank.objects.Battle;
 import realrank.objects.BattleInfo;
-import easyjdbc.query.ExecuteQuery;
-import easyjdbc.query.GetRecordQuery;
-import easyjdbc.query.GetRecordsQuery;
 import easyjdbc.query.QueryExecuter;
+import easyjdbc.query.raw.ExecuteQuery;
+import easyjdbc.query.raw.GetRecordQuery;
+import easyjdbc.query.raw.GetRecordsQuery;
 
 public class BattleManager {
 	public final static int STATE_NEW = 0;
@@ -34,7 +34,8 @@ public class BattleManager {
 		QueryExecuter qe = new QueryExecuter();
 		
 		
-		long battleId = (Long)qe.insertAndGetPrimaryKey(battle);
+		BigInteger key = (BigInteger) qe.insertAndGetPrimaryKey(battle);
+		long battleId = key.longValue(); 
 
 
 		battle=qe.get(Battle.class, battleId);
@@ -78,16 +79,17 @@ public class BattleManager {
 				" WHERE (challenger=" + "'" + userId + "' OR champion=" + "'" + userId + "')" +
 				" AND state=" + STATE_NEW +
 				" AND ADDDATE(req_time, 1) < NOW()";
-		System.out.println("[DEBUG] " + sql);
 
 		qe.execute(new ExecuteQuery(sql));
 	}
 	
 	public static boolean acceptChallenge(QueryExecuter qe, long battleId) {
 		Battle battle = qe.getWhere(Battle.class, "id=? and state=?", battleId, STATE_NEW);
-		qe.close();
-		if (determineTimeValidity(battle.getReq_time())) {
-			return setState(battleId, STATE_ACCEPTED);
+		if (determineTimeValidity(getServerTime(qe), battle.getReq_time())) {
+			battle.setState(STATE_ACCEPTED);
+			battle.setAcc_time(getServerTime(qe));
+			qe.update(battle);
+			return true;
 		}
 		updateAcceptTimeout(qe, battle.getChampion());
 		return false;
@@ -115,6 +117,7 @@ public class BattleManager {
 		Battle battle = new Battle();
 		battle.setId((int) battleId);
 		battle.setState(state);
+		
 		QueryExecuter qe = new QueryExecuter();
 		int result = qe.update(battle);
 		qe.close();
@@ -130,19 +133,14 @@ public class BattleManager {
 		qe.close();
 		return result != 0;
 	}
-	
-	
 
-	static Date getServerTime() {
-		QueryExecuter qe = new QueryExecuter();
+	static Date getServerTime(QueryExecuter qe) {
 		GetRecordQuery query = new GetRecordQuery(1, "select now()");
 		List<Object> l =  qe.execute(query);
-		qe.close();
 		return (Date) l.get(0);
 	}
 
-	static boolean determineTimeValidity(Date reqTime) {
-		Date currentTime = getServerTime();
+	static boolean determineTimeValidity(Date currentTime, Date reqTime) {
 		return (currentTime.getTime() - reqTime.getTime()) < (1000L * 60 * 60 * 24);
 	}
 

@@ -1,5 +1,0 @@
-{
-	"url" : "jdbc:mysql://10.73.45.136:3306/realrank?useUnicode=true&characterEncoding=utf8",
-	"id" : "realrank_test",
-	"password" : "1234"
-}

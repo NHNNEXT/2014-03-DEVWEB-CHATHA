@@ -8,7 +8,6 @@
 <c:if test="${not empty sessionScope.user}">
 	<c:redirect url="/users/modify.my" />
 </c:if>
-<%@ include file="/WEB-INF/include/_css.jspf"%>
 <link href="/css/register.css" rel="stylesheet" media="screen">
 <link href="/plugin/bootstrap/datepicker/datepicker.css" rel="stylesheet" media="screen">
 </head>

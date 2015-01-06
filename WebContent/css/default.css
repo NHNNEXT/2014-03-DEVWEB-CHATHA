@@ -43,6 +43,22 @@ html.loading:after {
     -webkit-animation: rotating 2s linear infinite;
 }
 
+
+.green {
+	color:green;
+}
+
+.red {
+	color:red;
+}
+
+body > .container {
+    margin-top: 80px;
+}
+
+body .jumbotron {
+    margin-bottom: -80px;
+}
 @-webkit-keyframes rotating {
     from{
         -webkit-transform: rotate(0deg);

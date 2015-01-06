@@ -5,7 +5,6 @@
 <html>
 <head>
 <title>Register - Mytoday</title>
-<%@ include file="/WEB-INF/include/_css.jspf"%>
 <link href="/css/register.css" rel="stylesheet" media="screen">
 </head>
 <body ng-app='module'>
@@ -63,19 +62,6 @@
 						ng-model="user.nickname">
 				</div>
 
-				<div>
-					<span ng-show="modify.password()"><span class='green'>패스워드 변경</span>
-					</span>
-					<span ng-show="modify.email()">e-mail : {{oldUser.email}} ==> <span class='green'>{{user.email}}</span>
-					</span>
-					<span ng-show="modify.name()">name : {{oldUser.name}} ==> <span class='green'>{{user.name}}</span>
-					</span>
-					<span ng-show="modify.gender()">gender : {{oldUser.gender}} ==> <span class='green'>{{user.gender}}</span>
-					</span>
-					<span ng-show="modify.nickname()">nickname : {{oldUser.nickname}} ==> <span class='green'>{{user.nickname}}</span>
-					</span>
-					
-				</div>
 			
 				<div class="btn btn-info btn-lg" ng-click="submit()">정보수정</div>
 

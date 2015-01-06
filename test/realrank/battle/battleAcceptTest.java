@@ -4,12 +4,12 @@ package realrank.battle;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import easyjdbc.query.GetRecordQuery;
-import easyjdbc.query.QueryExecuter;
-import easymapping.mapping.Http;
 import realrank.controller.BattleController;
 import realrank.objects.Battle;
 import realrank.objects.User;
+import easyjdbc.query.QueryExecuter;
+import easyjdbc.query.raw.GetRecordQuery;
+import easymapping.mapping.Http;
 
 public class battleAcceptTest {
 

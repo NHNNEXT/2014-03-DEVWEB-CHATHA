@@ -12,6 +12,7 @@ import realrank.objects.BattleInfo;
 import realrank.objects.User;
 import realrank.support.Notification;
 import realrank.support.Result;
+import realrank.user.UserManager;
 import easyjdbc.query.QueryExecuter;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
@@ -29,7 +30,6 @@ public class BattleController {
 		String uid = http.getSessionAttribute(User.class, "user").getId();
 		
 		String sendTo = http.getParameter("champId");
-		System.out.println(sendTo);
 		if (sendTo == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
 		
@@ -42,8 +42,6 @@ public class BattleController {
 		}
 		
 		
-		System.out.println(fromDB.getId());
-		System.out.println(uid);
 		if (fromDB.getId().equals(uid)){
 			qe.close();
 			return new Json(new Result(false, "자신에게 대결을 신청할 수는 없습니다."));
@@ -182,10 +180,23 @@ public class BattleController {
 		Battle battle = qe.get(Battle.class, http.getParameter("bid"));
 		Jsp jsp = new Jsp("battle.jsp");
 		Gson gson = new Gson();
+		System.out.println(battle);
+		User challenger = UserManager.getUserByID(battle.getChallenger());
+		User champion = UserManager.getUserByID(battle.getChampion());
+		
+		
+		
 		jsp.put("user", user.toJson());
 		jsp.put("score", user.getScoreJson(qe));
-		qe.close();
+		
+		jsp.put("challenger", challenger.toJson());
+		jsp.put("challengerScore", challenger.getScoreJson(qe));
+		
+		jsp.put("champion", champion.toJson());
+		jsp.put("championScore", champion.getScoreJson(qe));
+		
 		jsp.put("battle", gson.toJson(battle));
+		qe.close();
 		return jsp;
 	}
 	
@@ -224,6 +235,10 @@ public class BattleController {
 		QueryExecuter qe = new QueryExecuter();
 	
 		Battle battle = qe.get(Battle.class, battleId);
+		
+		if(battle.getState() != BattleManager.STATE_ACCEPTED)
+			return new Json(new Result(false, "이미 완료된 결투입니다."));
+		
 		User winner = qe.get(User.class, winnerId);
 		finishBattle(qe, battle, loser, winner);
 
@@ -231,16 +246,16 @@ public class BattleController {
 		
 		Notification.sendBattleResult(winnerId, loser.getId());
 
-		return new Json(new Result(true, "패배하셨습니다. 클릭하시면 마이페이지로 이동합니다."));
+		return new Json(new Result(true, ""));
 		
 	}
 
-	@Get("/winner/{}.rk")
+	@Get("/{}.winner")
 	public Response setSimpleBattleResult(Http http){
 		User loser = http.getSessionAttribute(User.class, "user");
 		String winnerId = http.getUriVariable(0);
 		if ( loser == null) {
-			http.sendRedirect("/users/login.rk?redirect=/winner/"+winnerId+".rk");
+			http.sendRedirect("/users/login.rk?redirect=/"+winnerId+".winner");
 			return null;
 		}
 		Jsp jsp = new Jsp("battle_result_alert.jsp");

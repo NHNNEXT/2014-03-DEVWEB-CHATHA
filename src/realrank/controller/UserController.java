@@ -8,11 +8,16 @@ import java.util.Map;
 import realrank.objects.Score;
 import realrank.objects.User;
 import realrank.support.Result;
-import realrank.support.Utility;
 import realrank.user.UserManager;
-import easyjdbc.query.ExecuteQuery;
-import easyjdbc.query.GetRecordQuery;
+
+import com.google.gson.Gson;
+
 import easyjdbc.query.QueryExecuter;
+import easyjdbc.query.execute.InsertQuery;
+import easyjdbc.query.execute.UpdateQuery;
+import easyjdbc.query.raw.ExecuteQuery;
+import easyjdbc.query.raw.GetRecordQuery;
+import easyjdbc.query.raw.GetRecordsQuery;
 import easymapping.annotation.Controller;
 import easymapping.annotation.Get;
 import easymapping.annotation.Post;
@@ -27,7 +32,7 @@ public class UserController {
 	@Get("/users/user_search.json")
 	public Response userSearch(Http http) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<User> searchResultList = UserManager.getUserByKeyword(http.getParameter("keyword"));
+		List<User> searchResultList = UserManager.getUsersByKeyword(http.getParameter("keyword"));
 		searchResultList.forEach(user -> {
 			user.setPassword("");
 		});
@@ -84,21 +89,19 @@ public class UserController {
 		User user = http.getJsonObject(User.class, "user");
 		user.setGames(0);
 		QueryExecuter qe = new QueryExecuter();
-		ExecuteQuery eq = new ExecuteQuery("INSERT INTO user VALUES (?, ?, HEX(AES_ENCRYPT(?, ?)), ?, ?, ?, ?)", user.getId(), user.getEmail(),
-				user.getPassword(), user.getPassword(), user.getNickname(), user.getGender(), user.getBirthday(), user.getGames());
-		boolean result = qe.execute(eq);
-		qe.close();
+		InsertQuery query = new InsertQuery(user);
+		boolean result = qe.execute(query);
+		
 		if (result) {
 			Score score = new Score();
 			score.setId(user.getId());
 			score.setScore(1500);
 			score.setReputation(100);
-			qe = new QueryExecuter();
 			qe.insert(score);
-			qe.close();
 			http.setSessionAttribute("user", user);
 			return new Json(new Result(true, null));
 		}
+		qe.close();
 		return new Json(new Result(false, "회원 가입 실패"));
 	}
 
@@ -140,10 +143,8 @@ public class UserController {
 		user.update(usermod);
 		QueryExecuter qe = new QueryExecuter();
 
-		ExecuteQuery eq = new ExecuteQuery("update user set email=?, password=HEX(AES_ENCRYPT(?, ?)), nickname=?, gender=?, birthday=? where id=?",
-				user.getEmail(), user.getPassword(), user.getPassword(), user.getNickname(), user.getGender(),
-				user.getBirthday(), user.getId());
-		boolean result = qe.execute(eq);
+		UpdateQuery query = new UpdateQuery(user);
+		boolean result = qe.execute(query);
 
 		qe.close();
 		if (!result) {
@@ -151,10 +152,45 @@ public class UserController {
 		}
 		return new Json(new Result(true, null));
 	}
+	
+	@Post("/users/rank.rk")
+	public Response getRanks(Http http) {
+		int rankType = Integer.parseInt(http.getParameter("rankType"));
+		String rankTable;
+		Gson gson = new Gson();
+		List<Score> ranks = new ArrayList<Score>();
+		List<List<Object>> rankList;
+		switch (rankType) {
+		case 2:
+			rankTable = "weekly_score";
+			break;
+		case 3:
+			rankTable = "monthly_score";
+			break;
+		default:
+			rankTable = "daily_score";
+			break;
+		}
+		
+		String sql = "SELECT * FROM " + rankTable;
+		
+		QueryExecuter qe = new QueryExecuter();
+		GetRecordsQuery qrq = new GetRecordsQuery(4, sql);
+		rankList = qe.execute(qrq);
+		rankList.forEach((list) -> {
+			Score score = new Score();
+			ArrayList<Object> retScore = (ArrayList<Object>) list;
+			score.setRank((int) retScore.get(0));
+			score.setId((String) retScore.get(1));
+			score.setScore((int) retScore.get(2));
+			score.setReputation((int) retScore.get(3));
+			ranks.add(score);
+		});
+		return new Json(ranks);
+	}
 
 	void increaseGameCount(QueryExecuter qe, User user) {
 		String sql = "UPDATE user set games=games+1" + " WHERE id='" + user.getId() + "'";
-		System.out.println("[DEBUG] " + sql);
 		qe.execute(new ExecuteQuery(sql));
 	}
 

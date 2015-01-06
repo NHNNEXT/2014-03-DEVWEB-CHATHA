@@ -4,11 +4,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import realrank.controller.BattleController;
-import realrank.objects.Battle;
 import realrank.objects.User;
-import realrank.support.Result;
 import easymapping.mapping.Http;
-import easymapping.response.Response;
 
 public class SendBattleTest {
 	BattleController con = new BattleController();
