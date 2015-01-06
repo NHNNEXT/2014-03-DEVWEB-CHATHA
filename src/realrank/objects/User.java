@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import easyjdbc.annotation.Column;
 import easyjdbc.annotation.Exclude;
 import easyjdbc.annotation.Key;
 import easyjdbc.annotation.Table;
@@ -18,6 +19,7 @@ public class User {
 	@Key
 	private String id;
 	private String email;
+	@Column(value = "password", valueFormat = "HEX(AES_ENCRYPT(?, ?))")
 	private String password;
 	private String nickname;
 	private String gender;
@@ -31,7 +33,6 @@ public class User {
 	public User(ArrayList<Object> data) {
 		this.id = (String) data.get(0);
 		this.email = (String) data.get(1);
-		System.out.println(data.get(2));
 		this.password = new String((byte[]) data.get(2));
 		this.nickname = (String) data.get(3);
 		this.gender = (String) data.get(4);

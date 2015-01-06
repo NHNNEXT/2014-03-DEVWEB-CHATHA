@@ -1,15 +1,16 @@
 package realrank.battle;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import realrank.objects.Battle;
 import realrank.objects.BattleInfo;
-import easyjdbc.query.ExecuteQuery;
-import easyjdbc.query.GetRecordQuery;
-import easyjdbc.query.GetRecordsQuery;
 import easyjdbc.query.QueryExecuter;
+import easyjdbc.query.raw.ExecuteQuery;
+import easyjdbc.query.raw.GetRecordQuery;
+import easyjdbc.query.raw.GetRecordsQuery;
 
 public class BattleManager {
 	public final static int STATE_NEW = 0;
@@ -33,7 +34,8 @@ public class BattleManager {
 		QueryExecuter qe = new QueryExecuter();
 		
 		
-		long battleId = (Long)qe.insertAndGetPrimaryKey(battle);
+		BigInteger key = (BigInteger) qe.insertAndGetPrimaryKey(battle);
+		long battleId = key.longValue(); 
 
 
 		battle=qe.get(Battle.class, battleId);
@@ -77,7 +79,6 @@ public class BattleManager {
 				" WHERE (challenger=" + "'" + userId + "' OR champion=" + "'" + userId + "')" +
 				" AND state=" + STATE_NEW +
 				" AND ADDDATE(req_time, 1) < NOW()";
-		System.out.println("[DEBUG] " + sql);
 
 		qe.execute(new ExecuteQuery(sql));
 	}
@@ -116,6 +117,7 @@ public class BattleManager {
 		Battle battle = new Battle();
 		battle.setId((int) battleId);
 		battle.setState(state);
+		
 		QueryExecuter qe = new QueryExecuter();
 		int result = qe.update(battle);
 		qe.close();

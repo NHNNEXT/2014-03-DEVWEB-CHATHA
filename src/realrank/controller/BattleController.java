@@ -30,7 +30,6 @@ public class BattleController {
 		String uid = http.getSessionAttribute(User.class, "user").getId();
 		
 		String sendTo = http.getParameter("champId");
-		System.out.println(sendTo);
 		if (sendTo == null)
 			return new Json(new Result(false, "유효하지 않은 접근입니다."));
 		
@@ -43,8 +42,6 @@ public class BattleController {
 		}
 		
 		
-		System.out.println(fromDB.getId());
-		System.out.println(uid);
 		if (fromDB.getId().equals(uid)){
 			qe.close();
 			return new Json(new Result(false, "자신에게 대결을 신청할 수는 없습니다."));
@@ -183,7 +180,7 @@ public class BattleController {
 		Battle battle = qe.get(Battle.class, http.getParameter("bid"));
 		Jsp jsp = new Jsp("battle.jsp");
 		Gson gson = new Gson();
-		
+		System.out.println(battle);
 		User challenger = UserManager.getUserByID(battle.getChallenger());
 		User champion = UserManager.getUserByID(battle.getChampion());
 		
@@ -238,6 +235,10 @@ public class BattleController {
 		QueryExecuter qe = new QueryExecuter();
 	
 		Battle battle = qe.get(Battle.class, battleId);
+		
+		if(battle.getState() != BattleManager.STATE_ACCEPTED)
+			return new Json(new Result(false, "이미 완료된 결투입니다."));
+		
 		User winner = qe.get(User.class, winnerId);
 		finishBattle(qe, battle, loser, winner);
 
