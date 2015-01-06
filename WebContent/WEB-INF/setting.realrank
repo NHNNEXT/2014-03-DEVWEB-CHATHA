@@ -5,6 +5,6 @@
 		"password" : "1234"
 	},
 	"domain" : {
-		"url" : "www.realrank.com"
+		"url" : "10.73.45.136:8080"
 	} 
 }

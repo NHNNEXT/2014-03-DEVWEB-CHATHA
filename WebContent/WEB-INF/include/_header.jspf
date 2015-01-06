@@ -75,7 +75,7 @@
 							<span class="glyphicon glyphicon-flag"></span> <a href
 								ng-click="turnOnModal()">{{score.score}}</a> <span
 								class="glyphicon glyphicon-tint"></span> {{score.reputation}} <span
-								class='glyphicon glyphicon-log-in'></span> <a href="#">http://localhost:8080/{{user.id}}.winner</a>
+								class='glyphicon glyphicon-log-in'></span> <a href="#">http://10.73.45.136:8080/{{user.id}}.winner</a>
 						</h4>
 					</div>
 					<modal title="Determine Rank">
